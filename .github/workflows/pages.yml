@@ -1,0 +1,55 @@
+name: Deploy preview to GitHub Pages
+
+# Publishes site/ so the client can review the build at a real URL.
+#
+# Two things happen here that deliberately do NOT live in the committed source:
+#
+#  1. A <meta name="robots" content="noindex,nofollow"> is injected into every
+#     page at deploy time. This is a STAGING url — it must not be indexed, and
+#     it must not compete with corafrica.org.ng in search results. Injecting at
+#     deploy rather than committing it means the source stays production-ready
+#     and nobody can forget to strip it at launch.
+#
+#  2. No CNAME is written. Adding one would make Pages claim corafrica.org.ng,
+#     which still serves the live WordPress site. The CNAME goes back only when
+#     DNS actually points here.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Mark as staging (noindex)
+        run: |
+          for f in site/*.html; do
+            perl -0pi -e 's{(<meta name="viewport"[^>]*>)}{$1\n<meta name="robots" content="noindex,nofollow">}' "$f"
+          done
+          echo "Injected noindex into $(ls site/*.html | wc -l) pages"
+          grep -c 'noindex' site/index.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

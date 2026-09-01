@@ -94,14 +94,14 @@ Full list of what to request: [`docs/ASK-FR-PETER.md`](docs/ASK-FR-PETER.md) (26
 
 ## Deploying
 
-The site is plain static files — any host works. `CNAME` is present for the GitHub Pages route
-used by the Teeej sites; delete it if hosting elsewhere.
+The site is plain static files — any host works.
 
-Not yet a git repository. To match the Teeej setup:
+**Preview:** `.github/workflows/pages.yml` publishes `site/` to GitHub Pages on every push to
+`main`, injecting `noindex` at deploy time so the staging URL cannot be indexed or compete with
+corafrica.org.ng. No `CNAME` is committed — adding one would make Pages claim the live domain,
+which still serves WordPress. Restore it only once DNS actually points at Pages.
 
-```bash
-git init && git add -A && git commit -m "CORAfrica static site"
-```
+Repo: <https://github.com/EthanSuquet/corafrica-website> (public).
 
 ## Photography
 
