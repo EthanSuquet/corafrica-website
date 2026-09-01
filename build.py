@@ -146,7 +146,7 @@ FOOTER = """<footer class="site-footer">
     </div>
     <div class="footer-base">
       <span>&copy; 2026 Children of Rural Africa</span>
-      <span>EIN [REQUEST FROM FR. PETER] &middot; CAC [REQUEST FROM FR. PETER]</span>
+      <span>EIN [REQUEST FROM FR. PETER] &middot; CAC/IT/NO 40479</span>
     </div>
   </div>
 </footer>
@@ -200,7 +200,8 @@ def grid(cards, cols=3):
 
 
 REVEAL = ("card", "tier", "person", "press-card", "press-row", "register-row",
-          "tl-row", "photo-card", "media", "panel", "alt-row", "section-head", "cred")
+          "tl-row", "photo-card", "media", "panel", "alt-row", "section-head", "cred",
+          "cost-row")
 
 
 def add_reveals(html):
@@ -377,6 +378,8 @@ HISTORY = [
      "CORAfrica is granted <span class='nolig'>501(c)(3)</span> non-profit status, with a founding Board of Trustees of Bruno Schickel, Royal Colle, Thomas Lickona and Carolann Darling. Building begins in Nigeria that same year."),
     ("2009", "Fr. Peter returns to Nigeria",
      "Empowerment programmes and projects follow across the Diocese of Ogoja &mdash; St. Joseph&rsquo;s Primary and Secondary School, the Sr. Augustina Abuo Medical Clinic, Little Flower School at Ipong-Obudu."),
+    ("2010", "Registered in Nigeria",
+     "CORAfrica is incorporated under the Companies and Allied Matters Act on 6 September 2010 as a Registered Trustee of an NGO, certificate CAC/IT/NO 40479 &mdash; giving the work a legal footing in both countries it operates in."),
     ("2010s", "A second board, from Western Pennsylvania",
      "Ray Ferguson, Fr. Jim Murphy, Anne Goetler, Tom Rooney, Jeannine Goetz and Ethan Suquet join. With Abode for Children Inc. of Evans City, led by Tom and Mary Rutkoski, they upgrade St. Joseph&rsquo;s Schools and Orphanage and CORAfrica Farms."),
     ("2020", "John Bosco Academy",
@@ -426,6 +429,18 @@ body += sec(head_block("Our philosophy", "Three convictions we build on.",
                        "CORAfrica&rsquo;s philosophy is rooted in Catholic Social Teaching, and reduces to three core "
                        "values that govern how we choose projects and how we hand them on.")
             + grid([card(t, b) for t, b in VALUES], 3), cls="grad-white-strong")
+# Registration and audit detail, from the 2025 financial report. This is the
+# section a grants officer looks for first, and it was missing entirely.
+body += sec(head_block("Accountability", "Registered, audited, and on the record.",
+                       "We are a registered charity in both countries we work in, our books are audited annually by "
+                       "an independent firm, and our accounts are available to funders on request.")
+            + grid([card("Registered in Nigeria", "Incorporated under the Companies and Allied Matters Act on 6 September 2010 as a Registered Trustee of an NGO. Certificate CAC/IT/NO 40479.", "Since 2010"),
+                    card("Registered in the United States", "A <span class='nolig'>501(c)(3)</span> non-profit, so gifts from US taxpayers are tax-deductible. EIN [REQUEST FROM FR. PETER].", "Since 2006"),
+                    card("Independently audited", "Our financial statements are audited by Akomaye Adie &amp; Co., Chartered Accountants and Tax Practitioners, of Calabar.", "Annually"),
+                    card("92.6% to programmes", "Of everything CORAfrica spent in the year ended 31 December 2025, 92.6% went to schools, clinics, farms and loan funds. Overheads were 7.4%.", "2025 accounts"),
+                    card("Assets we hold", "Land, school buildings and a farm and agricultural station, carried in the 2025 accounts at &#8358;180.5 million.", "2025 accounts"),
+                    card("Governed by trustees", "A Board of Trustees oversees the organisation, with operations directed from Ogoja in Cross River State.", "Governance")], 3),
+            cls="grad-paper-warm")
 write("who-we-are.html", head("who-we-are.html", "Who We Are — CORAfrica",
       "Our vision, mission, history and philosophy. CORAfrica has built schools in rural Nigeria since 2006, "
       "rooted in Catholic Social Teaching.", "img/founder.jpg")
@@ -539,7 +554,7 @@ write("what-we-do.html", head("what-we-do.html", "What We Do — CORAfrica",
 # ============================================================== schools
 REGISTER = [
     ("John Stilley Secondary School", "Victoria, Ikom", "2021", "300+ students", "Founded where the community had no secondary school at all. A new classroom block has since been added, supported by the John Stilley Family Trust Fund."),
-    ("John Bosco Academy", "Adagom, Ogoja", "2020", "Refugee response", "Founded to reach the high influx of refugee children arriving from Cameroon who could not access basic and quality education. Formerly St. Peter&rsquo;s Catholic School."),
+    ("John Bosco Academy", "Adagom, Ogoja", "2020", "479 pupils", "Founded to reach the high influx of refugee children arriving from Cameroon who could not access basic and quality education. Four in five of its pupils are refugee children. It now runs a primary section of 343 and a secondary section of 136, taught by 28 staff, and an academic block for science and the skilled trades is going up on the compound. Formerly St. Peter&rsquo;s Catholic School."),
     ("St. Peter&rsquo;s Primary School", "Adagom 3, Ogoja", "2021", "300+ pupils", "Registered with the education authorities in June 2021. A six-classroom block serves children from both refugee and host communities who cannot afford school fees."),
     ("St. Joseph&rsquo;s Primary &amp; Secondary", "Idum-Mbube, Ogoja", "&mdash;", "2,000+ pupils", "Also an orphanage, caring for children from five years and above. Now handed over to be owned and run by the Diocese of Ogoja &mdash; as our projects are designed to be."),
     ("Little Flower Nursery &amp; Primary", "Ipong-Obudu", "&mdash;", "Nursery &amp; primary", "One of the earliest schools initiated across the diocese, and part of the network that established the model we now build to."),
@@ -582,6 +597,34 @@ body = hero("Our strategic plan", "What we are building next.",
             "Our plan concerns the development of children in rural Nigeria, and the operational capacity and "
             "administration to deliver it &mdash; all within the setting of the Community Education Centre model.",
             "empower.jpg", "The economic empowerment programme")
+# John Bosco University and the Adagom academic building are the two live capital
+# priorities, from Fr. Peter's Mission Showcase one-pager and the Adagom proposal.
+# Neither appears in the docx or on the existing site.
+body += sec(head_block("The priority", "John Bosco University.",
+                       "Our biggest and most urgent undertaking is a university at Ogoja that would not simply grant "
+                       "degrees. It would form teachers, health workers, agricultural leaders, entrepreneurs, "
+                       "peacebuilders and Catholic servant-leaders who do not forget where they came from &mdash; "
+                       "young men and women able to rebuild rural communities from within. It is the next step after "
+                       "twenty years of primary and secondary schools.")
+            + grid([card("What it needs", "Approximately <strong>US $2 million</strong> in foundational support to move the university from vision to reality.", "Capital"),
+                    card("What we are looking for", "Mission partners, capital support, Catholic academic partnerships, university-development expertise and scholarship donors.", "Partnership"),
+                    card("Why now", "Our secondary schools are producing graduates who have nowhere in the region to go on to. The university closes the last gap in the path we have already built.", "Rationale")], 3),
+            cls="grad-paper-warm")
+
+body += sec(head_block("Under construction", "The academic building at John Bosco Academy, Adagom.",
+                       "A 56 by 13.5 metre academic block begun in January 2025 with John Stilley and Franciscan "
+                       "University of Steubenville. It houses an assembly hall, two computer laboratories and science "
+                       "laboratories, alongside workshops for fashion design, home economics, beauty and aesthetics, "
+                       "technical drawing, visual arts, music, and photography and videography. Completion is costed "
+                       "at <strong>US $129,158.62</strong>.")
+            + grid([card("Completing the building", "Ceiling, fenestration, plumbing, electrical works, plastering and external works on the administrative block.", "$62,441"),
+                    card("Computer laboratories", "Two hundred computer sets, networking, printers and power backup &mdash; enough to accredit the school as a WAEC and JAMB computer-based testing centre, which then earns income of its own.", "$42,069"),
+                    card("Science laboratories", "Chemistry, physics and biology: benching, equipment and reagents.", "$13,269"),
+                    card("Furniture and equipment", "Desks, chairs, boards, fans and a generator for the assembly hall and the skills workshops.", "$11,379"),
+                    card("Who it serves", "The academy&rsquo;s 479 pupils &mdash; 343 in the primary section and 136 in the secondary &mdash; taught by 28 staff. Four in five are refugee children.", "Reach"),
+                    card("What it produces", "Around 100 young people a year trained in employable trades, with half the places reserved for women and girls.", "Outcome")], 3),
+            cls="grad-white-strong")
+
 body += sec(head_block("The method", "Study teams, not just classes.",
                        "Through our Vocational and Skills Acquisition Centres, pilot systems are operated in which "
                        "children and young people form study teams together with parents, teachers and community "
@@ -590,7 +633,7 @@ body += sec(head_block("The method", "Study teams, not just classes.",
             + grid([card("Community Education Centre model", "Extending the four-component centre to further communities, and fully equipping the two that already run at Mbube-Ogoja and Victoria-Ikom.", "Programme in view"),
                     card("The Children&rsquo;s Hospital Project", "A dedicated children&rsquo;s hospital, extending the school-clinic model into full paediatric care. [SCOPE AND COST TO BE CONFIRMED]", "Programme in view"),
                     card("The VASAC Project", "Purpose-built vocational and skills acquisition centres, equipped across all nine trade areas, with certification and job placement partnerships. [SCOPE AND COST TO BE CONFIRMED]", "Programme in view")], 3),
-            cls="grad-paper-warm")
+            cls="grad-warm-white")
 body += sec(head_block("Alignment", "Where our work meets the global agenda.",
                        "CORAfrica&rsquo;s programmes are aligned to five United Nations Sustainable Development "
                        "Goals. Our livelihood strategy seeks to improve access to food, healthcare, education, clean "
@@ -601,10 +644,10 @@ body += sec(head_block("Alignment", "Where our work meets the global agenda.",
                     card("Decent work", "Vocational and skills training that leads to sustainable, dignified livelihoods."),
                     card("Reduced inequality", "Reaching refugee, IDP and host communities together, without distinction."),
                     card("Partnerships", "Working with communities, dioceses, institutions and bilateral organisations rather than around them.")], 3),
-            cls="grad-white-strong")
+            cls="grad-paper-warm")
 write("strategic-plan.html", head("strategic-plan.html", "Our Strategic Plan — CORAfrica",
-      "The programmes CORAfrica is building next: the Community Education Centre model, the Children's Hospital "
-      "Project, and purpose-built VASAC centres.", "img/empower.jpg")
+      "John Bosco University, the academic building at Adagom, and the Community Education Centre model \u2014 "
+      "what CORAfrica is building next in rural Cross River State.", "img/empower.jpg")
       + BANNER + header("strategic-plan.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
@@ -653,10 +696,56 @@ body += sec(head_block("Give monthly", "Monthly gifts are what let us plan.",
                        "worth far more to us than their size suggests, because they are the only kind we can build a "
                        "budget on. Choose an amount and Stripe handles the rest.")
             + '    <div class="amounts">\n' + amounts + "    </div>\n"
-            + '    <p class="amounts-note">[WHAT EACH TIER FUNDS &mdash; TO BE CONFIRMED WITH FR. PETER. '
-              "Tying an amount to a concrete outcome roughly doubles what people give, but the figure has to be "
-              'real.]</p>\n',
+            + '    <p class="amounts-note">Gifts are unrestricted unless you tell us otherwise, so we can put them '
+              "where the need is sharpest. What those amounts buy, at the prices we are actually paying, is set out "
+              "below.</p>\n",
             cls="grad-paper-warm")
+
+# Real unit costs, from the line-item budget of the Adagom academic building
+# proposal (converted at the proposal's own rate of N1,450 to the dollar).
+# Deliberately framed as a price list, not as a promise about where a given
+# dollar lands — that distinction matters and is item 9 in ASK-FR-PETER.md.
+COSTS = [("$3", "a set of wall charts for a classroom"),
+         ("$14", "a laboratory stool"),
+         ("$34", "a school desk"),
+         ("$55", "a whiteboard, or a ceiling fan for a classroom in 35&deg;C heat"),
+         ("$172", "one computer &mdash; and the school needs two hundred of them"),
+         ("$3,448", "every reagent the chemistry, physics and biology laboratories need"),
+         ("$8,352", "the full equipment fit-out of all three science laboratories"),
+         ("$13,269", "a complete science laboratory, built and stocked")]
+costs = ""
+for amt, what in COSTS:
+    costs += ('      <div class="cost-row"><span class="cost-n">%s</span>'
+              '<span class="cost-w">%s</span></div>\n' % (amt, what))
+
+body += sec(head_block("What it buys", "These are the prices we are paying.",
+                       "Not illustrations. Every figure below is a line in the costed budget for the academic "
+                       "building now going up at John Bosco Academy in Adagom, where four out of five pupils are "
+                       "refugee children from Cameroon. Converted at &#8358;1,450 to the dollar.")
+            + '    <div class="costs">\n' + costs + "    </div>\n",
+            cls="grad-warm-white")
+
+SPLIT = [("71.7%", "<strong>Education.</strong> The academic and administrative block at John Bosco Academy, "
+                   "fencing and landscaping at both academies, a bus for secondary students, a lodge for the youth "
+                   "corps teachers, and the cost of running the schools."),
+         ("10.0%", "<strong>Economic empowerment.</strong> Interest-free micro-loans to small businesses, and "
+                   "outright grants to widows and to vulnerable families."),
+         ("6.2%", "<strong>Health.</strong> Medical outreach at Victoria, drugs and medical supplies, and running "
+                  "the medical centre."),
+         ("4.7%", "<strong>Agriculture.</strong> Animal husbandry, crop farming and the cost of running the farms."),
+         ("7.4%", "<strong>Running the organisation.</strong> Administration, bank charges and depreciation "
+                  "&mdash; everything that is not a programme.")]
+split = ""
+for pct, what in SPLIT:
+    split += ('      <div class="cost-row"><span class="cost-n">%s</span>'
+              '<span class="cost-w">%s</span></div>\n' % (pct, what))
+
+body += sec(head_block("Where it went", "Our 2025 accounts, audited.",
+                       "For the year ended 31 December 2025, independently audited by Akomaye Adie &amp; Co., "
+                       "Chartered Accountants, of Calabar. Of everything we spent, <strong>92.6% went to "
+                       "programmes</strong>. Full statements are available to funders on request.")
+            + '    <div class="costs">\n' + split + "    </div>\n",
+            cls="grad-white-strong")
 
 body += sec(head_block("Give once", "One-time gifts are being set up.",
                        "The previous site took one-time gifts through a WordPress plugin, which does not carry over "
@@ -666,7 +755,7 @@ body += sec(head_block("Give once", "One-time gifts are being set up.",
             + '    <div class="button-row">\n'
               '      <a class="button button--accent" href="mailto:info@corafrica.org.ng">info@corafrica.org.ng</a>\n'
               '      <a class="button button--plain" href="tel:+2349153142288">+234 915 314 2288</a>\n    </div>\n',
-            cls="grad-warm-white")
+            cls="grad-paper-warm")
 
 body += sec_wide('    <div class="panel">\n      <div class="grid grid--3">\n'
                  '        <div><h3 style="font-size:17px;margin-bottom:8px">Tax-deductible in the US</h3>'
@@ -674,9 +763,9 @@ body += sec_wide('    <div class="panel">\n      <div class="grid grid--3">\n'
                  "<span class='nolig'>501(c)(3)</span> status in the United States since 2006. Gifts from US "
                  "taxpayers are tax-deductible. EIN [REQUEST FROM FR. PETER].</p></div>\n"
                  '        <div><h3 style="font-size:17px;margin-bottom:8px">Where it goes</h3>'
-                 '<p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)">Directly into the schools, '
-                 "clinics, farms and loan funds described on this site &mdash; and into projects designed to be handed "
-                 "over to the communities that run them. [FINANCIAL BREAKDOWN TO BE SUPPLIED].</p></div>\n"
+                 '<p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)">In our audited 2025 '
+                 "accounts, <strong>92.6% of everything we spent went to programmes</strong> &mdash; schools, "
+                 "clinics, farms and loan funds &mdash; and 7.4% to running the organisation.</p></div>\n"
                  '        <div><h3 style="font-size:17px;margin-bottom:8px">Other ways to give</h3>'
                  '<p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)">Fund a named project, '
                  "sponsor a classroom or a VASAC workshop, or partner with us as an institution. Write to "
@@ -690,6 +779,9 @@ write("donate.html", head("donate.html", "Donate — CORAfrica",
 
 
 # ============================================================== contact
+# Governance, per Fr. Peter's own docx — supplied 2026-08-31 and the NEWEST source
+# we hold. The audited 2025 financial report lists a different board, but it states
+# it as at 31 Dec 2025: an earlier snapshot, not a correction. See CONTENT-FACTS C5.
 TRUSTEES = [("Michael Ana", "Chairman"), ("Cornelius Okochi", "Vice Chairman"), ("Mark Okpatuma", "Member"),
             ("Michael Abuo", "Member"), ("Pamela Enamhe", "Member"), ("James Bulem", "Member"),
             ("Ethan Suquet", "Member"), ("Adewale Ajayi", "Member / Secretary")]

@@ -486,6 +486,29 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   max-width: 70ch;
 }
 
+/* Sourced unit costs. A price list, not a promise about where a given dollar
+   lands — so it reads as a ledger rather than as a set of donation tiers. */
+.costs { display: grid; gap: 0; max-width: 760px; }
+.cost-row {
+  display: grid; grid-template-columns: 128px 1fr; align-items: baseline;
+  gap: 20px; padding: 15px 0; border-top: 1px solid var(--line);
+}
+.cost-row:last-child { border-bottom: 1px solid var(--line); }
+.cost-n {
+  font-family: "Space Grotesk", sans-serif; font-size: 25px; font-weight: 600;
+  letter-spacing: -0.045em; line-height: 1; color: var(--accent);
+  text-align: right; font-variant-numeric: tabular-nums;
+}
+.cost-w { font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
+
+@media (max-width: 639px) {
+  /* The right-aligned money column stops working once it is only two digits
+     wide; stack instead so the figure leads each row. */
+  .cost-row { grid-template-columns: 1fr; gap: 4px; padding: 13px 0; }
+  .cost-n { text-align: left; font-size: 22px; }
+  .cost-w { font-size: 14.5px; }
+}
+
 /* ---------------------------------------------------------------- beliefs */
 
 .belief { display: grid; grid-template-columns: 22px 1fr; gap: 14px; padding: 15px 0; border-top: 1px solid rgba(255, 255, 255, 0.14); }

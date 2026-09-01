@@ -78,20 +78,25 @@ Written in `[SQUARE BRACKETS]` so they cannot ship unnoticed. Grep for them:
 grep -rn "\[.*REQUEST\|\[.*TO BE\|\[.*NEEDED" site/*.html
 ```
 
-- **EIN** and **CAC** registration numbers — in every page footer
-- **Financial breakdown** — `donate.html`
-- **Scope and cost** for the Children's Hospital and VASAC projects — `strategic-plan.html`
+- **EIN** — in every page footer, and on the Donate and Who We Are pages. The *only* registration
+  number still missing; the Nigerian CAC number is now filled in from the audited accounts.
+- **Scope and cost** for the Children's Hospital and VASAC projects — `strategic-plan.html`.
+  The other two named projects (Adagom, and John Bosco University) are now fully costed.
 - **Further roles** on the administrative team — `contact.html`
 
-Full list of what to request: [`docs/ASK-FR-PETER.md`](docs/ASK-FR-PETER.md) (26 items).
+Full list of what to request: [`docs/ASK-FR-PETER.md`](docs/ASK-FR-PETER.md) (39 items).
 
 ## 🔴 Before this goes live
 
 1. **Confirm the Board of Trustees in writing.** `contact.html` uses the list from Fr. Peter's
-   docx, which shares **no names** with the list currently published on corafrica.org.ng.
-   Publishing the wrong trustees is the one error here that could genuinely embarrass him.
+   docx — the newest source, supplied 2026-08-31, and therefore the one the site follows. But it
+   shares **no names** with the list currently published on corafrica.org.ng, and the audited 2025
+   accounts name a third set again (stated as at 31 Dec 2025, so an earlier snapshot). One
+   sentence in writing settles it.
 2. **Create the missing Stripe links** (above).
-3. **Fill the EIN and CAC placeholders.**
+3. **Fill the EIN placeholder** — the CAC number is now known.
+3b. **Get his permission to publish the 2025 financial figures.** They are on the site now
+   because they are the strongest asset we have for the grant audience, but they are his accounts.
 4. Decide what happens to the existing WordPress content — the two news posts, the GiveWP
    donation records, and the media library. **Nothing should be deleted until Fr. Peter confirms.**
 5. Get DNS/host access for corafrica.org.ng.
@@ -119,5 +124,13 @@ just landscape wides.
 
 Every claim on the site traces to [`docs/CONTENT-FACTS.md`](docs/CONTENT-FACTS.md), which lists
 each fact against its source — Fr. Peter's docx, the National Catholic Reporter (2024), Vanguard
-and ThisDay (July 2026). That file also records eight conflicts between the docx and the live
-site that are still unresolved. Nothing on the site is invented.
+and ThisDay (July 2026), plus four documents supplied on 2026-09-01: the **audited 2025 financial
+report**, the **Adagom academic building proposal**, the **Mission Showcase one-pager** and the
+**SENT video script**. That file also records fourteen conflicts between sources. Nothing on the
+site is invented.
+
+⚠️ **Two rules that file exists to enforce.** First, **the docx is the newest source** — Fr. Peter
+supplied it on 2026-08-31 — so on governance it beats the audited accounts, which state their board
+as at 31 Dec 2025. The audit looks more authoritative and is older; do not let it overwrite the
+board again. Second, the audited accounts attribute essentially all 2025 income to a single donor.
+That is recorded in the facts file and **deliberately kept off the site**.
