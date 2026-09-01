@@ -84,7 +84,18 @@
     el.style.transitionDelay = i ? Math.min(i * 90, 420) + "ms" : "0ms";
   });
 
+  /* Failsafe. An IntersectionObserver does not run while the tab is hidden, so a
+     page opened in a background tab would sit at opacity 0 until focused — and
+     if the observer never runs at all, the content would never appear. If
+     nothing has been revealed shortly after load, show everything; the observer
+     then takes over normally once it does start reporting. */
+  var everFired = false;
+  setTimeout(function () {
+    if (!everFired) nodes.forEach(function (el) { el.classList.add("is-in"); });
+  }, 1400);
+
   var io = new IntersectionObserver(function (entries) {
+    everFired = true;
     entries.forEach(function (e) {
       var el = e.target;
       if (e.isIntersecting) {
