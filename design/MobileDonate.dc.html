@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, ui-sans-serif, system-ui, sans-serif; }
+    a { color: #FB600A; text-decoration: none; }
+    a:hover { color: #c24f06; }
+  </style>
+</helmet>
+
+<div style="width: 390px; background: #ffffff; color: #181818; font-family: Manrope, system-ui, sans-serif; overflow: hidden;">
+
+  <!-- HEADER: nav collapses to a hamburger; Donate stays reachable -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 20px; background: rgba(44,42,42,.96);">
+    <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 32px; width: auto; display: block;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; background: {{accent}}; color: #fff; border-radius: 0.7rem; font-size: 14px; font-weight: 700;">Donate</span>
+      <span style="display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px; padding: 0 10px; box-sizing: border-box;">
+        <span style="display: block; height: 2px; background: #f2efe9; border-radius: 2px;"></span>
+        <span style="display: block; height: 2px; background: #f2efe9; border-radius: 2px;"></span>
+        <span style="display: block; height: 2px; background: #f2efe9; border-radius: 2px;"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div style="padding: 14px 20px 0; background: linear-gradient(180deg,#ffffff 0%,#fffdf9 100%);">
+    <div style="position: relative; height: 470px; border-radius: 1.5rem; overflow: hidden; background: #101317; box-shadow: 0 20px 44px rgba(14,18,24,.20);">
+      <img src="./hero.jpg" alt="Pupils at a CORAfrica school" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 38%;">
+      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,16,.55) 0%, rgba(8,12,16,.34) 32%, rgba(8,12,16,.90) 100%);"></div>
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 22px 26px;">
+        <span style="display: inline-flex; align-self: flex-start; padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.12); color: rgba(255,255,255,.80); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px;">Donate</span>
+        <h1 style="margin: 0 0 12px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 30px; line-height: 1.06; letter-spacing: -0.04em; color: #fff;">&#8358;150,000 started a business. $40,000 started a programme.</h1>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.5; color: rgba(255,255,255,.84);">Ada Okoli took a &#8358;150,000 soft loan in 2022 and turned a small trade into a wholesale business. Small sums, placed carefully, compound.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 44px 20px; background: linear-gradient(180deg,#fffdf9 0%,#ffffff 100%);">
+    <div style="margin: 0 0 .7rem; color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Give</div>
+    <h2 style="margin: 0 0 12px; font-family: 'Space Grotesk', sans-serif; font-size: 29px; font-weight: 600; line-height: 1.08; letter-spacing: -0.04em;">Monthly gifts are what let us plan.</h2>
+    <p style="margin: 0 0 24px; font-size: 15px; line-height: 1.55; color: #4f4d4b;">A school year is twelve months long, and so is a teacher’s salary. Recurring gifts are worth more to us than their size suggests, because they are the only kind we can budget on.</p>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+    <div style="background: #fff; border: 1px solid #ece7df; border-radius: 1.2rem; padding: 20px 20px 22px; box-shadow: 0 14px 32px rgba(14,18,24,.05);">
+      <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.045em;">$25</span>
+        <span style="font-size: 13px; font-weight: 600; color: #78726a;">a month</span>
+      </div>
+      <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">School materials and a uniform for a child through the Help-a-Kid programme.</div>
+    </div>
+    <div style="background: #fff; border: 1px solid #ece7df; border-radius: 1.2rem; padding: 20px 20px 22px; box-shadow: 0 14px 32px rgba(14,18,24,.05);">
+      <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.045em;">$100</span>
+        <span style="font-size: 13px; font-weight: 600; color: #78726a;">a month</span>
+      </div>
+      <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Contributes to teacher salaries and the running of a classroom.</div>
+    </div>
+    <div style="background: #fff; border: 1px solid #ece7df; border-radius: 1.2rem; padding: 20px 20px 22px; box-shadow: 0 14px 32px rgba(14,18,24,.05);">
+      <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600; letter-spacing: -0.045em;">$250</span>
+        <span style="font-size: 13px; font-weight: 600; color: #78726a;">a month</span>
+      </div>
+      <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Supports the clinic — preventive care and treatment for children under five.</div>
+    </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 22px;">
+    <span style="display: flex; align-items: center; justify-content: center; min-height: 52px; background: {{accent}}; color: #fff; border-radius: 0.7rem; font-size: 16px; font-weight: 700; box-shadow: 0 12px 24px rgba(251,96,10,.26);">Give monthly</span>
+    <span style="display: flex; align-items: center; justify-content: center; min-height: 52px; background: #fff; border: 1px solid #ddd6cb; color: #181818; border-radius: 0.7rem; font-size: 16px; font-weight: 700;">Give once</span>
+    </div>
+    <div style="font-size: 12px; color: #78726a; text-align: center; margin-top: 12px;">Processed securely by Stripe</div>
+  </div>
+
+  <div style="padding: 0 20px 44px; background: #ffffff;">
+    <div style="border-radius: 1.6rem; background: linear-gradient(180deg,#f1efea 0%,#efede8 100%); box-shadow: 0 20px 48px rgba(14,18,24,.10); padding: 8px 22px 22px;">
+      <div style="padding: 16px 0; border-top: 1px solid #e3ddd2;">
+        <div style="font-size: 16px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">Tax-deductible in the US</div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: #4f4d4b;">CORAfrica has held 501(c)(3) status since 2006. Gifts from US taxpayers are tax-deductible. EIN [REQUEST FROM FR. PETER].</div>
+      </div>
+      <div style="padding: 16px 0; border-top: 1px solid #e3ddd2;">
+        <div style="font-size: 16px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">Where it goes</div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: #4f4d4b;">Directly into the schools, clinics, farms and loan funds described on this site. [FINANCIAL BREAKDOWN TO BE SUPPLIED].</div>
+      </div>
+      <div style="padding: 16px 0; border-top: 1px solid #e3ddd2;">
+        <div style="font-size: 16px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">Other ways to give</div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: #4f4d4b;">Fund a named project, sponsor a classroom or a VASAC workshop, or partner with us as an institution.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER: three columns become one stack -->
+  <div style="background: #474545; color: #e9e5df; padding: 36px 20px 28px;">
+    <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 38px; width: auto; display: block; margin-bottom: 14px;">
+    <p style="margin: 0 0 26px; font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.72);">Helping children and communities thrive. A registered 501(c)(3) non-profit in the United States, operating in Cross River and Benue States, Nigeria.</p>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div><div style="font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55); margin-bottom: 6px;">Nigeria</div>
+      <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">No 48 Mbube Road, Opposite Govt. Technical College, Abakpa, Ogoja, Cross River State</div></div>
+      <div><div style="font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55); margin-bottom: 6px;">United States</div>
+      <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">PO Box 13, Evans City, PA 16033</div></div>
+      <div><div style="font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55); margin-bottom: 6px;">Contact</div>
+      <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">info@corafrica.org.ng<br>+234 915 314 2288</div></div>
+    </div>
+    <div style="margin-top: 26px; padding-top: 16px; border-top: 1px solid rgba(233,229,223,.16); display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: rgba(233,229,223,.55);">
+      <span>&copy; 2026 Children of Rural Africa</span>
+      <span>EIN [REQUEST] &middot; CAC [REQUEST]</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#FB600A","options":["#FB600A","#f16908","#C2410C","#166534"],"section":"Brand"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FB600A' };
+  }
+}
+</script>
+</body>
+</html>

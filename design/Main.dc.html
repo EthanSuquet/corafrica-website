@@ -1,0 +1,321 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, ui-sans-serif, system-ui, sans-serif; }
+    a { color: #FB600A; text-decoration: none; }
+    a:hover { color: #c24f06; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #ffffff; color: #181818; font-family: Manrope, system-ui, sans-serif;">
+
+  <!-- ============ HEADER ============ -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 40px; background: rgba(44,42,42,.94);">
+    <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 42px; width: auto; display: block;">
+    <div style="display: flex; align-items: center; gap: 26px; font-size: 14.5px; font-weight: 600; color: #f2efe9; letter-spacing: -0.01em;">
+      <span>Who We Are</span>
+      <span>Our Model</span>
+      <span>Schools</span>
+      <span>What We Do</span>
+      <span>Strategic Plan</span>
+      <span>News</span>
+      <span>Contact</span>
+      <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 12px 24px; background: {{accent}}; color: #fff; border-radius: 0.7rem; font-weight: 700;">Donate</span>
+    </div>
+  </div>
+
+  <!-- ============ HERO — photograph in a dark card, Teeej scrim ============ -->
+  <div style="padding: 26px 40px 0; background: linear-gradient(180deg,#ffffff 0%,#fffdf9 100%);">
+    <div style="position: relative; height: 588px; border-radius: 2.6rem; overflow: hidden; background: #101317; box-shadow: 0 34px 76px rgba(14,18,24,.20), inset 0 1px 0 rgba(255,255,255,.18);">
+      <img src="./hero.jpg" alt="Pupils at their desks at a CORAfrica school" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 38%;">
+      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,16,.62) 0%, rgba(8,12,16,.30) 34%, rgba(8,12,16,.50) 66%, rgba(8,12,16,.90) 100%);"></div>
+      <div style="position: absolute; inset: 0; background: radial-gradient(circle at 22% 30%, rgba(255,255,255,.10), rgba(255,255,255,0) 60%);"></div>
+
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 56px 52px; max-width: 980px;">
+        <span style="display: inline-flex; align-self: flex-start; padding: 0.45rem 0.72rem; border-radius: 999px; background: rgba(255,255,255,.10); color: rgba(255,255,255,.78); font-size: 0.84rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 22px;">
+          Education for Africa&rsquo;s Future
+        </span>
+        <h1 style="margin: 0 0 18px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 62px; line-height: 1.03; letter-spacing: -0.05em; color: #ffffff; max-width: 24ch;">
+          A school, and everything that keeps a child in it.
+        </h1>
+        <p style="margin: 0 0 30px; font-size: 16px; line-height: 1.5; color: rgba(255,255,255,.82); max-width: 60ch;">
+          CORAfrica builds primary and secondary schools in rural Nigeria where none exist &mdash;
+          then adds the clinic, the farm and the workshop that keep children coming back.
+          Founded 2006. Working across Cross River and Benue States.
+        </p>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 3.35rem; padding: 0.85rem 2rem; background: {{accent}}; color: #fff; border-radius: 0.7rem; font-size: 1.02rem; font-weight: 700; letter-spacing: -0.01em; box-shadow: 0 16px 30px rgba(251,96,10,.28);">Donate</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 3.35rem; padding: 0.85rem 1.85rem; background: rgba(255,255,255,.13); color: #fff; border: 1px solid rgba(255,255,255,.34); border-radius: 0.7rem; font-size: 1.02rem; font-weight: 700; letter-spacing: -0.01em;">Partner with us</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CREDIBILITY STRIP ============ -->
+  <div style="background: #fffdf9; padding: 26px 40px 6px;">
+    <div style="max-width: 1220px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 0 8px;">
+      <sc-for list="{{credentials}}" as="c" hint-placeholder-count="4">
+        <div style="display: flex; align-items: center; gap: 11px;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+          <span style="font-size: 13.5px; font-weight: 600; color: #4f4d4b; letter-spacing: -0.005em;">{{c}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- ============ EVIDENCE PANEL ============ -->
+  <div style="padding: 40px 40px 0; background: linear-gradient(180deg,#fffdf9 0%,#faf8f4 100%);">
+    <div style="max-width: 1360px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 3rem; background: linear-gradient(180deg,#f1efea 0%,#efede8 100%); box-shadow: 0 34px 76px rgba(14,18,24,.10); padding: 46px 48px 44px;">
+      <div style="position: absolute; inset: 1rem; border-radius: inherit; background: radial-gradient(circle at top center, rgba(255,255,255,.56), rgba(255,255,255,0)); pointer-events: none;"></div>
+      <div style="position: relative;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 30px;">
+          <div style="color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Twenty years on the ground</div>
+          <div style="font-size: 12.5px; color: #78726a;">Independently reported &mdash; National Catholic Reporter, Vanguard, ThisDay</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 34px;">
+          <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: 7px;">
+              <div style="font-family: 'Space Grotesk', sans-serif; font-size: 54px; font-weight: 600; line-height: 1; letter-spacing: -0.05em; color: #181818;">{{s.n}}</div>
+              <div style="font-size: 15px; font-weight: 700; color: #181818; letter-spacing: -0.02em;">{{s.label}}</div>
+              <div style="font-size: 13px; line-height: 1.35; color: #78726a;">{{s.note}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ THE MODEL ============ -->
+  <div style="padding: 82px 40px 20px; background: linear-gradient(180deg,#faf8f4 0%,#ffffff 100%);">
+    <div style="max-width: 1220px; margin: 0 auto; display: grid; grid-template-columns: 30rem 1fr; gap: 5.5rem; align-items: start;">
+      <div>
+        <div style="margin: 0 0 .95rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">The Community Education Centre</div>
+        <h2 style="margin: 0 0 1.4rem; font-family: 'Space Grotesk', sans-serif; font-size: 46px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em;">A school on its own does not keep a child in school.</h2>
+        <p style="margin: 0 0 1.1rem; font-size: 15px; line-height: 1.55; color: #4f4d4b;">
+          Hunger, illness, and a family with no income take more children out of class than
+          any exam does. So our model puts four things on one site, and treats them as one
+          system rather than four programmes.
+        </p>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #4f4d4b;">
+          Two centres are running today, at Mbube-Ogoja and Victoria-Ikom.
+        </p>
+        <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 3.35rem; margin-top: 2rem; padding: 0.85rem 2rem; background: #4d4a4a; color: #fff; border-radius: 0.92rem; font-size: 1.02rem; font-weight: 700; letter-spacing: -0.01em; box-shadow: 0 14px 28px rgba(19,20,22,.14);">Read the strategic plan</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px;">
+        <sc-for list="{{pillars}}" as="p" hint-placeholder-count="4">
+          <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+            <div style="width: 44px; height: 44px; border-radius: 999px; background: rgba(251,96,10,.10); display: flex; align-items: center; justify-content: center;">
+              <svg width="21" height="21" viewBox="0 0 28 28" fill="none" stroke="{{accent}}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="{{p.icon}}"></path>
+              </svg>
+            </div>
+            <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">{{p.name}}</div>
+            <div style="font-size: 14px; line-height: 1.45; color: #4f4d4b;">{{p.body}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCHOOLS — dark photo cards ============ -->
+  <div style="padding: 74px 40px 78px; background: linear-gradient(180deg,#ffffff 0%,#f5f2ec 100%);">
+    <div style="max-width: 1360px; margin: 0 auto;">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; margin-bottom: 30px;">
+        <div style="max-width: 40rem;">
+          <div style="margin: 0 0 .8rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Our schools</div>
+          <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 46px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em;">Built where there was nothing.</h2>
+        </div>
+        <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: {{accent}}; letter-spacing: -0.01em; padding-bottom: 6px;">
+          The full register
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"></path></svg>
+        </span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px;">
+        <div style="position: relative; height: 400px; border-radius: 2rem; overflow: hidden; background: #101317; box-shadow: 0 24px 52px rgba(20,24,30,.18), inset 0 1px 0 rgba(255,255,255,.18);">
+          <img src="./school.jpg" alt="John Stilley Secondary School" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,16,0) 26%, rgba(8,12,16,.30) 58%, rgba(8,12,16,.88) 100%);"></div>
+          <div style="position: absolute; inset: auto 0 0 0; padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: inline-flex; align-self: flex-start; padding: 5px 11px; border-radius: 999px; background: rgba(251,96,10,.92); color: #fff; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">300+ students</div>
+            <div style="font-family: 'Space Grotesk', sans-serif; font-size: 23px; font-weight: 600; letter-spacing: -0.035em; color: #fff; line-height: 1.14;">John Stilley Secondary School</div>
+            <div style="font-size: 13.5px; line-height: 1.4; color: rgba(255,255,255,.78);">Victoria, Ikom &mdash; the only secondary school in its community</div>
+          </div>
+        </div>
+        <div style="position: relative; height: 400px; border-radius: 2rem; overflow: hidden; background: #101317; box-shadow: 0 24px 52px rgba(20,24,30,.18), inset 0 1px 0 rgba(255,255,255,.18);">
+          <img src="./hands.jpg" alt="John Bosco Academy" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,16,0) 26%, rgba(8,12,16,.30) 58%, rgba(8,12,16,.88) 100%);"></div>
+          <div style="position: absolute; inset: auto 0 0 0; padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: inline-flex; align-self: flex-start; padding: 5px 11px; border-radius: 999px; background: rgba(251,96,10,.92); color: #fff; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Founded 2020</div>
+            <div style="font-family: 'Space Grotesk', sans-serif; font-size: 23px; font-weight: 600; letter-spacing: -0.035em; color: #fff; line-height: 1.14;">John Bosco Academy</div>
+            <div style="font-size: 13.5px; line-height: 1.4; color: rgba(255,255,255,.78);">Adagom, Ogoja &mdash; for refugee children arriving from Cameroon</div>
+          </div>
+        </div>
+        <div style="position: relative; height: 400px; border-radius: 2rem; overflow: hidden; background: #101317; box-shadow: 0 24px 52px rgba(20,24,30,.18), inset 0 1px 0 rgba(255,255,255,.18);">
+          <img src="./clinic.jpg" alt="St. Joseph&rsquo;s School" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,16,0) 26%, rgba(8,12,16,.30) 58%, rgba(8,12,16,.88) 100%);"></div>
+          <div style="position: absolute; inset: auto 0 0 0; padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: inline-flex; align-self: flex-start; padding: 5px 11px; border-radius: 999px; background: rgba(251,96,10,.92); color: #fff; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">2,000+ pupils</div>
+            <div style="font-family: 'Space Grotesk', sans-serif; font-size: 23px; font-weight: 600; letter-spacing: -0.035em; color: #fff; line-height: 1.14;">St. Joseph&rsquo;s School</div>
+            <div style="font-size: 13.5px; line-height: 1.4; color: rgba(255,255,255,.78);">Idum-Mbube &mdash; school and orphanage, now run by the Diocese of Ogoja</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FOUNDER ============ -->
+  <div style="padding: 78px 40px; background: linear-gradient(180deg,#f5f2ec 0%,#fffdfa 100%);">
+    <div style="max-width: 1220px; margin: 0 auto; display: grid; grid-template-columns: 1fr 30rem; gap: 5rem; align-items: center;">
+      <div style="border-radius: 1.6rem; overflow: hidden; box-shadow: 0 26px 70px rgba(12,18,28,.12); background: #efebe6;">
+        <img src="./founder.jpg" alt="Fr. Peter Abue with pupils" style="width: 100%; height: 420px; object-fit: cover; display: block;">
+      </div>
+      <div>
+        <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Our founder</div>
+        <h2 style="margin: 0 0 1.3rem; font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 600; line-height: 1.06; letter-spacing: -0.05em;">
+          &ldquo;Most of my peers in our village could not. So I decided to fill that gap.&rdquo;
+        </h2>
+        <p style="margin: 0 0 1.1rem; font-size: 15px; line-height: 1.55; color: #4f4d4b;">
+          Fr. Peter Obele Abue conceived CORAfrica in 2006 while completing a PhD in
+          International Development at Cornell. He holds a Master&rsquo;s in Corporate
+          Communication from Duquesne, and is Vicar General of the Catholic Diocese of Ogoja.
+        </p>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #4f4d4b;">
+          The schools, clinics and farms he has founded are handed over to be owned and run
+          by his home diocese &mdash; the work is built to outlast him.
+        </p>
+        <div style="display: flex; align-items: center; gap: 13px; margin-top: 1.6rem;">
+          <span style="width: 30px; height: 2px; background: {{accent}}; display: block;"></span>
+          <span style="font-size: 13.5px; font-weight: 700; color: #181818; letter-spacing: -0.01em;">Fr. Peter Obele Abue &middot; Founder</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ IN THE NEWS ============ -->
+  <div style="padding: 20px 40px 74px; background: #fffdfa;">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="margin: 0 0 1.4rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">In the news</div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px;">
+        <sc-for list="{{press}}" as="a" hint-placeholder-count="3">
+          <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.4rem; padding: 24px 26px 26px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 18px 44px rgba(14,18,24,.05);">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+              <span style="font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #181818;">{{a.outlet}}</span>
+              <span style="font-size: 12px; color: #a09889;">{{a.date}}</span>
+            </div>
+            <div style="font-size: 16.5px; font-weight: 700; line-height: 1.28; letter-spacing: -0.025em; color: #181818;">{{a.title}}</div>
+            <span style="font-size: 13.5px; font-weight: 700; color: {{accent}}; margin-top: 2px;">Read the article &rarr;</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DONATE BAND ============ -->
+  <div style="padding: 0 40px 46px; background: #fffdfa;">
+    <div style="max-width: 1360px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 3rem; background: #2c2a2a; box-shadow: 0 34px 76px rgba(14,18,24,.18); padding: 56px 56px 54px;">
+      <div style="position: absolute; inset: 0; background: radial-gradient(circle at 82% 18%, rgba(251,96,10,.30), rgba(251,96,10,0) 58%); pointer-events: none;"></div>
+      <div style="position: relative; display: grid; grid-template-columns: 1fr 26rem; gap: 4.5rem; align-items: center;">
+        <div>
+          <div style="margin: 0 0 .9rem; color: rgba(255,255,255,.62); font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Support the work</div>
+          <h2 style="margin: 0 0 1rem; font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 600; line-height: 1.04; letter-spacing: -0.05em; color: #fff; max-width: 20ch;">
+            &#8358;150,000 started a business. $40,000 started a programme.
+          </h2>
+          <p style="margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,.74); max-width: 52ch;">
+            CORAfrica is a registered 501(c)(3) in the United States, so gifts from US donors
+            are tax-deductible. Give once, or monthly.
+          </p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 3.5rem; padding: 0.9rem 2rem; background: {{accent}}; color: #fff; border-radius: 0.7rem; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; box-shadow: 0 16px 30px rgba(251,96,10,.30);">Give monthly</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 3.5rem; padding: 0.9rem 2rem; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.32); color: #fff; border-radius: 0.7rem; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em;">Give once</span>
+          <span style="font-size: 12.5px; color: rgba(255,255,255,.52); text-align: center; margin-top: 4px;">Processed securely by Stripe</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <div style="background: #474545; color: #e9e5df; padding: 46px 40px 34px;">
+    <div style="max-width: 1220px; margin: 0 auto; display: grid; grid-template-columns: 22rem 1fr; gap: 4rem; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 46px; width: auto; display: block;">
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.72);">
+          Helping children and communities thrive. A registered 501(c)(3) non-profit in the
+          United States, operating in Cross River and Benue States, Nigeria.
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 30px;">
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">Nigeria</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">No 48 Mbube Road<br>Opposite Govt. Technical College, Abakpa<br>Ogoja, Cross River State</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">United States</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">PO Box 13<br>Evans City, PA 16033</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">Contact</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">info@corafrica.org.ng<br>+234 915 314 2288</div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1220px; margin: 30px auto 0; padding-top: 18px; border-top: 1px solid rgba(233,229,223,.16); display: flex; justify-content: space-between; gap: 20px; font-size: 12.5px; color: rgba(233,229,223,.55);">
+      <span>&copy; 2026 Children of Rural Africa</span>
+      <span>EIN [REQUEST FROM FR. PETER] &middot; CAC [REQUEST FROM FR. PETER]</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#FB600A","options":["#FB600A","#f16908","#C2410C","#166534"],"section":"Brand"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ICO = {
+      book: 'M4 4h7a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2H4zM24 4h-7a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2H24z',
+      heart: 'M14 23s-8-5.1-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.9-8 11-8 11z',
+      leaf: 'M22 6c0 9-5.5 14-12 14 0-8 4.5-13 12-14zM7 23c1.5-5 4-8 8-10',
+      coin: 'M14 5v18M18.5 9.2c-.9-1.3-2.6-2-4.5-2-2.5 0-4.5 1.2-4.5 3.2 0 4.4 9 2.4 9 6.8 0 2-2 3.3-4.5 3.3-2.1 0-3.9-.8-4.7-2.3'
+    };
+    return {
+      accent: this.props.accent ?? '#FB600A',
+      credentials: [
+        'Registered 501(c)(3) since 2006',
+        'Cross River and Benue States',
+        'Aligned to five UN SDGs',
+        'Partnered with the Diocese of Ogoja'
+      ],
+      stats: [
+        { n: '2,000+', label: 'Pupils educated',   note: 'At St. Joseph’s, Idum-Mbube alone' },
+        { n: '500+',   label: 'Women financed',    note: 'Soft loans and grants to date' },
+        { n: '5',      label: 'Schools founded',   note: 'Across Cross River State' },
+        { n: '2',      label: 'Centres running',   note: 'Mbube-Ogoja and Victoria-Ikom' }
+      ],
+      pillars: [
+        { name: 'Education',   body: 'Primary and secondary schools, built where no school exists, plus vocational and skills centres.', icon: ICO.book },
+        { name: 'Healthcare',  body: 'A clinic on the school site, and care concentrated on a child’s first 1,000 days.', icon: ICO.heart },
+        { name: 'Agriculture', body: 'A demonstration farm that feeds the school and teaches the trade hands-on.', icon: ICO.leaf },
+        { name: 'Livelihoods', body: 'Soft loans so a parent can build a business and afford to keep a child in class.', icon: ICO.coin }
+      ],
+      press: [
+        { outlet: 'National Catholic Reporter', date: 'May 2024', title: 'Catholic-run CORAfrica aims to fill learning gap fueled by poverty in Nigeria' },
+        { outlet: 'Vanguard',                   date: 'Jul 2026', title: 'CORAfrica expands community development through education, healthcare, livelihood programmes' },
+        { outlet: 'ThisDay',                    date: 'Jul 2026', title: 'CORAfrica expands access to education for children in rural communities' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+{
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Homepage"
+    },
+    {
+      "id": "page-2",
+      "name": "Sub-pages"
+    },
+    {
+      "id": "page-mobile",
+      "name": "Mobile"
+    },
+    {
+      "id": "page-3",
+      "name": "Early directions"
+    }
+  ],
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "title": "Homepage",
+      "page": "page-1",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 4000
+    },
+    {
+      "file": "WhoWeAre.dc.html",
+      "title": "Who We Are",
+      "page": "page-2",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 3900
+    },
+    {
+      "file": "OurModel.dc.html",
+      "title": "Our Model",
+      "page": "page-2",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 4100
+    },
+    {
+      "file": "WhatWeDo.dc.html",
+      "title": "What We Do",
+      "page": "page-2",
+      "x": 3120,
+      "y": 0,
+      "w": 1440,
+      "h": 4400
+    },
+    {
+      "file": "Schools.dc.html",
+      "title": "Schools",
+      "page": "page-2",
+      "x": 4680,
+      "y": 0,
+      "w": 1440,
+      "h": 3250
+    },
+    {
+      "file": "StrategicPlan.dc.html",
+      "title": "Strategic Plan",
+      "page": "page-2",
+      "x": 0,
+      "y": 4600,
+      "w": 1440,
+      "h": 2700
+    },
+    {
+      "file": "News.dc.html",
+      "title": "News",
+      "page": "page-2",
+      "x": 1560,
+      "y": 4600,
+      "w": 1440,
+      "h": 2400
+    },
+    {
+      "file": "Donate.dc.html",
+      "title": "Donate",
+      "page": "page-2",
+      "x": 3120,
+      "y": 4600,
+      "w": 1440,
+      "h": 2200
+    },
+    {
+      "file": "Contact.dc.html",
+      "title": "Contact",
+      "page": "page-2",
+      "x": 4680,
+      "y": 4600,
+      "w": 1440,
+      "h": 2500
+    },
+    {
+      "file": "DirectionA.dc.html",
+      "title": "A — Evidence First",
+      "page": "page-3",
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 1560
+    },
+    {
+      "file": "DirectionB.dc.html",
+      "title": "B — Human and Warm",
+      "page": "page-3",
+      "x": 1400,
+      "y": 0,
+      "w": 1280,
+      "h": 1800
+    },
+    {
+      "file": "DirectionC.dc.html",
+      "title": "C — Bold Clarity",
+      "page": "page-3",
+      "x": 2800,
+      "y": 0,
+      "w": 1280,
+      "h": 1620
+    },
+    {
+      "file": "MobileHome.dc.html",
+      "title": "Home — 390px",
+      "page": "page-mobile",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 5500
+    },
+    {
+      "file": "MobileWhoWeAre.dc.html",
+      "title": "Who We Are — 390px",
+      "page": "page-mobile",
+      "x": 500,
+      "y": 0,
+      "w": 390,
+      "h": 4200
+    },
+    {
+      "file": "MobileSchools.dc.html",
+      "title": "Schools — 390px",
+      "page": "page-mobile",
+      "x": 1000,
+      "y": 0,
+      "w": 390,
+      "h": 3850
+    },
+    {
+      "file": "MobileDonate.dc.html",
+      "title": "Donate — 390px",
+      "page": "page-mobile",
+      "x": 1500,
+      "y": 0,
+      "w": 390,
+      "h": 2400
+    }
+  ],
+  "annotations": [
+    {
+      "id": "synthesis",
+      "page": "page-1",
+      "x": -520,
+      "y": 0,
+      "w": 440,
+      "text": "A + B, fused through the Teeej system.\n\nRather than blending two looks, both are re-expressed in ONE vocabulary — the actual design system from teeej.ai, read out of its stylesheet:\n\n• Space Grotesk display at -0.05em tracking, Manrope body\n• Warm section gradients (#ffffff → #fffdf9 → #f5f2ec)\n• Big soft panels: 3rem radius, 0 34px 76px shadow\n• Buttons: 0.7rem radius, 700 weight\n• One orange — CORAfrica's #FB600A, within a hair of Teeej's #f16908\n\nFROM B (warmth) — the hero is a photograph in a dark card with Teeej's scrim gradient; the school cards use the same treatment.\n\nFROM A (evidence) — the credibility strip, the numbers panel, press attribution, and named schools each carrying a figure.\n\nWarm at the top, evidential as you scroll — matching the audience order."
+    },
+    {
+      "id": "open-items",
+      "page": "page-1",
+      "x": -520,
+      "y": 780,
+      "w": 440,
+      "text": "Still open on this page:\n\n• EIN and CAC are visible placeholders in the footer — items 6 and 7 on the request list.\n\n• \"5 schools founded\" counts every school ever founded, including St. Joseph's, which has been handed to the Diocese of Ogoja. A count of schools operating TODAY would be a different number.\n\n• The SDG line comes from Vanguard quoting the organisation, not from a CORAfrica document.\n\n• Photography is still the ceiling on this design."
+    },
+    {
+      "id": "subpages-brief",
+      "page": "page-2",
+      "x": -560,
+      "y": 0,
+      "w": 480,
+      "text": "EIGHT SUB-PAGES — the full nav, built.\n\nAll generated from one shared system file, so the chrome, type scale and section rhythm are identical across every page. Change the header once and it changes everywhere.\n\nEvery page carries the same accent control, so recolouring the brand is a single move per artboard.\n\nContent sources: the docx for vision, mission, philosophy, history, the VASAC trade list and the board; press (NCR 2024, Vanguard and ThisDay Jul 2026) for every number and every date. Nothing is invented.\n\nPlaceholders are written in [SQUARE BRACKETS] so they are impossible to miss — EIN, CAC, the financial breakdown, the two unscoped projects, and the rest of the admin team."
+    },
+    {
+      "id": "subpages-notes",
+      "page": "page-2",
+      "x": -560,
+      "y": 700,
+      "w": 480,
+      "text": "Judgement calls worth your eye:\n\nWHO WE ARE — the history timeline uses 2009 for Fr. Peter's return (Vanguard), not 2006 (the docx). Both are in the request list. Your own name is in the 2010s entry, from the docx's board list.\n\nOUR LOGO — I used the tagline on the actual artwork, \"Helping Children and Communities Thrive\", not the docx's \"Education for Africa's Future\". He should pick one.\n\nSCHOOLS — the register is honest that St. Joseph's has been handed to the diocese, and frames that as the intended end state rather than a loss. Worth checking he agrees with that framing.\n\nSTRATEGIC PLAN — the docx says \"to be continued\", so this is the thinnest page. The Children's Hospital and VASAC projects are marked as needing scope and cost. Right now it leans on the SDG alignment to carry weight.\n\nCONTACT — uses the docx's board, not the current site's. This is the single riskiest thing on the site until he confirms it in writing."
+    },
+    {
+      "id": "note-a",
+      "page": "page-3",
+      "x": 0,
+      "y": -130,
+      "w": 420,
+      "text": "A — EVIDENCE FIRST\nWhat carried into the build: the whole evidence spine — credibility strip, numbers, press attribution, schools with figures attached."
+    },
+    {
+      "id": "note-b",
+      "page": "page-3",
+      "x": 1400,
+      "y": -130,
+      "w": 420,
+      "text": "B — HUMAN AND WARM\nWhat carried into the build: the photographic hero, the warm palette, and the founder spread — rebuilt with Teeej's scrim and radii instead of B's own."
+    },
+    {
+      "id": "note-c",
+      "page": "page-3",
+      "x": 2800,
+      "y": -130,
+      "w": 420,
+      "text": "C — BOLD CLARITY\nNot selected, but one idea survived into the Schools page: the register as a typographic list rather than a photo grid. That pattern needs no photography, so it is the fallback if the photo pull does not come through."
+    },
+    {
+      "id": "mobile-notes",
+      "page": "page-mobile",
+      "x": -560,
+      "y": 0,
+      "w": 480,
+      "text": "MOBILE — 390px, authored for the phone rather than shrunk from desktop.\n\nWhat had to change, and why:\n\nNAV — seven items plus a CTA cannot fit below about 900px. Collapses to logo + Donate + hamburger. Donate stays visible at all times because it is the primary action; burying it behind the menu would cost conversions.\n\nTYPE — display drops 62px to 34px, h2 44px to 29px. Tracking eases from -0.05em to -0.04em, because tight tracking that reads as confident at 62px reads as cramped at 34px.\n\nGRIDS — every 2, 3 and 4 column grid becomes one column, except the numbers panel, which stays 2x2. Four stacked numbers would push the schools below the fold for no gain.\n\nSCHOOLS REGISTER — the real work. A four-column table cannot become one column without losing its scanning logic, so each row is rebuilt as a card with the location, year and scale as pills under the name.\n\nTOUCH — every target is at least 44px. Buttons go full width at 52px.\n\nPHOTOGRAPHY — the hero crop holds at 390px because the source frame is close and centred. Wider group shots would lose their subject at this width, which is another argument for the photo pull.\n\nFour pages are drawn. The remaining five follow these same rules — say the word and I will draw them too."
+    }
+  ],
+  "launch": {
+    "view": "canvas",
+    "page": "page-mobile"
+  }
+}

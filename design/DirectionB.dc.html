@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=Karla:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Karla, ui-sans-serif, system-ui, sans-serif; }
+    a { color: #B4500B; text-decoration: none; }
+    a:hover { color: #FB600A; }
+  </style>
+</helmet>
+
+<div style="width: 1280px; background: #F7F2E9; color: #1E1A16; font-family: Karla, system-ui, sans-serif;">
+
+  <!-- hero: full-bleed photograph, type sitting on it -->
+  <div style="position: relative; height: 660px; overflow: hidden;">
+    <img src="./hero.jpg" alt="Pupils at their desks at a CORAfrica school" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+    <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30,26,22,.80) 0%, rgba(30,26,22,.36) 34%, rgba(30,26,22,.30) 58%, rgba(30,26,22,.90) 100%);"></div>
+
+    <div style="position: relative; display: flex; flex-direction: column; height: 100%; justify-content: space-between;">
+      <!-- nav -->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 40px; padding: 26px 56px;">
+        <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 44px; width: auto;">
+        <div style="display: flex; align-items: center; gap: 28px; font-size: 15px; font-weight: 500; color: #F7F2E9;">
+          <span>Who We Are</span>
+          <span>Our Model</span>
+          <span>Schools</span>
+          <span>What We Do</span>
+          <span>News</span>
+          <span style="background: {{accent}}; color: #fff; padding: 12px 24px; border-radius: 999px; font-weight: 700;">Donate</span>
+        </div>
+      </div>
+
+      <!-- headline -->
+      <div style="padding: 0 56px 52px; display: grid; grid-template-columns: 1.25fr .85fr; gap: 56px; align-items: end;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div style="font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #F0C9A6;">Children of Rural Africa &middot; Since 2006</div>
+          <h1 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; font-size: 66px; line-height: 1.02; letter-spacing: -0.03em; color: #FFFDF9; text-wrap: balance;">
+            Every child deserves the chance to stay in the room.
+          </h1>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 22px; padding-bottom: 6px;">
+          <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #EFE7DA;">
+            We build schools in rural Nigeria where none exist &mdash; then add the clinic,
+            the farm and the workshop that keep a child coming back.
+          </p>
+          <div style="display: flex; gap: 12px;">
+            <span style="background: {{accent}}; color: #fff; padding: 15px 28px; font-size: 15px; font-weight: 700; border-radius: 999px;">Donate</span>
+            <span style="border: 1.5px solid rgba(255,253,249,.55); color: #FFFDF9; padding: 13.5px 26px; font-size: 15px; font-weight: 700; border-radius: 999px;">See our schools</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- the numbers, warm card band -->
+  <div style="padding: 0 56px; margin-top: -46px; position: relative;">
+    <div style="background: #FFFDF9; border-radius: 20px; box-shadow: 0 24px 60px rgba(30,26,22,.13); padding: 34px 40px; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 34px;">
+      <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <div style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; color: {{accent}};">{{s.n}}</div>
+          <div style="font-size: 15px; font-weight: 700; color: #1E1A16;">{{s.label}}</div>
+          <div style="font-size: 13px; color: #7C7166; line-height: 1.4;">{{s.note}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- story block -->
+  <div style="padding: 68px 56px 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+      <div style="font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #A8907A;">Why a school is not enough</div>
+      <h2 style="margin: 0; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; font-size: 40px; line-height: 1.08; letter-spacing: -0.026em;">
+        Hunger, illness and school fees take more children out of class than any exam.
+      </h2>
+      <p style="margin: 0; font-size: 16.5px; line-height: 1.65; color: #5C5349;">
+        So our Community Education Centre puts four things on one site: a school, a clinic,
+        a working farm, and a fund that lets a parent build a business. Take away any one of
+        them and the child stops coming.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 9px; padding-top: 6px;">
+        <sc-for list="{{pillars}}" as="p" hint-placeholder-count="4">
+          <span style="border: 1.5px solid #E3D8C6; background: #FFFDF9; border-radius: 999px; padding: 9px 17px; font-size: 14px; font-weight: 600; color: #3A342C;">{{p}}</span>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <img src="./hands.jpg" alt="Children at a CORAfrica school" style="width: 100%; height: 210px; object-fit: cover; border-radius: 14px; display: block;">
+      <img src="./empower.jpg" alt="Women in the economic empowerment programme" style="width: 100%; height: 210px; object-fit: cover; border-radius: 14px; display: block; margin-top: 26px;">
+      <img src="./farm.jpg" alt="The demonstration farm" style="width: 100%; height: 210px; object-fit: cover; border-radius: 14px; display: block;">
+      <img src="./clinic.jpg" alt="School health programme" style="width: 100%; height: 210px; object-fit: cover; border-radius: 14px; display: block; margin-top: 26px;">
+    </div>
+  </div>
+
+  <!-- founder quote, warm dark -->
+  <div style="margin: 74px 56px 56px; background: #26201A; border-radius: 22px; padding: 46px 52px; display: grid; grid-template-columns: 210px 1fr; gap: 44px; align-items: center;">
+    <img src="./founder.jpg" alt="Fr. Peter Abue with pupils" style="width: 210px; height: 210px; object-fit: cover; border-radius: 16px; display: block;">
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 27px; line-height: 1.32; color: #FFFDF9; font-weight: 500; letter-spacing: -0.014em;">
+        &ldquo;Growing up, I was privileged to pursue my education. Most of my peers in our
+        village could not. So I decided to fill that gap.&rdquo;
+      </div>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span style="width: 30px; height: 2px; background: {{accent}};"></span>
+        <span style="font-size: 14px; font-weight: 700; color: #F0C9A6; letter-spacing: .04em;">Fr. Peter Obele Abue &middot; Founder, CORAfrica</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#FB600A","options":["#FB600A","#B4500B","#7C6A3E","#26201A"],"section":"Brand"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#FB600A',
+      stats: [
+        { n: '2,000+', label: 'Pupils educated',  note: 'St. Joseph’s, Idum-Mbube' },
+        { n: '500+',   label: 'Women financed',   note: 'Soft loans and grants' },
+        { n: '5',      label: 'Schools founded',  note: 'Cross River State' },
+        { n: '20 yrs', label: 'On the ground',    note: '501(c)(3) since 2006' }
+      ],
+      pillars: ['Education', 'Healthcare', 'Agriculture', 'Economic empowerment']
+    };
+  }
+}
+</script>
+</body>
+</html>

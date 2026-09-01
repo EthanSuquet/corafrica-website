@@ -1,0 +1,14 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Generated review bundles. Both are rebuilt on demand and are megabytes each,
+# so they would bloat every commit. The sources they are built from ARE tracked:
+#   corafrica-site-preview.html      <- python3 make_preview.py
+#   corafrica-website-directions.html <- the .dc.html artboards + canvas.json
+design/corafrica-site-preview.html
+design/corafrica-website-directions.html
+
+# Raw photo downloads pulled from the client's WordPress media library.
+# The optimised versions that actually ship live in site/img/.
+photos/source/

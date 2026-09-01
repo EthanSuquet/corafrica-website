@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85..112,400;85..112,600;85..112,700;85..112,800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif; }
+    a { color: #FB600A; text-decoration: none; }
+    a:hover { color: #C2410C; }
+  </style>
+</helmet>
+
+<div style="width: 1280px; background: #FFFFFF; color: #0E0E0D; font-family: 'Space Grotesk', system-ui, sans-serif;">
+
+  <!-- nav: hard rule, no chrome -->
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 40px; padding: 20px 48px; border-bottom: 2px solid #0E0E0D;">
+    <img src="./corafrica-lockup.svg" alt="CORAfrica" style="height: 42px; width: auto;">
+    <div style="display: flex; align-items: center; gap: 26px; font-size: 14px; font-weight: 600; letter-spacing: -0.005em;">
+      <span>Who We Are</span>
+      <span>Model</span>
+      <span>Schools</span>
+      <span>Programmes</span>
+      <span>News</span>
+      <span style="background: {{accent}}; color: #fff; padding: 12px 22px; font-weight: 700;">Donate</span>
+    </div>
+  </div>
+
+  <!-- hero: a stated problem, sized like a poster -->
+  <div style="display: grid; grid-template-columns: 1fr 400px; border-bottom: 2px solid #0E0E0D;">
+    <div style="padding: 54px 48px 46px; border-right: 2px solid #0E0E0D; display: flex; flex-direction: column; gap: 26px;">
+      <div style="display: flex; align-items: center; gap: 14px; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;">
+        <span style="background: {{accent}}; color: #fff; padding: 5px 10px;">The problem</span>
+        <span style="color: #6B6862;">UNICEF &middot; Nigeria</span>
+      </div>
+      <h1 style="margin: 0; font-family: Archivo, system-ui, sans-serif; font-weight: 800; font-variation-settings: 'wdth' 100; font-size: 78px; line-height: .96; letter-spacing: -0.04em; text-transform: uppercase;">
+        10 million<br>children.<br><span style="color: {{accent}};">No school.</span>
+      </h1>
+      <p style="margin: 0; font-size: 17px; line-height: 1.58; color: #3C3A36; max-width: 50ch;">
+        Nigeria has the highest out-of-school population on earth &mdash; about 15% of the
+        global total. CORAfrica answers it one community at a time: build the school,
+        then build everything that keeps a child inside it.
+      </p>
+      <div style="display: flex; gap: 0; padding-top: 6px;">
+        <span style="background: {{accent}}; color: #fff; padding: 16px 30px; font-size: 15px; font-weight: 700;">Fund a classroom</span>
+        <span style="border: 2px solid #0E0E0D; border-left: none; padding: 14px 28px; font-size: 15px; font-weight: 700;">Partner with us</span>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+      <img src="./hero.jpg" alt="Pupils at a CORAfrica school" style="width: 100%; height: 300px; object-fit: cover; display: block; border-bottom: 2px solid #0E0E0D;">
+      <div style="padding: 26px 30px; display: flex; flex-direction: column; gap: 10px; flex-grow: 1; justify-content: center;">
+        <div style="font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #6B6862;">Our vision</div>
+        <div style="font-family: Archivo, system-ui, sans-serif; font-size: 22px; font-weight: 600; line-height: 1.22; letter-spacing: -0.018em;">
+          To impact the lives of children throughout Africa, beginning with Nigeria.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- numbers: full orange field, unmissable -->
+  <div style="background: {{accent}}; color: #fff; padding: 40px 48px; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 0; border-bottom: 2px solid #0E0E0D;">
+    <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+      <div style="padding: 0 26px; border-right: 1px solid rgba(255,255,255,.32); display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-family: Archivo, system-ui, sans-serif; font-size: 46px; font-weight: 800; line-height: 1; letter-spacing: -0.035em;">{{s.n}}</div>
+        <div style="font-size: 14.5px; font-weight: 700;">{{s.label}}</div>
+        <div style="font-size: 12.5px; line-height: 1.4; color: rgba(255,255,255,.82);">{{s.note}}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- model: four numbered blocks -->
+  <div style="border-bottom: 2px solid #0E0E0D;">
+    <div style="padding: 44px 48px 22px; display: flex; justify-content: space-between; align-items: baseline;">
+      <h2 style="margin: 0; font-family: Archivo, system-ui, sans-serif; font-weight: 700; font-size: 34px; letter-spacing: -0.03em; text-transform: uppercase;">The Community Education Centre</h2>
+      <div style="font-size: 14px; font-weight: 600; color: #6B6862;">Four components, one site</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); border-top: 1px solid #D8D5CE;">
+      <sc-for list="{{pillars}}" as="p" hint-placeholder-count="4">
+        <div style="padding: 28px 26px 34px; border-right: 1px solid #D8D5CE; display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: Archivo, system-ui, sans-serif; font-size: 15px; font-weight: 800; color: {{accent}};">{{p.num}}</div>
+          <div style="font-family: Archivo, system-ui, sans-serif; font-size: 21px; font-weight: 700; letter-spacing: -0.018em;">{{p.name}}</div>
+          <div style="font-size: 14px; line-height: 1.55; color: #3C3A36;">{{p.body}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- schools as an index, not a gallery — works with few photos -->
+  <div style="padding: 44px 48px 54px;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 20px;">
+      <h2 style="margin: 0; font-family: Archivo, system-ui, sans-serif; font-weight: 700; font-size: 34px; letter-spacing: -0.03em; text-transform: uppercase;">Our schools</h2>
+      <div style="font-size: 14px; font-weight: 700; color: {{accent}};">Full register &rarr;</div>
+    </div>
+    <sc-for list="{{schools}}" as="s" hint-placeholder-count="4">
+      <div style="display: grid; grid-template-columns: 62px 1fr 220px 150px; gap: 22px; align-items: baseline; padding: 19px 0; border-top: 1px solid #D8D5CE;">
+        <div style="font-family: Archivo, system-ui, sans-serif; font-size: 14px; font-weight: 700; color: {{accent}};">{{s.year}}</div>
+        <div style="font-family: Archivo, system-ui, sans-serif; font-size: 21px; font-weight: 700; letter-spacing: -0.018em;">{{s.name}}</div>
+        <div style="font-size: 14px; color: #3C3A36;">{{s.place}}</div>
+        <div style="font-size: 14px; font-weight: 600; text-align: right;">{{s.stat}}</div>
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#FB600A","options":["#FB600A","#0E0E0D","#15803D","#B91C1C"],"section":"Brand"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#FB600A',
+      stats: [
+        { n: '2,000+', label: 'Pupils educated',  note: 'St. Joseph’s, Idum-Mbube' },
+        { n: '500+',   label: 'Women financed',   note: 'Soft loans and grants' },
+        { n: '2',      label: 'States reached',   note: 'Cross River and Benue' },
+        { n: '2006',   label: '501(c)(3) since',  note: 'Registered in the United States' }
+      ],
+      pillars: [
+        { num: '01', name: 'Education',   body: 'Primary and secondary schools, built where no school exists.' },
+        { num: '02', name: 'Healthcare',  body: 'A clinic on the school site, and care through the first 1,000 days.' },
+        { num: '03', name: 'Agriculture', body: 'A demonstration farm that feeds the school and teaches the trade.' },
+        { num: '04', name: 'Livelihoods', body: 'Soft loans so a parent can afford to keep a child in class.' }
+      ],
+      schools: [
+        { year: '2020', name: 'John Bosco Academy',       place: 'Adagom, Ogoja',   stat: 'Refugee children' },
+        { year: '2021', name: 'John Stilley Schools',     place: 'Victoria, Ikom',  stat: '300+ students' },
+        { year: '2021', name: 'St. Peter’s Primary',      place: 'Adagom 3, Ogoja', stat: '6 classrooms' },
+        { year: '—',    name: 'St. Joseph’s School',      place: 'Idum-Mbube',      stat: '2,000+ pupils' },
+        { year: '—',    name: 'Little Flower Nursery',    place: 'Ipong-Obudu',     stat: 'Nursery & primary' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

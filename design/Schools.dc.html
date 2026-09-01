@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, ui-sans-serif, system-ui, sans-serif; }
+    a { color: #FB600A; text-decoration: none; }
+    a:hover { color: #c24f06; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #ffffff; color: #181818; font-family: Manrope, system-ui, sans-serif;">
+
+  <!-- HEADER -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 40px; background: rgba(44,42,42,.94);">
+    <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 42px; width: auto; display: block;">
+    <div style="display: flex; align-items: center; gap: 26px; font-size: 14.5px; font-weight: 600; color: #f2efe9; letter-spacing: -0.01em;">
+      <span style="color: #f2efe9;">Who We Are</span>
+      <span style="color: #f2efe9;">Our Model</span>
+      <span style="color: {{accent}};">Schools</span>
+      <span style="color: #f2efe9;">What We Do</span>
+      <span style="color: #f2efe9;">Strategic Plan</span>
+      <span style="color: #f2efe9;">News</span>
+      <span style="color: #f2efe9;">Contact</span>
+      <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 12px 24px; background: {{accent}}; color: #fff; border-radius: 0.7rem; font-weight: 700;">Donate</span>
+    </div>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div style="padding: 26px 40px 0; background: linear-gradient(180deg,#ffffff 0%,#fffdf9 100%);">
+    <div style="position: relative; height: 392px; border-radius: 2.6rem; overflow: hidden; background: #101317; box-shadow: 0 34px 76px rgba(14,18,24,.20), inset 0 1px 0 rgba(255,255,255,.18);">
+      <img src="./school.jpg" alt="John Stilley Secondary School" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%;">
+      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,16,.58) 0%, rgba(8,12,16,.40) 40%, rgba(8,12,16,.86) 100%);"></div>
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 56px 44px; max-width: 900px;">
+        <span style="display: inline-flex; align-self: flex-start; padding: 0.45rem 0.72rem; border-radius: 999px; background: rgba(255,255,255,.10); color: rgba(255,255,255,.78); font-size: 0.84rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 18px;">Our schools</span>
+        <h1 style="margin: 0 0 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 52px; line-height: 1.04; letter-spacing: -0.05em; color: #fff; max-width: 22ch;">Built where there was nothing.</h1>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5; color: rgba(255,255,255,.82); max-width: 62ch;">We found schools where the need is greatest &mdash; and then hand them over to be owned and run by the local diocese. The work is built to outlast whoever started it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 76px 40px; background: linear-gradient(180deg,#fffdf9 0%,#ffffff 100%);">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">The register</div>
+      <h2 style="margin: 0 0 1.1rem; font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em; max-width: 26ch;">Every school CORAfrica has founded or upgraded.</h2>
+      <p style="margin: 0 0 2.2rem; font-size: 16px; line-height: 1.55; color: #4f4d4b; max-width: 68ch;">Some of these are now run by the Diocese of Ogoja. That is the intended end state, not a loss &mdash; a project that cannot be handed on has not really been built.</p>
+      <div style="display: grid; grid-template-columns: 1fr 210px 130px 150px; gap: 26px; padding-bottom: 10px; font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #a09889;">
+        <div>School</div><div>Location</div><div>Founded</div><div style="text-align: right;">Scale</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 210px 130px 150px; gap: 26px; align-items: start; padding: 26px 0; border-top: 1px solid #e8e2d8;">
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.035em; margin-bottom: 7px;">John Stilley Secondary School</div><div style="font-size: 14px; line-height: 1.5; color: #4f4d4b; max-width: 62ch;">Founded where the community had no secondary school at all. A new classroom block has since been added, supported by the John Stilley Family Trust Fund.</div></div>
+        <div style="font-size: 14.5px; color: #4f4d4b; padding-top: 5px;">Victoria, Ikom</div>
+        <div style="font-size: 14.5px; color: #78726a; padding-top: 5px;">2021</div>
+        <div style="font-size: 14px; font-weight: 700; color: {{accent}}; text-align: right; padding-top: 5px;">300+ students</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 210px 130px 150px; gap: 26px; align-items: start; padding: 26px 0; border-top: 1px solid #e8e2d8;">
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.035em; margin-bottom: 7px;">John Bosco Academy</div><div style="font-size: 14px; line-height: 1.5; color: #4f4d4b; max-width: 62ch;">Founded to reach the high influx of refugee children arriving from Cameroon who could not access basic and quality education. Formerly St. Peter&rsquo;s Catholic School.</div></div>
+        <div style="font-size: 14.5px; color: #4f4d4b; padding-top: 5px;">Adagom, Ogoja</div>
+        <div style="font-size: 14.5px; color: #78726a; padding-top: 5px;">2020</div>
+        <div style="font-size: 14px; font-weight: 700; color: {{accent}}; text-align: right; padding-top: 5px;">Refugee response</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 210px 130px 150px; gap: 26px; align-items: start; padding: 26px 0; border-top: 1px solid #e8e2d8;">
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.035em; margin-bottom: 7px;">St. Peter&rsquo;s Primary School</div><div style="font-size: 14px; line-height: 1.5; color: #4f4d4b; max-width: 62ch;">Registered with the education authorities in June 2021. A six-classroom block serves children from both refugee and host communities who cannot afford school fees.</div></div>
+        <div style="font-size: 14.5px; color: #4f4d4b; padding-top: 5px;">Adagom 3, Ogoja</div>
+        <div style="font-size: 14.5px; color: #78726a; padding-top: 5px;">2021</div>
+        <div style="font-size: 14px; font-weight: 700; color: {{accent}}; text-align: right; padding-top: 5px;">300+ pupils</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 210px 130px 150px; gap: 26px; align-items: start; padding: 26px 0; border-top: 1px solid #e8e2d8;">
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.035em; margin-bottom: 7px;">St. Joseph&rsquo;s Primary &amp; Secondary</div><div style="font-size: 14px; line-height: 1.5; color: #4f4d4b; max-width: 62ch;">Also an orphanage, caring for children from five years and above. Now handed over to be owned and run by the Diocese of Ogoja &mdash; as our projects are designed to be.</div></div>
+        <div style="font-size: 14.5px; color: #4f4d4b; padding-top: 5px;">Idum-Mbube, Ogoja</div>
+        <div style="font-size: 14.5px; color: #78726a; padding-top: 5px;">&mdash;</div>
+        <div style="font-size: 14px; font-weight: 700; color: {{accent}}; text-align: right; padding-top: 5px;">2,000+ pupils</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 210px 130px 150px; gap: 26px; align-items: start; padding: 26px 0; border-top: 1px solid #e8e2d8;">
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.035em; margin-bottom: 7px;">Little Flower Nursery &amp; Primary</div><div style="font-size: 14px; line-height: 1.5; color: #4f4d4b; max-width: 62ch;">One of the earliest schools initiated across the diocese, and part of the network that established the model we now build to.</div></div>
+        <div style="font-size: 14.5px; color: #4f4d4b; padding-top: 5px;">Ipong-Obudu</div>
+        <div style="font-size: 14.5px; color: #78726a; padding-top: 5px;">&mdash;</div>
+        <div style="font-size: 14px; font-weight: 700; color: {{accent}}; text-align: right; padding-top: 5px;">Nursery &amp; primary</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 210px 130px 150px; gap: 26px; align-items: start; padding: 26px 0; border-top: 1px solid #e8e2d8;">
+        <div><div style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.035em; margin-bottom: 7px;">Thomas McGettrick Institute of Technology</div><div style="font-size: 14px; line-height: 1.5; color: #4f4d4b; max-width: 62ch;">A technical institute among the projects facilitated in collaboration with the diocesan bishops, and since handed on.</div></div>
+        <div style="font-size: 14.5px; color: #4f4d4b; padding-top: 5px;">Ogoja Diocese</div>
+        <div style="font-size: 14.5px; color: #78726a; padding-top: 5px;">&mdash;</div>
+        <div style="font-size: 14px; font-weight: 700; color: {{accent}}; text-align: right; padding-top: 5px;">Technical</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="padding: 76px 40px; background: linear-gradient(180deg,#ffffff 0%,#f5f2ec 100%);">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Also under our care</div>
+      <h2 style="margin: 0 0 2rem; font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em; max-width: 26ch;">Clinics, farms and empowerment programmes.</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px;">
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Health</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Sr. Augustina Abuo Medical Clinic</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Idum-Mbube. The health component of the Mbube Community Education Centre.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Agriculture</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">CORAfrica Farms</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Demonstration farms feeding the schools and teaching mechanised agriculture and livestock.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Agriculture</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">ODAIP</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">The Ogoja Diocesan Agriculture and Investment Programme, run in collaboration with the diocese.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Livelihoods</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">St. Thomas Aquinas Programme</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Economic empowerment, launched in 2022 with $40,000 and commissioned by Bishop Donatus Akpan.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Livelihoods</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Holy Family Parish Programme</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Economic empowerment at Ikom, giving parishioners access to funds for small and larger enterprises.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Scholarships</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Help-a-Kid</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Scholarships for children who cannot afford fees, with educational materials and school uniforms provided.</div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background: #474545; color: #e9e5df; padding: 46px 40px 34px;">
+    <div style="max-width: 1220px; margin: 0 auto; display: grid; grid-template-columns: 22rem 1fr; gap: 4rem; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 46px; width: auto; display: block;">
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.72);">
+          Helping children and communities thrive. A registered 501(c)(3) non-profit in the
+          United States, operating in Cross River and Benue States, Nigeria.
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 30px;">
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">Nigeria</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">No 48 Mbube Road<br>Opposite Govt. Technical College, Abakpa<br>Ogoja, Cross River State</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">United States</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">PO Box 13<br>Evans City, PA 16033</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">Contact</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">info@corafrica.org.ng<br>+234 915 314 2288</div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1220px; margin: 30px auto 0; padding-top: 18px; border-top: 1px solid rgba(233,229,223,.16); display: flex; justify-content: space-between; gap: 20px; font-size: 12.5px; color: rgba(233,229,223,.55);">
+      <span>&copy; 2026 Children of Rural Africa</span>
+      <span>EIN [REQUEST FROM FR. PETER] &middot; CAC [REQUEST FROM FR. PETER]</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#FB600A","options":["#FB600A","#f16908","#C2410C","#166534"],"section":"Brand"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FB600A' };
+  }
+}
+</script>
+</body>
+</html>

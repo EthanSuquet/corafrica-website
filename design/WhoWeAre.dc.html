@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, ui-sans-serif, system-ui, sans-serif; }
+    a { color: #FB600A; text-decoration: none; }
+    a:hover { color: #c24f06; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #ffffff; color: #181818; font-family: Manrope, system-ui, sans-serif;">
+
+  <!-- HEADER -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 40px; background: rgba(44,42,42,.94);">
+    <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 42px; width: auto; display: block;">
+    <div style="display: flex; align-items: center; gap: 26px; font-size: 14.5px; font-weight: 600; color: #f2efe9; letter-spacing: -0.01em;">
+      <span style="color: {{accent}};">Who We Are</span>
+      <span style="color: #f2efe9;">Our Model</span>
+      <span style="color: #f2efe9;">Schools</span>
+      <span style="color: #f2efe9;">What We Do</span>
+      <span style="color: #f2efe9;">Strategic Plan</span>
+      <span style="color: #f2efe9;">News</span>
+      <span style="color: #f2efe9;">Contact</span>
+      <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 12px 24px; background: {{accent}}; color: #fff; border-radius: 0.7rem; font-weight: 700;">Donate</span>
+    </div>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div style="padding: 26px 40px 0; background: linear-gradient(180deg,#ffffff 0%,#fffdf9 100%);">
+    <div style="position: relative; height: 392px; border-radius: 2.6rem; overflow: hidden; background: #101317; box-shadow: 0 34px 76px rgba(14,18,24,.20), inset 0 1px 0 rgba(255,255,255,.18);">
+      <img src="./founder.jpg" alt="Fr. Peter Abue with pupils" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%;">
+      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,16,.58) 0%, rgba(8,12,16,.40) 40%, rgba(8,12,16,.86) 100%);"></div>
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 56px 44px; max-width: 900px;">
+        <span style="display: inline-flex; align-self: flex-start; padding: 0.45rem 0.72rem; border-radius: 999px; background: rgba(255,255,255,.10); color: rgba(255,255,255,.78); font-size: 0.84rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 18px;">Who we are</span>
+        <h1 style="margin: 0 0 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 52px; line-height: 1.04; letter-spacing: -0.05em; color: #fff; max-width: 22ch;">Twenty years of building schools where there were none.</h1>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5; color: rgba(255,255,255,.82); max-width: 62ch;">CORAfrica is a development agency with 501(c)(3) status in the United States and operations across rural Nigeria. We believe a child&rsquo;s education is inseparable from their health, their food and their family&rsquo;s income &mdash; so we build all four.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 60px 40px; background: linear-gradient(180deg,#fffdf9 0%,#faf8f4 100%);">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px;">
+        <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 34px 34px 36px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+          <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Our vision</div>
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 600; line-height: 1.16; letter-spacing: -0.04em;">To impact the lives of children throughout Africa, beginning with Nigeria.</div>
+        </div>
+        <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 34px 34px 36px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+          <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Our mission</div>
+          <div style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 600; line-height: 1.16; letter-spacing: -0.04em;">To change the face of education and healthcare for indigent children in Africa, one community at a time.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="padding: 76px 40px; background: linear-gradient(180deg,#faf8f4 0%,#ffffff 100%);">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: 260px 1fr; gap: 4.5rem; align-items: center;">
+        <img src="./corafrica-seal.svg" alt="The CORAfrica seal" style="width: 230px; height: auto; display: block; margin: 0 auto;">
+        <div>
+      <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Our logo</div>
+      <h2 style="margin: 0 0 1.1rem; font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em; max-width: 26ch;">The map, and the light.</h2>
+      <p style="margin: 0 0 2.2rem; font-size: 16px; line-height: 1.55; color: #4f4d4b; max-width: 68ch;">The seal carries the map of Africa and a torch. The torch stands for the Light our programmes are meant to bring &mdash; the conviction that education is what changes a continent&rsquo;s prospects, one community at a time. The ring around it carries our name and our promise: <em>Helping Children and Communities Thrive</em>.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="padding: 20px 40px 76px; background: #ffffff;">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Our history</div>
+      <h2 style="margin: 0 0 2rem; font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em; max-width: 26ch;">From a doctorate to a network of schools.</h2>
+      <div style="display: grid; grid-template-columns: 108px 1fr; gap: 30px; padding: 24px 0; border-top: 1px solid #e8e2d8;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: {{accent}}; letter-spacing: -0.02em;">2006</div>
+        <div><div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">Conceived at Cornell</div><div style="font-size: 14.5px; line-height: 1.55; color: #4f4d4b; max-width: 74ch;">Fr. Peter Obele Abue, completing a PhD in International Development at Cornell University, sets out to close the gap he had watched open between the developed and the developing world.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 108px 1fr; gap: 30px; padding: 24px 0; border-top: 1px solid #e8e2d8;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: {{accent}}; letter-spacing: -0.02em;">2006</div>
+        <div><div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">Incorporated in the United States</div><div style="font-size: 14.5px; line-height: 1.55; color: #4f4d4b; max-width: 74ch;">CORAfrica is granted 501(c)(3) non-profit status, with a founding Board of Trustees of Bruno Schickel, Royal Colle, Thomas Lickona and Carolann Darling. Building begins in Nigeria that same year.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 108px 1fr; gap: 30px; padding: 24px 0; border-top: 1px solid #e8e2d8;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: {{accent}}; letter-spacing: -0.02em;">2009</div>
+        <div><div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">Fr. Peter returns to Nigeria</div><div style="font-size: 14.5px; line-height: 1.55; color: #4f4d4b; max-width: 74ch;">Empowerment programmes and projects follow across the Diocese of Ogoja &mdash; St. Joseph&rsquo;s Primary and Secondary School, the Sr. Augustina Abuo Medical Clinic, Little Flower School at Ipong-Obudu.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 108px 1fr; gap: 30px; padding: 24px 0; border-top: 1px solid #e8e2d8;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: {{accent}}; letter-spacing: -0.02em;">2010s</div>
+        <div><div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">A second board, from Western Pennsylvania</div><div style="font-size: 14.5px; line-height: 1.55; color: #4f4d4b; max-width: 74ch;">Ray Ferguson, Fr. Jim Murphy, Anne Goetler, Tom Rooney, Jeannine Goetz and Ethan Suquet join. With Abode for Children Inc. of Evans City, led by Tom and Mary Rutkoski, they upgrade St. Joseph&rsquo;s Schools and Orphanage and CORAfrica Farms.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 108px 1fr; gap: 30px; padding: 24px 0; border-top: 1px solid #e8e2d8;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: {{accent}}; letter-spacing: -0.02em;">2020</div>
+        <div><div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">John Bosco Academy</div><div style="font-size: 14.5px; line-height: 1.55; color: #4f4d4b; max-width: 74ch;">Founded at Adagom, Ogoja, to reach the influx of refugee children arriving from Cameroon with no access to basic education.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 108px 1fr; gap: 30px; padding: 24px 0; border-top: 1px solid #e8e2d8;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: {{accent}}; letter-spacing: -0.02em;">2021</div>
+        <div><div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">The John Stilley Schools</div><div style="font-size: 14.5px; line-height: 1.55; color: #4f4d4b; max-width: 74ch;">Founded at Victoria, Ikom, where no secondary school existed. St. Peter&rsquo;s Primary is registered at Adagom 3. John Stilley and his family have given time, funds and energy to make these projects last.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 108px 1fr; gap: 30px; padding: 24px 0; border-top: 1px solid #e8e2d8;">
+        <div style="font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; color: {{accent}}; letter-spacing: -0.02em;">Today</div>
+        <div><div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px;">Two states, and a model that travels</div><div style="font-size: 14.5px; line-height: 1.55; color: #4f4d4b; max-width: 74ch;">Headquartered in Abuja, CORAfrica works across Cross River and Benue States, reaching rural communities, IDP camps and refugee settlements.</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="padding: 76px 40px; background: linear-gradient(180deg,#ffffff 0%,#f5f2ec 100%);">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Our philosophy</div>
+      <h2 style="margin: 0 0 1.1rem; font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em; max-width: 26ch;">Three convictions we build on.</h2>
+      <p style="margin: 0 0 2.2rem; font-size: 16px; line-height: 1.55; color: #4f4d4b; max-width: 68ch;">CORAfrica&rsquo;s philosophy is rooted in Catholic Social Teaching, and reduces to three core values that govern how we choose projects and how we hand them on.</p>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px;">
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Dignity of the human person</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Each person &mdash; each child &mdash; has an inalienable dignity, and should be treated as an end and never only as a means. Every child deserves the chance to achieve their dreams, no matter where they were born.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Solidarity and the common good</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Faced with globalisation and the growing interdependence of peoples, the universal human family remains one. We are obliged to increase our sensitivity toward children, especially those who suffer deprivation.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Self-reliance</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">We look for the explicit ways a community or institution can design its structures so that children and young people become independent &mdash; rather than relying permanently on outside intervention.</div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background: #474545; color: #e9e5df; padding: 46px 40px 34px;">
+    <div style="max-width: 1220px; margin: 0 auto; display: grid; grid-template-columns: 22rem 1fr; gap: 4rem; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 46px; width: auto; display: block;">
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.72);">
+          Helping children and communities thrive. A registered 501(c)(3) non-profit in the
+          United States, operating in Cross River and Benue States, Nigeria.
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 30px;">
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">Nigeria</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">No 48 Mbube Road<br>Opposite Govt. Technical College, Abakpa<br>Ogoja, Cross River State</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">United States</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">PO Box 13<br>Evans City, PA 16033</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">Contact</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">info@corafrica.org.ng<br>+234 915 314 2288</div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1220px; margin: 30px auto 0; padding-top: 18px; border-top: 1px solid rgba(233,229,223,.16); display: flex; justify-content: space-between; gap: 20px; font-size: 12.5px; color: rgba(233,229,223,.55);">
+      <span>&copy; 2026 Children of Rural Africa</span>
+      <span>EIN [REQUEST FROM FR. PETER] &middot; CAC [REQUEST FROM FR. PETER]</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#FB600A","options":["#FB600A","#f16908","#C2410C","#166534"],"section":"Brand"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FB600A' };
+  }
+}
+</script>
+</body>
+</html>

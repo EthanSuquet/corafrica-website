@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Public+Sans:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: "Public Sans", ui-sans-serif, system-ui, sans-serif; }
+    a { color: #9a3d05; text-decoration: none; }
+    a:hover { color: #FB600A; }
+    .rule { height: 1px; background: #E2DCD1; }
+  </style>
+</helmet>
+
+<div style="width: 1280px; background: #FBFAF7; color: #14110E; font-family: 'Public Sans', system-ui, sans-serif;">
+
+  <!-- utility bar -->
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 9px 56px; background: #14110E; color: #B9B2A6; font-size: 12px; letter-spacing: 0.04em;">
+    <div style="display: flex; gap: 26px; align-items: center;">
+      <span>Registered 501(c)(3) &middot; United States</span>
+      <span style="opacity: .4;">|</span>
+      <span>Abuja &middot; Ogoja, Cross River State</span>
+    </div>
+    <div style="display: flex; gap: 22px; align-items: center;">
+      <a href="#" style="color: #B9B2A6;">info@corafrica.org.ng</a>
+      <a href="#" style="color: #B9B2A6;">+234 915 314 2288</a>
+    </div>
+  </div>
+
+  <!-- masthead -->
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 40px; padding: 22px 56px; background: #FBFAF7; border-bottom: 1px solid #E2DCD1;">
+    <img src="./corafrica-lockup.svg" alt="CORAfrica" style="height: 46px; width: auto;">
+    <div style="display: flex; align-items: center; gap: 30px; font-size: 14.5px; font-weight: 500;">
+      <span>Who We Are</span>
+      <span>Our Model</span>
+      <span>Our Schools</span>
+      <span>What We Do</span>
+      <span>Strategic Plan</span>
+      <span>News</span>
+      <span style="display: inline-flex; align-items: center; gap: 8px; background: {{accent}}; color: #fff; padding: 11px 22px; border-radius: 2px; font-weight: 600;">
+        Donate
+      </span>
+    </div>
+  </div>
+
+  <!-- hero: statement-led, evidence immediately under it -->
+  <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 64px; align-items: center; padding: 68px 56px 56px;">
+    <div style="display: flex; flex-direction: column; gap: 26px;">
+      <div style="display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: {{accent}};">
+        <span style="width: 26px; height: 2px; background: {{accent}}; display: block;"></span>
+        Education for Africa&rsquo;s Future
+      </div>
+      <h1 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 60px; line-height: 1.06; letter-spacing: -0.018em; color: #14110E; text-wrap: balance;">
+        Ten million Nigerian children are out of school.<br>
+        <em style="font-style: italic; color: {{accent}};">We build the schools that reach them.</em>
+      </h1>
+      <p style="margin: 0; font-size: 17.5px; line-height: 1.62; color: #4A443B; max-width: 54ch; text-wrap: pretty;">
+        CORAfrica builds and runs primary and secondary schools in rural Nigeria, then
+        surrounds them with the clinics, farms and vocational centres that keep children
+        in class. Founded in 2006. Operating in Cross River and Benue States.
+      </p>
+      <div style="display: flex; gap: 14px; align-items: center; padding-top: 4px;">
+        <span style="background: {{accent}}; color: #fff; padding: 15px 30px; font-size: 15px; font-weight: 600; border-radius: 2px;">Fund a classroom</span>
+        <span style="border: 1px solid #14110E; color: #14110E; padding: 14px 28px; font-size: 15px; font-weight: 600; border-radius: 2px;">Read our strategic plan</span>
+      </div>
+    </div>
+    <div style="position: relative;">
+      <img src="./hero.jpg" alt="Pupils at their desks at a CORAfrica school" style="width: 100%; height: 420px; object-fit: cover; border-radius: 2px; display: block;">
+      <div style="position: absolute; left: -1px; bottom: -1px; background: #FBFAF7; padding: 18px 24px 0 0; max-width: 300px;">
+        <div style="font-family: Newsreader, Georgia, serif; font-size: 15px; font-style: italic; color: #4A443B; line-height: 1.45;">
+          &ldquo;My main mission is to improve the lives of poor children who live in rural areas through education.&rdquo;
+        </div>
+        <div style="font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #8A8175; margin-top: 9px;">Fr. Peter Abue, Founder</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- the evidence band: what a grant officer scans for -->
+  <div style="background: #14110E; color: #F5F1EA; padding: 44px 56px;">
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px;">
+      <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 7px; border-left: 2px solid rgba(251,96,10,.85); padding-left: 18px;">
+          <div style="font-family: Newsreader, Georgia, serif; font-size: 42px; line-height: 1; font-weight: 400;">{{s.n}}</div>
+          <div style="font-size: 14px; font-weight: 600; color: #F5F1EA;">{{s.label}}</div>
+          <div style="font-size: 12.5px; color: #9A9184; line-height: 1.4;">{{s.note}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- the model -->
+  <div style="padding: 66px 56px 20px;">
+    <div style="display: grid; grid-template-columns: 380px 1fr; gap: 64px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #8A8175;">The Community Education Centre</div>
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: 36px; line-height: 1.12; letter-spacing: -0.012em;">A school alone does not keep a child in school.</h2>
+        <p style="margin: 0; font-size: 15.5px; line-height: 1.65; color: #4A443B;">
+          Our model puts four components on one site, because the reasons a rural child
+          leaves school are rarely academic. Hunger, illness and a family without income
+          take more children out of class than any exam.
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: #E2DCD1; border: 1px solid #E2DCD1;">
+        <sc-for list="{{pillars}}" as="p" hint-placeholder-count="4">
+          <div style="background: #FBFAF7; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 10px;">
+            <svg width="26" height="26" viewBox="0 0 28 28" fill="none" stroke="{{accent}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="{{p.icon}}"></path>
+            </svg>
+            <div style="font-size: 17px; font-weight: 700; letter-spacing: -0.005em;">{{p.name}}</div>
+            <div style="font-size: 14px; line-height: 1.55; color: #4A443B;">{{p.body}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 46px 56px 60px;">
+    <div class="rule"></div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 26px;">
+      <div style="font-family: Newsreader, Georgia, serif; font-size: 22px; color: #14110E;">Our schools</div>
+      <div style="font-size: 14px; color: {{accent}}; font-weight: 600;">All five schools &rarr;</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; padding-top: 22px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <img src="./school.jpg" alt="John Stilley Secondary School" style="width: 100%; height: 190px; object-fit: cover; display: block; border-radius: 2px;">
+        <div style="font-size: 16px; font-weight: 700;">John Stilley Secondary School</div>
+        <div style="font-size: 13.5px; color: #4A443B; line-height: 1.5;">Victoria, Ikom &middot; 300+ students &middot; the only secondary school in its community</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <img src="./hands.jpg" alt="John Bosco Academy" style="width: 100%; height: 190px; object-fit: cover; display: block; border-radius: 2px;">
+        <div style="font-size: 16px; font-weight: 700;">John Bosco Academy</div>
+        <div style="font-size: 13.5px; color: #4A443B; line-height: 1.5;">Adagom, Ogoja &middot; founded 2020 for refugee children from Cameroon</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <img src="./clinic.jpg" alt="School health programme" style="width: 100%; height: 190px; object-fit: cover; display: block; border-radius: 2px;">
+        <div style="font-size: 16px; font-weight: 700;">St. Joseph&rsquo;s, Idum-Mbube</div>
+        <div style="font-size: 13.5px; color: #4A443B; line-height: 1.5;">2,000+ pupils educated &middot; school and orphanage &middot; handed to the Diocese of Ogoja</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#FB600A","options":["#FB600A","#C2410C","#166534","#14110E"],"section":"Brand"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ICO = {
+      book: 'M4 4h7a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2H4zM24 4h-7a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2H24z',
+      heart: 'M14 23s-8-5.1-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.9-8 11-8 11z',
+      leaf: 'M22 6c0 9-5.5 14-12 14 0-8 4.5-13 12-14zM7 23c1.5-5 4-8 8-10',
+      coin: 'M14 5v18M18.5 9.2c-.9-1.3-2.6-2-4.5-2-2.5 0-4.5 1.2-4.5 3.2 0 4.4 9 2.4 9 6.8 0 2-2 3.3-4.5 3.3-2.1 0-3.9-.8-4.7-2.3'
+    };
+    return {
+      accent: this.props.accent ?? '#FB600A',
+      stats: [
+        { n: '2,000+', label: 'Pupils educated',      note: 'St. Joseph’s, Idum-Mbube' },
+        { n: '500+',   label: 'Women financed',        note: 'Soft loans and grants' },
+        { n: '5',      label: 'Schools founded',       note: 'Cross River State' },
+        { n: '2006',   label: '501(c)(3) since',       note: 'Registered in the United States' }
+      ],
+      pillars: [
+        { name: 'Education',            body: 'Primary and secondary schools built where no school exists.',   icon: ICO.book },
+        { name: 'Healthcare',           body: 'Clinics inside the school, and the first 1,000 days of life.',  icon: ICO.heart },
+        { name: 'Agriculture',          body: 'Demonstration farms that feed the school and teach the trade.', icon: ICO.leaf },
+        { name: 'Economic empowerment', body: 'Soft loans so parents can afford to keep a child in class.',    icon: ICO.coin }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

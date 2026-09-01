@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, ui-sans-serif, system-ui, sans-serif; }
+    a { color: #FB600A; text-decoration: none; }
+    a:hover { color: #c24f06; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #ffffff; color: #181818; font-family: Manrope, system-ui, sans-serif;">
+
+  <!-- HEADER -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 40px; background: rgba(44,42,42,.94);">
+    <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 42px; width: auto; display: block;">
+    <div style="display: flex; align-items: center; gap: 26px; font-size: 14.5px; font-weight: 600; color: #f2efe9; letter-spacing: -0.01em;">
+      <span style="color: #f2efe9;">Who We Are</span>
+      <span style="color: {{accent}};">Our Model</span>
+      <span style="color: #f2efe9;">Schools</span>
+      <span style="color: #f2efe9;">What We Do</span>
+      <span style="color: #f2efe9;">Strategic Plan</span>
+      <span style="color: #f2efe9;">News</span>
+      <span style="color: #f2efe9;">Contact</span>
+      <span style="display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 12px 24px; background: {{accent}}; color: #fff; border-radius: 0.7rem; font-weight: 700;">Donate</span>
+    </div>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div style="padding: 26px 40px 0; background: linear-gradient(180deg,#ffffff 0%,#fffdf9 100%);">
+    <div style="position: relative; height: 392px; border-radius: 2.6rem; overflow: hidden; background: #101317; box-shadow: 0 34px 76px rgba(14,18,24,.20), inset 0 1px 0 rgba(255,255,255,.18);">
+      <img src="./farm.jpg" alt="A CORAfrica demonstration farm" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%;">
+      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,16,.58) 0%, rgba(8,12,16,.40) 40%, rgba(8,12,16,.86) 100%);"></div>
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 56px 44px; max-width: 900px;">
+        <span style="display: inline-flex; align-self: flex-start; padding: 0.45rem 0.72rem; border-radius: 999px; background: rgba(255,255,255,.10); color: rgba(255,255,255,.78); font-size: 0.84rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 18px;">Our model</span>
+        <h1 style="margin: 0 0 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 52px; line-height: 1.04; letter-spacing: -0.05em; color: #fff; max-width: 22ch;">Four components. One site. One system.</h1>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5; color: rgba(255,255,255,.82); max-width: 62ch;">The Community Education Centre is our answer to a hard lesson: a school on its own does not keep a child in school. Hunger, illness and a family without income take more children out of class than any exam does.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 76px 40px; background: linear-gradient(180deg,#fffdf9 0%,#ffffff 100%);">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">The Community Education Centre</div>
+      <h2 style="margin: 0 0 1.1rem; font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em; max-width: 26ch;">Built from what actually keeps children out of class.</h2>
+      <p style="margin: 0 0 2.2rem; font-size: 16px; line-height: 1.55; color: #4f4d4b; max-width: 68ch;">Each CEC combines a primary and secondary school, a medical clinic with a running water system, an agricultural demonstration farm, and a vocational and skills acquisition centre. Children learn from the school and the community at once, with hands-on experience in each.</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: center; padding: 34px 0; border-top: 1px solid #e8e2d8;">
+        <div style="border-radius: 1.6rem; overflow: hidden; box-shadow: 0 26px 70px rgba(12,18,28,.12); background: #efebe6;">
+          <img src="./hands.jpg" alt="Education" style="width: 100%; height: 320px; object-fit: cover; display: block;">
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: {{accent}};">01</span>
+            <span style="width: 26px; height: 2px; background: {{accent}}; display: block;"></span>
+          </div>
+          <h3 style="margin: 0 0 12px; font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 600; line-height: 1.06; letter-spacing: -0.045em;">Education</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4f4d4b;">Primary and secondary schools, built where children have no educational opportunity at all, and educational amenities supplied where schools exist but lack them. Small classes, high-quality instruction, and a holistic education that grows a child academically, personally and spiritually.</p>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: center; padding: 34px 0; border-top: 1px solid #e8e2d8;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: {{accent}};">02</span>
+            <span style="width: 26px; height: 2px; background: {{accent}}; display: block;"></span>
+          </div>
+          <h3 style="margin: 0 0 12px; font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 600; line-height: 1.06; letter-spacing: -0.045em;">Healthcare</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4f4d4b;">A clinic inside the school system, so a child&rsquo;s health is not a reason to miss class. Particular emphasis on diarrhoeal disease and malaria in the under-fives, and heavy investment in the first 1,000 days of life &mdash; the window that sets brain development, growth and immune strength.</p>
+        </div>
+        <div style="border-radius: 1.6rem; overflow: hidden; box-shadow: 0 26px 70px rgba(12,18,28,.12); background: #efebe6;">
+          <img src="./clinic.jpg" alt="Healthcare" style="width: 100%; height: 320px; object-fit: cover; display: block;">
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: center; padding: 34px 0; border-top: 1px solid #e8e2d8;">
+        <div style="border-radius: 1.6rem; overflow: hidden; box-shadow: 0 26px 70px rgba(12,18,28,.12); background: #efebe6;">
+          <img src="./farm.jpg" alt="Agriculture" style="width: 100%; height: 320px; object-fit: cover; display: block;">
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: {{accent}};">03</span>
+            <span style="width: 26px; height: 2px; background: {{accent}}; display: block;"></span>
+          </div>
+          <h3 style="margin: 0 0 12px; font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 600; line-height: 1.06; letter-spacing: -0.045em;">Agriculture</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4f4d4b;">Agricultural centres and school farms where children learn agriculture with their hands, not from a textbook. The farm feeds the school, and the skill outlasts the schooling.</p>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: center; padding: 34px 0; border-top: 1px solid #e8e2d8;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: {{accent}};">04</span>
+            <span style="width: 26px; height: 2px; background: {{accent}}; display: block;"></span>
+          </div>
+          <h3 style="margin: 0 0 12px; font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 600; line-height: 1.06; letter-spacing: -0.045em;">Economic empowerment</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #4f4d4b;">Where a family cannot afford to keep a child in class, the barrier is income. Soft loans let poor parents start small businesses and farms. More than 500 women have been supported this way.</p>
+        </div>
+        <div style="border-radius: 1.6rem; overflow: hidden; box-shadow: 0 26px 70px rgba(12,18,28,.12); background: #efebe6;">
+          <img src="./empower.jpg" alt="Economic empowerment" style="width: 100%; height: 320px; object-fit: cover; display: block;">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="padding: 76px 40px; background: linear-gradient(180deg,#ffffff 0%,#f5f2ec 100%);">
+    <div style="max-width: 1220px; margin: 0 auto;">
+      <div style="margin: 0 0 .9rem; color: {{accent}}; font-size: 0.88rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;">Where we operate</div>
+      <h2 style="margin: 0 0 1.1rem; font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 600; line-height: 1.05; letter-spacing: -0.05em; max-width: 26ch;">Two centres running, and a model designed to travel.</h2>
+      <p style="margin: 0 0 2.2rem; font-size: 16px; line-height: 1.55; color: #4f4d4b; max-width: 68ch;">Our two Community Education Centres are at Mbube-Ogoja and Victoria-Ikom. We are seeking funding to equip and operate both to their full plan. Our wider work reaches rural communities, IDP camps and refugee settlements across Cross River and Benue States.</p>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px;">
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Centre one</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Mbube-Ogoja</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Home of St. Joseph&rsquo;s Primary and Secondary School and the Sr. Augustina Abuo Medical Clinic.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Centre two</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Victoria-Ikom</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">Home of the John Stilley Schools, founded where the community had no secondary school at all.</div>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #ece7df; border-radius: 1.6rem; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 11px; box-shadow: 0 18px 44px rgba(14,18,24,.06);">
+        <div style="display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: rgba(251,96,10,.10); color: {{accent}}; font-size: 11.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;">Refugee response</div>
+        <div style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Adagom, Ogoja</div>
+        <div style="font-size: 14px; line-height: 1.5; color: #4f4d4b;">John Bosco Academy and St. Peter&rsquo;s Primary, serving refugee and host communities together.</div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background: #474545; color: #e9e5df; padding: 46px 40px 34px;">
+    <div style="max-width: 1220px; margin: 0 auto; display: grid; grid-template-columns: 22rem 1fr; gap: 4rem; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <img src="./corafrica-lockup-white.svg" alt="CORAfrica" style="height: 46px; width: auto; display: block;">
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.72);">
+          Helping children and communities thrive. A registered 501(c)(3) non-profit in the
+          United States, operating in Cross River and Benue States, Nigeria.
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 30px;">
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">Nigeria</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">No 48 Mbube Road<br>Opposite Govt. Technical College, Abakpa<br>Ogoja, Cross River State</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">United States</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">PO Box 13<br>Evans City, PA 16033</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: rgba(233,229,223,.55);">Contact</div>
+          <div style="font-size: 13.5px; line-height: 1.5; color: rgba(233,229,223,.86);">info@corafrica.org.ng<br>+234 915 314 2288</div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1220px; margin: 30px auto 0; padding-top: 18px; border-top: 1px solid rgba(233,229,223,.16); display: flex; justify-content: space-between; gap: 20px; font-size: 12.5px; color: rgba(233,229,223,.55);">
+      <span>&copy; 2026 Children of Rural Africa</span>
+      <span>EIN [REQUEST FROM FR. PETER] &middot; CAC [REQUEST FROM FR. PETER]</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#FB600A","options":["#FB600A","#f16908","#C2410C","#166534"],"section":"Brand"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FB600A' };
+  }
+}
+</script>
+</body>
+</html>
