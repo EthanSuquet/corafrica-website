@@ -120,12 +120,18 @@ h1, h2, h3, h4 {
 
 /* Scroll reveals. Gated behind .js-anim on <html>, which script.js sets, so
    with JS off or broken every block renders fully visible — the content is
-   never hostage to the animation. Reduced motion opts out below. */
+   never hostage to the animation. Reduced motion opts out below.
+
+   --rv is the direction the block returns from: 1 = from below (default),
+   -1 = from above, set by script.js when the block leaves over the top. That
+   is what makes scrolling back up reverse the motion instead of replaying it
+   upside down. */
 .js-anim [data-reveal] {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 700ms cubic-bezier(.22,.61,.36,1),
-              transform 700ms cubic-bezier(.22,.61,.36,1);
+  transform: translateY(calc(var(--rv, 1) * 44px)) scale(0.965);
+  transition: opacity 820ms cubic-bezier(.22,.61,.36,1),
+              transform 820ms cubic-bezier(.22,.61,.36,1);
+  will-change: opacity, transform;
 }
 .js-anim [data-reveal].is-in { opacity: 1; transform: none; }
 /* The reveal's `transform: none` out-specifies the card hover lift, so restate
@@ -135,18 +141,18 @@ h1, h2, h3, h4 {
 /* The hero photograph settles out of a slow push-in. Runs once, forwards. */
 .js-anim .hero-card > img { animation: heroSettle 2600ms cubic-bezier(.16,.72,.3,1) both; }
 @keyframes heroSettle {
-  from { transform: scale(1.07); }
+  from { transform: scale(1.10); }
   to   { transform: scale(1); }
 }
 
 /* Hero copy rises in a beat behind the image. */
-.js-anim .hero-body > * { animation: heroRise 900ms cubic-bezier(.22,.61,.36,1) both; }
+.js-anim .hero-body > * { animation: heroRise 1000ms cubic-bezier(.22,.61,.36,1) both; }
 .js-anim .hero-body > :nth-child(1) { animation-delay: 120ms; }
 .js-anim .hero-body > :nth-child(2) { animation-delay: 220ms; }
 .js-anim .hero-body > :nth-child(3) { animation-delay: 320ms; }
 .js-anim .hero-body > :nth-child(4) { animation-delay: 420ms; }
 @keyframes heroRise {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(26px); }
   to   { opacity: 1; transform: none; }
 }
 
