@@ -116,6 +116,55 @@ h1, h2, h3, h4 {
 }
 .skip-link:focus { top: 12px; color: #fff; }
 
+/* ---------------------------------------------------------- motion */
+
+/* Scroll reveals. Gated behind .js-anim on <html>, which script.js sets, so
+   with JS off or broken every block renders fully visible — the content is
+   never hostage to the animation. Reduced motion opts out below. */
+.js-anim [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms cubic-bezier(.22,.61,.36,1),
+              transform 700ms cubic-bezier(.22,.61,.36,1);
+}
+.js-anim [data-reveal].is-in { opacity: 1; transform: none; }
+/* The reveal's `transform: none` out-specifies the card hover lift, so restate
+   it at higher specificity or hovering a revealed school card does nothing. */
+.js-anim a.photo-card[data-reveal].is-in:hover { transform: translateY(-4px); }
+
+/* The hero photograph settles out of a slow push-in. Runs once, forwards. */
+.js-anim .hero-card > img { animation: heroSettle 2600ms cubic-bezier(.16,.72,.3,1) both; }
+@keyframes heroSettle {
+  from { transform: scale(1.07); }
+  to   { transform: scale(1); }
+}
+
+/* Hero copy rises in a beat behind the image. */
+.js-anim .hero-body > * { animation: heroRise 900ms cubic-bezier(.22,.61,.36,1) both; }
+.js-anim .hero-body > :nth-child(1) { animation-delay: 120ms; }
+.js-anim .hero-body > :nth-child(2) { animation-delay: 220ms; }
+.js-anim .hero-body > :nth-child(3) { animation-delay: 320ms; }
+.js-anim .hero-body > :nth-child(4) { animation-delay: 420ms; }
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Header gains weight once the page leaves the top, as on the Teeej sites. */
+.site-header { transition: background-color 220ms ease, box-shadow 220ms ease; }
+.site-header.is-scrolled {
+  background: rgba(32, 30, 30, 0.97);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.stat-n { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js-anim [data-reveal],
+  .js-anim .hero-body > * { opacity: 1; transform: none; transition: none; animation: none; }
+  .js-anim .hero-card > img { animation: none; }
+}
+
 /* ---------------------------------------------------------------- layout */
 
 .shell { width: min(100% - 2 * var(--gutter), var(--shell)); margin-inline: auto; }

@@ -10,9 +10,21 @@ Generated files carry a do-not-edit banner.
 Every fact is sourced from docs/CONTENT-FACTS.md. Placeholders awaiting
 Fr. Peter are written in [SQUARE BRACKETS] so they cannot ship unnoticed.
 """
+import hashlib
 import os
+import re
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
+
+
+def assetv(name):
+    """Content hash for cache-busting. GitHub Pages serves CSS with max-age=600,
+    so without this a style change is invisible for ten minutes."""
+    p = os.path.join(OUT, name)
+    if not os.path.exists(p):
+        return name
+    h = hashlib.md5(open(p, "rb").read()).hexdigest()[:8]
+    return "%s?v=%s" % (name, h)
 BASE = "https://corafrica.org.ng"
 
 # Verified live 2026-09-01 by opening each link. BOTH are recurring
@@ -70,7 +82,7 @@ def head(page, title, desc, og_img="img/hero.jpg"):
         + '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
         + '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800'
           '&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">\n'
-        + '<link rel="stylesheet" href="styles.css">\n'
+        + '<link rel="stylesheet" href="%s">\n' % assetv("styles.css")
         + "</head>\n<body>\n"
         + '<a class="skip-link" href="#main">Skip to content</a>\n'
     )
@@ -125,7 +137,7 @@ FOOTER = """<footer class="site-footer">
     </div>
   </div>
 </footer>
-<script src="script.js" defer></script>
+<script src="SCRIPTSRC" defer></script>
 </body>
 </html>
 """
@@ -174,7 +186,28 @@ def grid(cards, cols=3):
     return '    <div class="grid grid--%d">\n%s    </div>\n' % (cols, "".join(cards))
 
 
+REVEAL = ("card", "tier", "person", "press-card", "press-row", "register-row",
+          "tl-row", "photo-card", "media", "panel", "alt-row", "section-head", "cred")
+
+
+def add_reveals(html):
+    """Tag animatable blocks inside <main>. The chrome is left alone — a header
+    that fades in on every page load is a nuisance, not a flourish."""
+    i, j = html.index("<main"), html.index("</main>")
+    head, main, tail = html[:i], html[i:j], html[j:]
+
+    def hook(m):
+        cls = m.group(1)
+        if any(c in cls.split() for c in REVEAL) and "data-reveal" not in m.group(0):
+            return 'class="%s" data-reveal' % cls
+        return m.group(0)
+
+    return head + re.sub(r'class="([^"]+)"', hook, main) + tail
+
+
 def write(page, html):
+    html = add_reveals(html)
+    html = html.replace("SCRIPTSRC", assetv("script.js"))
     path = os.path.join(OUT, page)
     open(path, "w", encoding="utf-8").write(html)
     print("%-24s %6d bytes" % (page, len(html)))
@@ -636,7 +669,7 @@ write("donate.html", head("donate.html", "Donate — CORAfrica",
 # ============================================================== contact
 TRUSTEES = [("Michael Ana", "Chairman"), ("Cornelius Okochi", "Vice Chairman"), ("Mark Okpatuma", "Member"),
             ("Michael Abuo", "Member"), ("Pamela Enamhe", "Member"), ("James Bulem", "Member"),
-            ("Adewale Ajayi", "Member / Secretary")]
+            ("Ethan Suquet", "Member"), ("Adewale Ajayi", "Member / Secretary")]
 ADMIN = [("Adewale Ajayi", "National Programmes Coordinator"), ("Elijah Ugani", "Projects Manager"),
          ("[FURTHER ROLES]", "To be confirmed")]
 
