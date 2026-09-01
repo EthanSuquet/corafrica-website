@@ -45,26 +45,30 @@ Lifted from the Teeej stylesheet, which is the look Fr. Peter approved:
 
 Breakpoints and every layout transform: [`docs/RESPONSIVE-SPEC.md`](docs/RESPONSIVE-SPEC.md).
 
-## 🔴 Donations — read before launching
+## Donations — one gap before launching
 
-Retiring WordPress **removes the GiveWP donation form.** The old page offered a grid of monthly
-and one-time amounts; only two of those were raw Stripe Payment Links, and both were verified
-live on 2026-09-01 by opening them:
+The full monthly ladder carried over. Seven Stripe Payment Links, recovered from the live
+donate page's markup and each one **opened to confirm the amount matches the label**:
 
-| Link | What it actually is |
+| Amount | Link |
 |---|---|
-| `donate.stripe.com/eVq14p1O83Q66iT71Wcwg00` | **Subscribe — $10/month**, fixed |
-| `donate.stripe.com/7sYdRbeAUcmCgXx3PKcwg01` | **Subscribe — $25/month**, fixed |
+| $10 / month | `donate.stripe.com/eVq14p1O83Q66iT71Wcwg00` |
+| $25 / month | `donate.stripe.com/7sYdRbeAUcmCgXx3PKcwg01` |
+| $50 / month | `donate.stripe.com/dRmbJ39gA86m22D0Dycwg02` |
+| $100 / month | `donate.stripe.com/8x29AV9gAbiy5eP71Wcwg03` |
+| $250 / month | `donate.stripe.com/fZu4gB1O8dqG22DgCwcwg04` |
+| $500 / month | `donate.stripe.com/7sY14pakE4Ua4aLbiccwg05` |
+| $1,000 / month | `donate.stripe.com/8x26oJfEY72i36Hcmgcwg06` |
 
-**There is no one-time giving link, and no other amounts.** Everything else on the old page was
-rendered by the GiveWP plugin and dies with WordPress.
+🔴 **One-time giving does not carry over.** On the old site it is a GiveWP embed
+(`form-id=2804`), not a Stripe link — it is rendered by the WordPress plugin and dies with it.
+CORAfrica needs **one new Stripe Payment Link with a customer-chosen amount**. Until then
+`donate.html` says plainly that one-time gifts are being set up and routes to email; it does not
+show a dead button.
 
-Before launch, CORAfrica needs to create in Stripe either:
-- a Payment Link with **customer-chosen amount** (one-time), plus one for recurring; or
-- individual links for each tier they want to offer.
-
-Until then `donate.html` routes the third option to email, and this is marked
-`[STRIPE LINK NEEDED]` in `build.py`. **Do not launch with dead donate buttons.**
+Per-tier impact copy is deliberately absent. Tying an amount to a concrete outcome lifts giving
+substantially, but the figures have to be real — so the page carries
+`[WHAT EACH TIER FUNDS — TO BE CONFIRMED]` rather than numbers we invented.
 
 ## Placeholders still in the markup
 

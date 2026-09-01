@@ -450,6 +450,36 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 .tier-amt span { font-size: 14px; font-weight: 600; color: var(--ink-muted); }
 .tier p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); }
 
+/* The monthly ladder. auto-fit keeps it a single tidy grid from 390px to
+   desktop without a breakpoint of its own. */
+.amounts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 14px;
+}
+.amount {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; min-height: 92px; padding: 18px 12px;
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius-card);
+  color: var(--ink); box-shadow: var(--shadow-card);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+.amount:hover, .amount:focus-visible {
+  color: var(--ink); border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 22px 46px rgba(251, 96, 10, 0.16);
+}
+.amount-n {
+  font-family: "Space Grotesk", sans-serif; font-size: 27px; font-weight: 600;
+  letter-spacing: -0.045em; line-height: 1;
+}
+.amount:hover .amount-n { color: var(--accent); }
+.amount-per { font-size: 12.5px; font-weight: 600; color: var(--ink-muted); }
+.amounts-note {
+  margin: 1.4rem 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-muted);
+  max-width: 70ch;
+}
+
 /* ---------------------------------------------------------------- beliefs */
 
 .belief { display: grid; grid-template-columns: 22px 1fr; gap: 14px; padding: 15px 0; border-top: 1px solid rgba(255, 255, 255, 0.14); }

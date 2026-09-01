@@ -29,8 +29,21 @@ BASE = "https://corafrica.org.ng"
 
 # Verified live 2026-09-01 by opening each link. BOTH are recurring
 # subscriptions at a fixed amount; there is currently NO one-time link.
-STRIPE_10_MONTHLY = "https://donate.stripe.com/eVq14p1O83Q66iT71Wcwg00"
-STRIPE_25_MONTHLY = "https://donate.stripe.com/7sYdRbeAUcmCgXx3PKcwg01"
+# The full monthly ladder, recovered from the live donate page's markup and each
+# one opened to confirm the amount matches the label.
+STRIPE_MONTHLY = [
+    ("10",    "https://donate.stripe.com/eVq14p1O83Q66iT71Wcwg00"),
+    ("25",    "https://donate.stripe.com/7sYdRbeAUcmCgXx3PKcwg01"),
+    ("50",    "https://donate.stripe.com/dRmbJ39gA86m22D0Dycwg02"),
+    ("100",   "https://donate.stripe.com/8x29AV9gAbiy5eP71Wcwg03"),
+    ("250",   "https://donate.stripe.com/fZu4gB1O8dqG22DgCwcwg04"),
+    ("500",   "https://donate.stripe.com/7sY14pakE4Ua4aLbiccwg05"),
+    ("1,000", "https://donate.stripe.com/8x26oJfEY72i36Hcmgcwg06"),
+]
+STRIPE_25_MONTHLY = STRIPE_MONTHLY[1][1]
+
+# One-time giving on the old site is a GiveWP embed (form-id 2804), not a Stripe
+# link — so it cannot be carried across and needs a new Payment Link.
 STRIPE_ONE_TIME = None  # [STRIPE LINK NEEDED]
 
 NAV = [
@@ -623,34 +636,43 @@ write("news.html", head("news.html", "In the News — CORAfrica",
 
 
 # ============================================================== donate
-TIERS = [("$10", "a month", "Educational materials for a child through the Help-a-Kid programme.", STRIPE_10_MONTHLY),
-         ("$25", "a month", "A larger monthly share of the running of a classroom &mdash; books, materials and teaching.", STRIPE_25_MONTHLY),
-         ("Other", "amount", "Any other amount, one-time gifts, and gifts by bank transfer. [STRIPE LINK NEEDED &mdash; write to us in the meantime]", "mailto:info@corafrica.org.ng")]
-tc = ""
-for amt, per, txt, url in TIERS:
-    tc += ('      <article class="tier">\n'
-           '        <div class="tier-amt"><strong>%s</strong><span>%s</span></div>\n' % (amt, per)
-           + "        <p>%s</p>\n" % txt
-           + '        <a class="button button--accent" href="%s" rel="noopener" style="margin-top:auto">%s</a>\n      </article>\n'
-             % (url, "Give " + amt + " monthly" if amt != "Other" else "Contact us"))
+amounts = ""
+for amt, url in STRIPE_MONTHLY:
+    amounts += ('      <a class="amount" href="%s" rel="noopener">\n'
+                '        <span class="amount-n">$%s</span>\n'
+                '        <span class="amount-per">a month</span>\n      </a>\n' % (url, amt))
 
 body = hero("Donate", "&#8358;150,000 started a business. $40,000 started a programme.",
             "Ada Okoli took a &#8358;150,000 soft loan in 2022 and turned a small trade into a wholesale and retail "
             "business. The St. Thomas Aquinas empowerment programme launched with $40,000 and has since supported "
             "more than 500 women. Small sums, placed carefully, compound.",
             "hero.jpg", "Pupils at a CORAfrica school")
-body += sec(head_block("Give", "Monthly gifts are what let us plan.",
+
+body += sec(head_block("Give monthly", "Monthly gifts are what let us plan.",
                        "A school year is twelve months long, and so is a teacher&rsquo;s salary. Recurring gifts are "
                        "worth far more to us than their size suggests, because they are the only kind we can build a "
-                       "budget on.")
-            + grid([tc], 3)
-            + '    <p class="lede" style="margin-top:1.6rem;font-size:13px;color:var(--ink-muted)">'
-              "Processed securely by Stripe.</p>\n", cls="grad-paper-warm")
+                       "budget on. Choose an amount and Stripe handles the rest.")
+            + '    <div class="amounts">\n' + amounts + "    </div>\n"
+            + '    <p class="amounts-note">[WHAT EACH TIER FUNDS &mdash; TO BE CONFIRMED WITH FR. PETER. '
+              "Tying an amount to a concrete outcome roughly doubles what people give, but the figure has to be "
+              'real.]</p>\n',
+            cls="grad-paper-warm")
+
+body += sec(head_block("Give once", "One-time gifts are being set up.",
+                       "The previous site took one-time gifts through a WordPress plugin, which does not carry over "
+                       "to the new site. A Stripe link for one-off and custom amounts is being arranged. In the "
+                       "meantime, write to us and we will take it from there &mdash; including bank transfer, cheque, "
+                       "and gifts from outside the United States.")
+            + '    <div class="button-row">\n'
+              '      <a class="button button--accent" href="mailto:info@corafrica.org.ng">info@corafrica.org.ng</a>\n'
+              '      <a class="button button--plain" href="tel:+2349153142288">+234 915 314 2288</a>\n    </div>\n',
+            cls="grad-warm-white")
+
 body += sec_wide('    <div class="panel">\n      <div class="grid grid--3">\n'
                  '        <div><h3 style="font-size:17px;margin-bottom:8px">Tax-deductible in the US</h3>'
                  '<p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)">CORAfrica has held '
-                 "<span class='nolig'>501(c)(3)</span> status in the United States since 2006. Gifts from US taxpayers are tax-deductible. "
-                 "EIN [REQUEST FROM FR. PETER].</p></div>\n"
+                 "<span class='nolig'>501(c)(3)</span> status in the United States since 2006. Gifts from US "
+                 "taxpayers are tax-deductible. EIN [REQUEST FROM FR. PETER].</p></div>\n"
                  '        <div><h3 style="font-size:17px;margin-bottom:8px">Where it goes</h3>'
                  '<p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)">Directly into the schools, '
                  "clinics, farms and loan funds described on this site &mdash; and into projects designed to be handed "
@@ -660,6 +682,7 @@ body += sec_wide('    <div class="panel">\n      <div class="grid grid--3">\n'
                  "sponsor a classroom or a VASAC workshop, or partner with us as an institution. Write to "
                  '<a href="mailto:info@corafrica.org.ng">info@corafrica.org.ng</a>.</p></div>\n'
                  "      </div>\n    </div>\n", cls="bg-white", extra="section--flush-top section")
+
 write("donate.html", head("donate.html", "Donate — CORAfrica",
       "Support education, healthcare and livelihoods for children in rural Nigeria. CORAfrica is a registered "
       "501(c)(3), so gifts from US donors are tax-deductible.")
@@ -702,7 +725,7 @@ write("contact.html", head("contact.html", "Contact Us — CORAfrica",
       + BANNER + header("contact.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
-print("\nDonate links verified live 2026-09-01 by opening each:")
-print("  %-12s %s" % ("$10/month", STRIPE_10_MONTHLY))
-print("  %-12s %s" % ("$25/month", STRIPE_25_MONTHLY))
-print("  %-12s %s" % ("one-time", STRIPE_ONE_TIME or "[STRIPE LINK NEEDED — none exists yet]"))
+print("\nDonate links (recovered from the live page's markup, each opened to confirm):")
+for amt, url in STRIPE_MONTHLY:
+    print("  $%-6s monthly   %s" % (amt, url))
+print("  %-15s %s" % ("one-time", STRIPE_ONE_TIME or "[STRIPE LINK NEEDED — GiveWP embed, does not carry over]"))

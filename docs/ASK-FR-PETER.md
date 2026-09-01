@@ -109,3 +109,20 @@ replacements.
     both spellings in nearby sentences.
 26. **A photo of the Board and the Administrative Team**, once the lists are confirmed — the
     Contact page has cards for them and no faces.
+
+---
+
+## Added after wiring the donation page (2026-09-01)
+
+27. 🔴 **One new Stripe Payment Link, with a customer-chosen amount.** The seven monthly tiers
+    ($10 → $1,000) carried across fine — they are real Stripe links and all seven were opened
+    and verified. But **one-time giving on the old site is a GiveWP embed** (`form-id=2804`),
+    rendered by the WordPress plugin, so it cannot come with us. Without a new link there is no
+    way to make a single gift, and no way to give an amount that isn't on the ladder. This is
+    the last thing genuinely blocking launch on the donations side.
+28. **What each monthly tier actually funds.** The page currently shows seven amounts with no
+    impact statement, because we will not invent one. If Fr. Peter can say what $25, $100 and
+    $250 a month really pay for — a child's materials, a teacher's month, a clinic's supplies —
+    that copy goes straight onto the buttons and typically lifts giving noticeably.
+29. **Gift Aid / non-US donors.** Is there any route for donors outside the United States, or
+    does everything run through the US 501(c)(3)? The page currently offers email for this.
