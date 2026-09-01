@@ -95,6 +95,13 @@ h1, h2, h3, h4 {
   border-radius: 4px;
 }
 
+.nolig {
+  /* Manrope ligates "(c)" into ©, which turns 501(c)(3) into 501©(3).
+     Scoped to the strings that need it so the rest of the type keeps its ligatures. */
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "clig" 0, "calt" 0;
+}
+
 .sr-only {
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
@@ -151,7 +158,7 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(10px);
 }
 .brand { display: inline-flex; flex: 0 0 auto; }
-.brand img { height: 42px; width: auto; }
+.brand img { height: 46px; width: auto; }
 
 .site-nav { display: flex; align-items: center; gap: 26px; }
 .site-nav a {
@@ -423,7 +430,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
 .site-footer { background: var(--charcoal-deep); color: #e9e5df; padding: 46px 0 34px; }
 .footer-grid { display: grid; grid-template-columns: 22rem 1fr; gap: 4rem; align-items: start; }
-.footer-brand img { height: 46px; width: auto; margin-bottom: 16px; }
+.footer-brand img { height: 50px; width: auto; margin-bottom: 16px; }
 .footer-brand p { margin: 0; font-size: 13.5px; line-height: 1.5; color: rgba(233, 229, 223, 0.72); }
 .footer-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
 .footer-h { font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(233, 229, 223, 0.55); margin-bottom: 9px; }
@@ -480,7 +487,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
   /* Nav collapses. Donate never hides behind the menu — it is the primary action. */
   .site-header { padding: 12px var(--gutter); }
-  .brand img { height: 32px; }
+  .brand img { height: 34px; }
   .nav-toggle { display: flex; }
   .site-nav {
     position: fixed; inset: var(--header-h) 0 auto 0;

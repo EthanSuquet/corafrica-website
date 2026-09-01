@@ -100,7 +100,7 @@ FOOTER = """<footer class="site-footer">
     <div class="footer-grid">
       <div class="footer-brand">
         <img src="img/corafrica-lockup-white.svg" alt="CORAfrica" width="1010" height="348">
-        <p>Helping children and communities thrive. A registered 501(c)(3) non-profit in the
+        <p>Helping children and communities thrive. A registered <span class='nolig'>501(c)(3)</span> non-profit in the
           United States, operating in Cross River and Benue States, Nigeria.</p>
       </div>
       <div class="footer-cols">
@@ -191,7 +191,7 @@ PILLARS = [("Education", "Primary and secondary schools, built where no school e
            ("Agriculture", "A demonstration farm that feeds the school and teaches the trade hands-on.", "leaf"),
            ("Livelihoods", "Soft loans so a parent can build a business and afford to keep a child in class.", "coin")]
 
-CREDS = ["Registered 501(c)(3) since 2006", "Cross River and Benue States",
+CREDS = ["Registered <span class='nolig'>501(c)(3)</span> since 2006", "Cross River and Benue States",
          "Aligned to five UN SDGs", "Partnered with the Diocese of Ogoja"]
 
 PRESS = [("National Catholic Reporter", "May 2024",
@@ -249,7 +249,7 @@ def donate_band():
             "        <div>\n"
             '          <p class="kicker kicker--light">Support the work</p>\n'
             "          <h2>&#8358;150,000 started a business. $40,000 started a programme.</h2>\n"
-            "          <p>CORAfrica is a registered 501(c)(3) in the United States, so gifts from US donors "
+            "          <p>CORAfrica is a registered <span class='nolig'>501(c)(3)</span> in the United States, so gifts from US donors "
             "are tax-deductible. Give monthly, and we can plan.</p>\n"
             "        </div>\n"
             '        <div class="donate-actions">\n'
@@ -328,7 +328,7 @@ HISTORY = [
     ("2006", "Conceived at Cornell",
      "Fr. Peter Obele Abue, completing a PhD in International Development at Cornell University, sets out to close the gap he had watched open between the developed and the developing world."),
     ("2006", "Incorporated in the United States",
-     "CORAfrica is granted 501(c)(3) non-profit status, with a founding Board of Trustees of Bruno Schickel, Royal Colle, Thomas Lickona and Carolann Darling. Building begins in Nigeria that same year."),
+     "CORAfrica is granted <span class='nolig'>501(c)(3)</span> non-profit status, with a founding Board of Trustees of Bruno Schickel, Royal Colle, Thomas Lickona and Carolann Darling. Building begins in Nigeria that same year."),
     ("2009", "Fr. Peter returns to Nigeria",
      "Empowerment programmes and projects follow across the Diocese of Ogoja &mdash; St. Joseph&rsquo;s Primary and Secondary School, the Sr. Augustina Abuo Medical Clinic, Little Flower School at Ipong-Obudu."),
     ("2010s", "A second board, from Western Pennsylvania",
@@ -352,7 +352,7 @@ for yr, t, b in HISTORY:
            "        <div><h3>%s</h3><p>%s</p></div>\n      </div>\n" % (yr, t, b))
 
 body = hero("Who we are", "Twenty years of building schools where there were none.",
-            "CORAfrica is a development agency with 501(c)(3) status in the United States and operations across rural "
+            "CORAfrica is a development agency with <span class='nolig'>501(c)(3)</span> status in the United States and operations across rural "
             "Nigeria. We believe a child&rsquo;s education is inseparable from their health, their food and their "
             "family&rsquo;s income &mdash; so we build all four.",
             "founder.jpg", "Fr. Peter Abue with pupils")
@@ -616,7 +616,7 @@ body += sec(head_block("Give", "Monthly gifts are what let us plan.",
 body += sec_wide('    <div class="panel">\n      <div class="grid grid--3">\n'
                  '        <div><h3 style="font-size:17px;margin-bottom:8px">Tax-deductible in the US</h3>'
                  '<p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)">CORAfrica has held '
-                 "501(c)(3) status in the United States since 2006. Gifts from US taxpayers are tax-deductible. "
+                 "<span class='nolig'>501(c)(3)</span> status in the United States since 2006. Gifts from US taxpayers are tax-deductible. "
                  "EIN [REQUEST FROM FR. PETER].</p></div>\n"
                  '        <div><h3 style="font-size:17px;margin-bottom:8px">Where it goes</h3>'
                  '<p style="margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)">Directly into the schools, '
@@ -659,7 +659,7 @@ body += sec(head_block("Administrative team", "Delivery.")
 body += sec(head_block("Offices", "Where to find us.")
             + grid([card("Nigeria &mdash; operations", "No 48 Mbube Road, Opposite Govt. Technical College, Abakpa, Ogoja, Cross River State."),
                     card("Nigeria &mdash; headquarters", "Abuja. Our national office directs programmes across Cross River and Benue States."),
-                    card("United States", "PO Box 13, Evans City, PA 16033. Our 501(c)(3) entity and US board.")], 3)
+                    card("United States", "PO Box 13, Evans City, PA 16033. Our <span class='nolig'>501(c)(3)</span> entity and US board.")], 3)
             + '    <div class="button-row" style="margin-top:1.9rem">\n'
               '      <a class="button button--accent" href="mailto:info@corafrica.org.ng">info@corafrica.org.ng</a>\n'
               '      <a class="button button--plain" href="tel:+2349153142288">+234 915 314 2288</a>\n    </div>\n',
