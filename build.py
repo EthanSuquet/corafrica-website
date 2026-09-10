@@ -258,7 +258,7 @@ def media_pair(a, b):
 
 REVEAL = ("card", "tier", "person", "press-card", "press-row", "register-row",
           "tl-row", "photo-card", "media", "panel", "alt-row", "section-head", "cred",
-          "cost-row", "partners", "pull")
+          "cost-row", "partners", "pull", "group-label", "pending")
 
 
 def add_reveals(html):
