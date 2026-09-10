@@ -10,8 +10,8 @@ import base64, mimetypes, os, re
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = os.path.join(ROOT, "site")
-PAGES = ["index.html", "who-we-are.html", "our-model.html", "schools.html",
-         "what-we-do.html", "strategic-plan.html", "news.html", "donate.html", "contact.html"]
+PAGES = ["index.html", "who-we-are.html", "our-model.html", "what-we-do.html",
+         "track-record.html", "strategic-plan.html", "news.html", "donate.html", "contact.html"]
 
 
 def data_uri(rel):

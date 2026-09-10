@@ -12,3 +12,12 @@ design/corafrica-website-directions.html
 # Raw photo downloads pulled from the client's WordPress media library.
 # The optimised versions that actually ship live in site/img/.
 photos/source/
+
+# Source documents from Fr. Peter (PDFs, docx). They name the principal donor, which he asked
+# never to be published, and this repository is public. Keep them local.
+docs/source/
+
+# Internal notes. They quote Fr. Peter's private answers and details from the audited accounts
+# that he asked never to be published, and this repository is public. Kept locally only.
+docs/CONTENT-FACTS.md
+docs/ASK-FR-PETER.md
