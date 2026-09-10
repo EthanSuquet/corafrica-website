@@ -42,9 +42,10 @@ STRIPE_MONTHLY = [
 ]
 STRIPE_25_MONTHLY = STRIPE_MONTHLY[1][1]
 
-# One-time giving on the old site is a GiveWP embed (form-id 2804), not a Stripe
-# link — so it cannot be carried across and needs a new Payment Link.
-STRIPE_ONE_TIME = None  # [STRIPE LINK NEEDED]
+# One-time giving on the old site was a GiveWP embed (form-id 2804), which dies with
+# WordPress. This replacement Payment Link lets the donor choose the amount; Ethan sent it
+# 2026-09-10 and it opens as "One Time Donation" for Children of Rural Africa.
+STRIPE_ONE_TIME = "https://buy.stripe.com/cNi4gBfEY4Ua22D860cwg07"
 
 # Fr. Peter, 2026-09-04: info@corafrica.org.ng and +234 915 314 2288 no longer work,
 # and new ones are still to come. Until they are set here the site says so rather
@@ -357,7 +358,24 @@ TRACK_CARDS = [("Founded 2017", "John Stilley Schools", "js-welcome.jpg",
 # Headshots for the Contact page, keyed by name exactly as it appears in the lists
 # below; anyone without one gets their initials. Only add a photo once you are
 # certain who is in it — a wrong face under a name is worse than no face.
+# Matched 2026-09-10 against Fr. Peter's WhatsApp messages of 2026-09-06: each board photo
+# sits between that trustee's own name and their details, and each admin photo is followed
+# by its "Name (Role)" caption. Originals are in photos/source/ (gitignored).
 HEADSHOTS = {
+    "Michael Ana": "team/michael-ana.jpg",
+    "Pamela Enamhe": "team/pamela-enamhe.jpg",
+    "Mark Okpatuma": "team/mark-okpatuma.jpg",
+    "James Bulem": "team/james-bulem.jpg",
+    "Michael Abuo": "team/michael-abuo.jpg",
+    "Fr. Peter Abue": "team/peter-abue.jpg",
+    "Adewale Ajayi": "team/adewale-ajayi.jpg",
+    "Cornelius Okochi": "team/chux-okochi.jpg",  # sent as "Fr. Chux Okochi, President"
+    "Silvia Okoro": "team/silvia-okoro.jpg",
+    "Jeannine Goelz": "team/jeannine-goelz.jpg",
+    "Elijah Ugani": "team/elijah-ugani.jpg",
+    "Edwin Okungbowa": "team/edwin-okungbowa.jpg",
+    "Blessing Ana": "team/blessing-ana.jpg",
+    "Ethan Suquet": "team/ethan-suquet.jpg",  # supplied by Ethan, 2026-09-10
     "Olurotimi Akinkunmi Padonu": "team/rotimi.jpg",  # rotimi.docx, supplied 2026-09-06
 }
 
@@ -403,13 +421,21 @@ def initials(name):
     return (parts[0][0] + parts[-1][0]).upper()
 
 
+def bio_page(name):
+    return "team-%s.html" % re.sub(r"[^a-z]+", "-", name.lower().replace("fr. ", "")).strip("-")
+
+
 def person(name, role):
     if name in HEADSHOTS:
         face = '<img class="person-photo" src="img/%s" alt="" width="112" height="112" loading="lazy">' % HEADSHOTS[name]
     else:
         face = '<span class="person-initials" aria-hidden="true">%s</span>' % initials(name)
-    return ('      <div class="person">%s<div><div class="person-name">%s</div>'
-            '<div class="person-role">%s</div></div></div>\n' % (face, name, role))
+    inner = ('%s<div><div class="person-name">%s</div><div class="person-role">%s</div></div>' % (face, name, role))
+    # A bio page exists only for people whose bio we hold (BIOS, Contact section), and the
+    # card is the only way to it: bio pages are in no menu.
+    if name in BIOS:
+        return '      <a class="person person--link" href="%s">%s</a>\n' % (bio_page(name), inner)
+    return '      <div class="person">%s</div>\n' % inner
 
 
 # ============================================================== index
@@ -529,15 +555,14 @@ body += sec('    <div class="grid grid--2">\n'
             '<h3 style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;line-height:1.16;letter-spacing:-.04em">'
             "To change the face of education and healthcare for indigent children in Africa, one community at a time.</h3></article>\n"
             "    </div>\n", cls="grad-paper-warm", extra="section--tight")
-# The official seal with the new tagline arrived only as a 400px JPEG (WhatsApp, 2026-09-04),
-# cleaned up into corafrica-seal-official.png. The SVG seal and lockups still carry the old
-# ring text until a vector original turns up.
+# The official seal arrived only as a 400px JPEG (WhatsApp, 2026-09-04). It was rebuilt as a
+# vector on 2026-09-10 (brand/corafrica-seal.svg), and every seal and lockup now carries it.
 body += sec('    <div class="split split--center">\n'
-            '      <div style="text-align:center"><img src="img/corafrica-seal-official.png" alt="The CORAfrica seal" '
-            'style="width:230px;margin-inline:auto" loading="lazy" width="480" height="480"></div>\n'
+            '      <div style="text-align:center"><img src="img/corafrica-seal.svg" alt="The CORAfrica seal" '
+            'style="width:230px;margin-inline:auto" loading="lazy" width="292" height="292"></div>\n'
             "      <div>\n"
             + head_block("Our logo", "The map, and the light.",
-                         "The seal carries the map of Africa and a torch. The torch stands for the Light our "
+                         "The seal carries the map of Africa, with an open book and a torch at its heart. The torch stands for the Light our "
                          "programmes are meant to bring &mdash; the conviction that education is what changes a "
                          "continent&rsquo;s prospects, one community at a time. Around it runs our name and our "
                          "motto: <em>Education for Africa&rsquo;s Future</em>.")
@@ -988,19 +1013,22 @@ for pct, what in SPLIT:
     split += ('      <div class="cost-row"><span class="cost-n">%s</span>'
               '<span class="cost-w">%s</span></div>\n' % (pct, what))
 
+# One-time sits directly under monthly: the Payment Link lets the donor choose the amount.
+body += sec(head_block("Give once", "A single gift, in any amount.",
+                       "Choose the amount yourself, and Stripe processes the gift securely, in US dollars. If you would "
+                       "rather not give online, a cheque by post is always welcome, payable to Children of Rural Africa.")
+            + '    <div class="button-row" style="margin-bottom:1.9rem">\n'
+              '      <a class="button button--accent" href="%s" rel="noopener">Give once</a>\n'
+              "    </div>\n" % STRIPE_ONE_TIME
+            + grid([card("Mail your cheque to", "Children of Rural Africa<br>%s<br>%s" % US_ADDRESS, "By post"),
+                    card("Questions about giving", "For a larger gift, a partnership, or anything else about giving: " + email_inline() + ".", "Contact")], 2),
+            cls="grad-white-strong")
+
 body += sec(head_block("Where it went", "Our 2025 accounts, audited.",
                        "For the year ended 31 December 2025, independently audited by Akomaye Adie &amp; Co., "
                        "Chartered Accountants, of Calabar. Of everything we spent, <strong>92.6% went to "
                        "programmes</strong>. Full statements are available to funders on request.")
             + '    <div class="costs">\n' + split + "    </div>\n",
-            cls="grad-white-strong")
-
-body += sec(head_block("Give once, or by cheque", "One-time gifts.",
-                       "A secure way to make a single gift online is being set up. Until then, you can give by cheque, "
-                       "in US dollars, payable to Children of Rural Africa. Online gifts are in US dollars too; if you "
-                       "would rather not give online, a cheque by post is always welcome.")
-            + grid([card("Mail your cheque to", "Children of Rural Africa<br>%s<br>%s" % US_ADDRESS, "By post"),
-                    card("Questions about giving", "For a larger gift, a partnership, or anything else about giving: " + email_inline() + ".", "Contact")], 2),
             cls="grad-paper-warm")
 
 body += sec_wide('    <div class="panel">\n      <div class="grid grid--3">\n'
@@ -1036,6 +1064,158 @@ ADMIN = [("Adewale Ajayi", "National Programmes Coordinator"), ("Jeannine Goelz"
          ("Elijah Ugani", "Projects Manager, Nigeria"), ("Silvia Okoro", "Office Coordinator, USA"),
          ("Olurotimi Akinkunmi Padonu", "Grants Coordinator"), ("Edwin Okungbowa", "Programmes Manager, Nigeria"),
          ("Ethan Suquet", "IT Coordinator"), ("Blessing Ana", "Logistics, Nigeria")]
+# Titles stay as the written answers give them. Ethan, 2026-09-10: use the txt, even where
+# Fr. Peter's later WhatsApp list or a bio words a title differently.
+
+# Bios, lightly copy-edited from what was supplied: Michael Ana's own docx, the founder section
+# of WEB PAGES 3.docx, and the bios Fr. Peter posted on WhatsApp on 2026-09-06. Titles inside a
+# bio are brought into line with the lists above. Anyone missing here has no bio page yet;
+# docs/ASK-FR-PETER.md lists who still owes one.
+BIOS = {
+    "Michael Ana": [
+        "Michael is a certified Project Management Professional (PMP) and a business and financial advisory "
+        "consultant with more than 26 years of experience. His career has spanned banking operations, credit "
+        "analysis, treasury and asset management, and stockbroking, and he has held senior management positions "
+        "at a Pan-African bank, including Country Head, Commercial Banking, and Group Head, Lagos &amp; South "
+        "Zones. He is Principal Consultant at Dominion Excel Limited, helping commercial and mid-sized companies "
+        "with business transformation, process improvement and project management.",
+        "A graduate of Accounting, Michael is a Fellow of the Institute of Chartered Accountants of Nigeria (FCA) "
+        "and a Fellow of the Institute of Management Consultants (FIMC). He is also a change management "
+        "practitioner, and has been admitted by a US court as an expert witness in economic loss valuation. As a "
+        "consultant he has raised debt for companies through development finance institutions and structured "
+        "equity investments.",
+        "A keen football fan, Michael sits on the Board of Trustees of an All-Stars football club and on the board "
+        "of his local parish. His other interests are real estate and trading: he is a Director of The Yard "
+        "Terraces and of Dominion DTR Limited. He is happily married with children.",
+    ],
+    "Pamela Enamhe": [
+        "Pamela is a development finance professional with 20 years of experience spanning banking, strategy, "
+        "risk management, business analysis, data analysis and institutional development.",
+        "She is Head of the Credit Review Unit in the Risk Management Group of the Federal Mortgage Bank of Nigeria "
+        "(FMBN), and Secretary of the Bank&rsquo;s Management Credit Committee. She has held leadership roles in "
+        "strategy, business process improvement, performance management and internal audit.",
+        "A Certified Business Analysis Professional (CBAP), she holds ACCA certifications in Data Analysis and "
+        "Internal Audit, an M.Sc. in Banking and Finance and a B.Sc. in Economics.",
+        "She is the founder of the Pam-Zake Development Initiative (PDI), which works on housing finance, financial "
+        "inclusion, community development, youth empowerment and policy engagement, with particular attention to "
+        "informal-sector households and underserved communities.",
+    ],
+    "Mark Okpatuma": [
+        "Mark is a finance and accounting professional with more than a decade of experience in financial "
+        "governance, audit and accountability. He has a strong track record in financial reporting systems, "
+        "internal control frameworks, financial analysis, budgeting and risk management, and a particular interest "
+        "in capacity-building and training to strengthen financial literacy and governance. He holds an MBA and is "
+        "an Associate Chartered Accountant (ACA) of the Institute of Chartered Accountants of Nigeria (ICAN).",
+        "As a member of CORAfrica&rsquo;s Board of Trustees, he contributes technical accounting expertise and "
+        "governance oversight in support of the organisation&rsquo;s commitment to accountability, sound financial "
+        "management and the responsible use of resources.",
+    ],
+    "James Bulem": [
+        "James is an entrepreneur, media practitioner and public servant, with a B.A. Ed. in English and Education "
+        "from the University of Lagos. His background is in broadcast media, entertainment and cultural "
+        "storytelling.",
+        "He serves as a Commission Member and Head of Planning, Research and Statistics at the Cross River State "
+        "Carnival Commission, following his contributions to the state&rsquo;s Tourism Cluster. He is committed to "
+        "building sustainable institutions that deliver value to his community, the state and humanity.",
+        "As CEO of The Grandmother Place, a restaurant and bar chain in Cross River State, James leads a hospitality "
+        "business, combining private-sector experience with public service to create jobs and promote Cross "
+        "River&rsquo;s culture and tourism. He is married with two children.",
+    ],
+    "Michael Abuo": [
+        "Prince Michael Abuo is a distinguished public servant, environmental scholar and community leader. He is "
+        "Special Adviser to the Governor of Cross River State on Interventions and Grants, and coordinator of the "
+        "African Union Development Agency (AUDA-NEPAD), the Renewed Hope Ward Development Programme and the Cross "
+        "River State Political Network (CRISPON).",
+        "A graduate of Microbiology with an M.Sc. in Environmental Resource Management, he is pursuing a Ph.D. in the "
+        "same field. He also holds an honorary doctorate in Public Administration from Escae University, Benin "
+        "Republic, and represented Nigeria at COP26 in Glasgow in 2021.",
+        "His public service began in student leadership at the University of Calabar and St. Patrick&rsquo;s "
+        "College, Calabar, and has included roles as Personal Assistant to the Governor, Special Assistant on "
+        "Students&rsquo; Affairs, and Director-General of the Cross River State Migration Control Agency.",
+        "A youth development advocate, political strategist and published poet and author, he is recognised for his "
+        "work in governance, environmental sustainability, migration management and grassroots mobilisation. He is "
+        "married with children.",
+    ],
+    "Adewale Ajayi": [
+        "Adewale is CORAfrica&rsquo;s National Programmes Coordinator, with a focus on education that restores "
+        "dignity and opportunity to rural children in Nigeria. In that role he also provides operational leadership "
+        "for CORAfrica in Nigeria, from partnership development and programme oversight to fiduciary stewardship "
+        "and community engagement.",
+        "He brings a practitioner&rsquo;s lens to programme design, making sure initiatives are locally owned, "
+        "financially prudent and built to last. With more than a decade of cross-sector experience in Nigeria, he "
+        "coordinates partnerships with community leaders, NGOs and the private sector, overseeing implementation "
+        "and compliance.",
+        "He is also a project development consultant, advising public and private stakeholders on feasibility, "
+        "stakeholder alignment and execution planning for community-impact projects.",
+    ],
+    # Sent as "Fr. Chux Okochi, President"; the title follows the txt (Chairman of the US board).
+    "Cornelius Okochi": [
+        "Fr. Chux Okochi chairs the Board of Trustees of Children of Rural Africa in the United States, bringing "
+        "steadfast leadership and a deeply rooted commitment to the organisation&rsquo;s humanitarian objectives. "
+        "Since taking on the role, he has been instrumental in translating strategic vision into community-focused "
+        "action.",
+        "His approach blends spiritual guidance with practical advocacy, keeping CORAfrica&rsquo;s initiatives "
+        "centred on the people they serve.",
+    ],
+    # Sent naming her Chiamaka S. Okoro, as "Secretary and Treasurer"; titles follow the txt.
+    "Silvia Okoro": [
+        "Silvia Okoro joined Children of Rural Africa in February 2026, bringing a diverse background in "
+        "administrative management to the leadership team. As Secretary to the US Board of Trustees and Office "
+        "Coordinator in the United States, she oversees the organisation&rsquo;s official records, making sure its "
+        "operations are transparent and meticulously documented.",
+        "Her work is driven by a deep dedication to the Nigerian communities CORAfrica serves, and a personal mission "
+        "to see every resource used to its fullest potential.",
+    ],
+    # From "OUR FOUNDER" in WEB PAGES 3.docx, which he pointed to for his bio. Kept to what the
+    # site already stands behind: the award year is 2017 (C3), no Duquesne degree (still
+    # unresolved), and John Bosco Academy left out, since it is not to be promoted.
+    "Fr. Peter Abue": [
+        "Born in Idum-Mbube, in the Ogoja Local Government Area of Cross River State, Fr. Peter Abue was ordained "
+        "a Catholic priest of the Diocese of Ogoja in 1985. He conceived Children of Rural Africa in 2006 as a "
+        "corollary to his doctoral research in International Development at Cornell University, and it was "
+        "granted <span class='nolig'>501(c)(3)</span> status the same year.",
+        "Since returning from his studies in 2006 he has initiated empowerment programmes and facilitated projects "
+        "across the diocese with its bishops, among them St. Joseph Primary and Secondary School and the Sr. "
+        "Augustina Abuo Memorial Medical Clinic at Idum-Mbube, Little Flower School at Ipong-Obudu, the Ogoja "
+        "Diocesan Agriculture and Investment Program, the Thomas McGettrick Institute of Technology, the John "
+        "Stilley Schools at Victoria-Ikom, and the St. Thomas Aquinas and Holy Family economic empowerment "
+        "programmes. In 2017 the Cross River State Government honoured him with a special award at its jubilee "
+        "celebrations, Cross River@50.",
+        "He is Parish Priest of Holy Family Parish, Ikom, Vicar General of the Catholic Diocese of Ogoja, and a "
+        "member of the St. Francis Humanitarian Mission in Nigeria.",
+    ],
+}
+
+
+def roles_of(name):
+    out = []
+    for group, where in ((BOARD_NG, "Board of Trustees, Nigeria"), (BOARD_US, "Board of Trustees, United States"),
+                         (ADMIN, "")):
+        for n, r in group:
+            label = r if (not where or r == "Founder") else "%s, %s" % (r, where)
+            if n == name and label not in out:
+                out.append(label)
+    return out
+
+
+for name, paras in BIOS.items():
+    page, roles = bio_page(name), roles_of(name)
+    photo = HEADSHOTS.get(name)
+    if photo and os.path.exists(os.path.join(OUT, "img", photo.replace(".jpg", "-lg.jpg"))):
+        photo = photo.replace(".jpg", "-lg.jpg")
+    body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
+            '    <a class="bio-back" href="contact.html">&larr; Boards and team</a>\n'
+            '    <div class="bio-head">\n'
+            + ('      <img class="bio-photo" src="img/%s" alt="%s" width="440" height="440">\n' % (photo, name) if photo else "")
+            + '      <div>\n        <p class="kicker">Our people</p>\n        <h1>%s</h1>\n' % name
+            + '        <ul class="bio-roles">\n' + "".join("          <li>%s</li>\n" % r for r in roles) + "        </ul>\n"
+            + "      </div>\n    </div>\n  </div>\n</section>\n")
+    body += sec('    <div class="bio-text">\n' + "".join("      <p>%s</p>\n" % p for p in paras) + "    </div>\n",
+                cls="grad-paper-warm", extra="section--flush-top section")
+    write(page, head(page, "%s — CORAfrica" % name,
+                     "%s: %s at CORAfrica, Children of Rural Africa." % (name, "; ".join(roles)),
+                     og_img="img/" + (photo or "hero.jpg"))
+          + BANNER + header("contact.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
         '    <p class="kicker">Contact us</p>\n'
