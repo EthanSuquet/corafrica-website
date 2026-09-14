@@ -47,11 +47,16 @@ STRIPE_25_MONTHLY = STRIPE_MONTHLY[1][1]
 # 2026-09-10 and it opens as "One Time Donation" for Children of Rural Africa.
 STRIPE_ONE_TIME = "https://buy.stripe.com/cNi4gBfEY4Ua22D860cwg07"
 
-# Fr. Peter, 2026-09-04: info@corafrica.org.ng and +234 915 314 2288 no longer work,
-# and new ones are still to come. Until they are set here the site says so rather
-# than linking to dead ones; fill them in and every page picks them up.
+# Fr. Peter, 2026-09-04: info@corafrica.org.ng and +234 915 314 2288 no longer work.
+# He sent the replacement numbers on 2026-09-14; the email is still to come, and until
+# it is set here the site says so rather than linking to a dead address.
 CONTACT_EMAIL = None  # [NEW EMAIL TO BE SUPPLIED]
-CONTACT_PHONE = None  # [NEW PHONE TO BE SUPPLIED]
+# He gave the Nigerian number in local form (07030249901) and the US one as 724 272 1851.
+# Both are written in international form so they dial from either country.
+PHONES = [("Nigeria", "+234 703 024 9901"), ("United States", "+1 724 272 1851")]
+# No 48 Mbube Road, Ogoja is no longer operational (Fr. Peter, 2026-09-14); Abuja is the
+# national office and the only Nigerian address on the site.
+NG_ADDRESS = ("C20, 3rd Floor", "CDA Zenith, Kebbi House", "Abuja FCT, Nigeria")
 US_ADDRESS = ("811 Center Drive", "North Baldwin, NY 11510")
 EIN = "68-0619454"  # checked against the public IRS record, 2026-09-10
 SOCIAL = [("Facebook", "https://www.facebook.com/Corafrica"), ("X", "https://x.com/CorAfrica")]
@@ -90,25 +95,27 @@ def tel(number):
 
 
 def contact_lines():
-    """Footer contact column: live links once the new details arrive, placeholders until then."""
+    """Footer contact column: live links once the new details arrive, a placeholder for
+    anything still pending."""
     email = ('<a href="mailto:%s">%s</a>' % (CONTACT_EMAIL, CONTACT_EMAIL)) if CONTACT_EMAIL else "[NEW EMAIL &mdash; TO BE SUPPLIED]"
-    phone = ('<a href="tel:%s">%s</a>' % (tel(CONTACT_PHONE), CONTACT_PHONE)) if CONTACT_PHONE else "[NEW PHONE &mdash; TO BE SUPPLIED]"
+    phones = ['%s <a href="tel:%s">%s</a>' % (where, tel(num), num) for where, num in PHONES]
     social = " &middot; ".join('<a href="%s" rel="noopener">%s</a>' % (u, n) for n, u in SOCIAL)
-    return email + "<br>\n             " + phone + "<br>\n             " + social
+    return "<br>\n             ".join([email] + phones + ['<a href="faq.html">Questions donors ask</a>', social])
 
 
 def contact_block(margin_top=False):
-    """Email and phone buttons for a page body, or a plain note while they are pending."""
+    """Email and phone buttons for a page body, with a note for anything still pending."""
     style = ' style="margin-top:1.9rem"' if margin_top else ""
-    if not (CONTACT_EMAIL or CONTACT_PHONE):
-        return ('    <p class="pending"%s>Our new email address and phone number are being set up: '
-                "[NEW EMAIL &mdash; TO BE SUPPLIED] &middot; [NEW PHONE &mdash; TO BE SUPPLIED]</p>\n" % style)
     o = '    <div class="button-row"%s>\n' % style
     if CONTACT_EMAIL:
         o += '      <a class="button button--accent" href="mailto:%s">%s</a>\n' % (CONTACT_EMAIL, CONTACT_EMAIL)
-    if CONTACT_PHONE:
-        o += '      <a class="button button--plain" href="tel:%s">%s</a>\n' % (tel(CONTACT_PHONE), CONTACT_PHONE)
-    return o + "    </div>\n"
+    for where, num in PHONES:
+        o += '      <a class="button button--plain" href="tel:%s">%s &middot; %s</a>\n' % (tel(num), where, num)
+    o += "    </div>\n"
+    if not CONTACT_EMAIL:
+        o += ('    <p class="pending">Our new email address is being set up: '
+              "[NEW EMAIL &mdash; TO BE SUPPLIED]</p>\n")
+    return o
 
 
 def email_inline():
@@ -171,7 +178,7 @@ FOOTER_TEMPLATE = """<footer class="site-footer">
       <div class="footer-cols">
         <div class="footer-col">
           <div class="footer-h">Nigeria</div>
-          <p>No 48 Mbube Road<br>Opposite Govt. Technical College, Abakpa<br>Ogoja, Cross River State</p>
+          <p>NGADDR</p>
         </div>
         <div class="footer-col">
           <div class="footer-h">United States</div>
@@ -194,6 +201,7 @@ FOOTER_TEMPLATE = """<footer class="site-footer">
 </html>
 """
 FOOTER = (FOOTER_TEMPLATE.replace("USADDR", "<br>".join(US_ADDRESS))
+          .replace("NGADDR", "<br>".join(NG_ADDRESS))
           .replace("CONTACTLINES", contact_lines()).replace("EINNUM", EIN))
 
 
@@ -236,6 +244,18 @@ def card(title, body, tag=None, ic=None):
     return o + "        <h3>%s</h3>\n        <p>%s</p>\n      </article>\n" % (title, body)
 
 
+def link_card(title, body, href, tag=None, ic=None, cta="Read more"):
+    """A card that opens a page of its own &mdash; the only way into the programme pages,
+    which are in no menu. Same anatomy as card(), plus the arrow."""
+    o = '      <a class="card card--link" href="%s">\n' % href
+    if ic:
+        o += '        <span class="card-icon">%s</span>\n' % icon(ic)
+    if tag:
+        o += '        <span class="card-tag">%s</span>\n' % tag
+    return o + ('        <h3>%s</h3>\n        <p>%s</p>\n'
+                '        <span class="card-go">%s &rarr;</span>\n      </a>\n' % (title, body, cta))
+
+
 def goals_card(title, items, tag=None):
     o = '      <article class="card">\n'
     if tag:
@@ -259,7 +279,7 @@ def media_pair(a, b):
 
 REVEAL = ("card", "tier", "person", "press-card", "press-row", "register-row",
           "tl-row", "photo-card", "media", "panel", "alt-row", "section-head", "cred",
-          "cost-row", "partners", "pull", "group-label", "pending")
+          "cost-row", "partners", "pull", "group-label", "pending", "faq-row")
 
 
 def add_reveals(html):
@@ -286,13 +306,13 @@ def write(page, html):
 
 
 # ============================================================== shared data
-# Fr. Peter's figures as at September 2026 (CONTENT-FACTS S10). They count the schools
-# and clinics CORAfrica founded, most of which the St. Francis Humanitarian Mission now
-# runs, so the panel note says so rather than implying we run them all today.
+# Fr. Peter's figures as at September 2026 (CONTENT-FACTS S10). They count the schools and
+# clinics CORAfrica founded, which it still runs: the hand-over to the partners who will
+# take them on is set for 2027, and the 61 staff are CORAfrica's until then (S15).
 STATS = [("2,550", "Children in school", "Enrolled today in the schools we founded"),
          ("7", "Schools and clinics", "Founded by CORAfrica and operating today"),
          ("64", "Communities", "Reached through our programmes"),
-         ("61", "Staff and teachers", "At work across those schools and programmes"),
+         ("61", "Staff and teachers", "On our payroll, until the 2027 hand-over"),
          ("513", "Women supported", "Through our empowerment programmes, to date")]
 
 # The model is two programmes with two more built into the school (S10, 2026-09-04),
@@ -302,11 +322,25 @@ PILLARS = [("Education", "Primary and secondary schools where none exist, with v
            ("Agriculture", "School farms where children learn the trade by hand, and farming support for parents and guardians where it is available.", "leaf", "Built in"),
            ("Economic empowerment", "Micro-credit for parents and guardians, so a family can afford to keep its child in class.", "coin", "Built in")]
 
-# What CORAfrica still runs itself (S10). Everything else it founded is on the track record.
-TODAY = [("HELP-A-KID", "Scholarships, school uniforms and educational materials for children whose families cannot afford them.", "Children"),
-         ("Economic empowerment", "Three programmes &mdash; St. Thomas Aquinas at Igoli, Holy Family at Ikom, and the CORAfrica programme &mdash; that have supported 513 women so far.", "Families"),
-         ("CORA Farms Nigeria Ltd", "Our registered farming company: crops, poultry and livestock, and a training ground for rural farmers.", "Agriculture"),
-         ("A new centre in Abuja", "Our next Community Education Centre, recently begun. About US $2 million will complete it.", "Building now")]
+# The five programmes Fr. Peter asked us to promote (S15, 2026-09-14). Each has a page of
+# its own, and the card is the only way in, exactly as with the bio pages. CORA Farms and
+# the Abuja centre follow as plain cards: real work, but not part of that five.
+PROGRAMMES = [
+    ("HELP-A-KID", "programme-help-a-kid.html", "Children",
+     "School fees, uniforms and materials for children who would otherwise leave school. 245 have completed primary or secondary education through it."),
+    ("Economic empowerment", "programme-empowerment.html", "Families",
+     "Interest-free loans to more than 500 business owners across the Ogoja&ndash;Ikom axis, so parents can trade their way to school fees."),
+    ("School clinics", "programme-school-clinics.html", "Health",
+     "Clinics inside our school system, free to pupils and affordable to their communities, with medical outreach to villages that have neither."),
+    ("School demonstration farms", "programme-school-farms.html", "Agriculture",
+     "Agriculture on the timetable rather than in a textbook: pupils prepare the land, plant, weed, harvest, store and sell."),
+    ("Vocational and skills acquisition", "programme-vasac.html", "Skills",
+     "VASAC centres inside our schools, so a student leaves with a trade as well as a certificate &mdash; from tailoring and computing to building and solar."),
+]
+ALSO_TODAY = [
+    ("CORA Farms Nigeria Ltd", "Our registered farming company, founded in 2015: crops, poultry and livestock, and a training ground for rural farmers.", "Agriculture"),
+    ("A new centre in Abuja", "Our next Community Education Centre, recently begun. About US $2 million will complete it.", "Building now"),
+]
 
 CREDS = ["Registered <span class='nolig'>501(c)(3)</span> since 2006", "Registered in Nigeria since 2010",
          "92.6% of 2025 spending went to programmes", "Aligned to five UN SDGs"]
@@ -369,7 +403,7 @@ HEADSHOTS = {
     "Michael Abuo": "team/michael-abuo.jpg",
     "Fr. Peter Abue": "team/peter-abue.jpg",
     "Adewale Ajayi": "team/adewale-ajayi.jpg",
-    "Cornelius Okochi": "team/chux-okochi.jpg",  # sent as "Fr. Chux Okochi, President"
+    "Chux Okochi": "team/chux-okochi.jpg",  # sent as "Fr. Chux Okochi, President"
     "Silvia Okoro": "team/silvia-okoro.jpg",
     "Jeannine Goelz": "team/jeannine-goelz.jpg",
     "Elijah Ugani": "team/elijah-ugani.jpg",
@@ -389,7 +423,7 @@ def stats_panel():
     return ('    <div class="panel">\n'
             '      <div class="panel-head">\n'
             '        <p class="kicker">Twenty years on the ground</p>\n'
-            '        <p class="panel-note">As at September 2026, including schools and clinics now run by the St. Francis Humanitarian Mission</p>\n'
+            '        <p class="panel-note">As at September 2026, across every school, clinic and programme CORAfrica founded</p>\n'
             "      </div>\n"
             '      <div class="stats stats--5">\n%s      </div>\n    </div>\n' % s)
 
@@ -462,10 +496,12 @@ body += sec('    <div class="split split--center">\n      <div>\n'
             + "      </div>\n"
             + grid([card(n, b, tag=t, ic=i) for n, b, i, t in PILLARS], 2)
             + "    </div>\n", cls="grad-warm-white")
-body += sec(head_block("What we run today", "Our programmes.",
-                       "Most of the schools and clinics we founded now run under our partner, the St. Francis "
-                       "Humanitarian Mission. These are the programmes CORAfrica runs itself.")
-            + grid([card(t, b, tag) for t, b, tag in TODAY], 2)
+body += sec(head_block("What we run today", "Five programmes, and what each one is for.",
+                       "Each of these runs inside the school system or alongside it, and each answers a different "
+                       "reason a child stops coming to class.")
+            + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in PROGRAMMES], 2)
+            + '    <h3 class="group-label">Alongside them</h3>\n'
+            + grid([card(t, b, tag) for t, b, tag in ALSO_TODAY], 2)
             + '    <div class="button-row" style="margin-top:1.9rem">\n'
               '      <a class="button button--dark" href="what-we-do.html">What we do</a>\n    </div>\n',
             cls="bg-white")
@@ -477,10 +513,10 @@ for tag, name, img, alt, note in TRACK_CARDS:
            + '        <div class="photo-card-body">\n'
            + '          <span class="photo-card-tag">%s</span>\n          <h3>%s</h3>\n          <p>%s</p>\n' % (tag, name, note)
            + "        </div>\n      </a>\n")
-body += sec_wide(head_block("Our track record", "Built, proven, and handed on.",
-                            "The schools and clinics below were founded by CORAfrica and now run under the St. Francis "
-                            "Humanitarian Mission. That is the model working: we build where there is nothing, prove "
-                            "it, hand it on, and begin again.")
+body += sec_wide(head_block("Our track record", "Built, proven, and built to be handed on.",
+                            "The schools and clinics below were founded by CORAfrica, and are being handed to the "
+                            "institutions that will run them from 2027. That is the model working: we build where "
+                            "there is nothing, prove it, hand it on, and begin again.")
                  + grid([tc], 3), cls="grad-white-strong")
 
 # Fr. Peter asked to be less visible (S10) — his goal is to hand the work on — so the
@@ -490,10 +526,10 @@ body += sec('    <div class="split split--media split--center">\n'
             "      <div>\n"
             + head_block("How we work", "Built to be handed on.",
                          "CORAfrica was founded in 2006 by Fr. Peter Obele Abue, and it was never meant to run its "
-                         "schools forever. We build where there is nothing, prove that the model works, and hand it to "
-                         "people who will carry it on. Our first two Community Education Centres, at Idum-Mbube and "
-                         "Victoria-Ikom, have done exactly that: both now run under the St. Francis Humanitarian "
-                         "Mission, which still works with us on funding and operation. So we have begun again, in Abuja.")
+                         "schools forever. We build where there is nothing, prove that the model works, and hand it "
+                         "to the institutions that will carry it on. Our first two Community Education Centres, at "
+                         "Idum-Mbube and Victoria-Ikom, have done exactly that, and their hand-over completes in "
+                         "2027. So we have begun again, in Abuja.")
             + '        <a class="button button--dark" href="track-record.html">See our track record</a>\n'
             + "      </div>\n    </div>\n", cls="grad-strong-paper")
 
@@ -529,7 +565,7 @@ HISTORY = [
     ("2020&ndash;22", "Refugees and displaced families",
      "A school for refugee children from Cameroon opens at Adagom; 1,000 refugees, migrants and displaced people are trained in agribusiness with UNHCR and the International Institute of Tropical Agriculture; and six classrooms are built in an IDP camp in Benue State."),
     ("Today", "Handed on, and beginning again",
-     "The first two Community Education Centres, at Idum-Mbube and Victoria-Ikom, now run under the St. Francis Humanitarian Mission, which works with us on their funding and operation. From our national office in Abuja, CORAfrica runs its empowerment programmes, HELP-A-KID and CORA Farms, and is building its next centre."),
+     "The first two Community Education Centres, at Idum-Mbube and Victoria-Ikom, are being handed to the institutions that will run them from 2027. From our headquarters in Abuja, CORAfrica runs HELP-A-KID, its empowerment programmes, the school clinics, the demonstration farms, its skills acquisition centres and CORA Farms &mdash; and is building its next centre."),
 ]
 VALUES = [
     ("Dignity of the human person", "Each person &mdash; each child &mdash; has an inalienable dignity, and should be treated as an end and never only as a means. Every child deserves the chance to achieve their dreams, no matter where they were born."),
@@ -571,10 +607,25 @@ body += sec(head_block("Our history", "From a doctorate to a model that travels.
             + '    <div class="button-row" style="margin-top:1.9rem">\n'
               '      <a class="button button--dark" href="track-record.html">The full track record</a>\n    </div>\n',
             cls="bg-white", extra="section--flush-top section")
+# "I wish to remain less visible, not totally absent" (Fr. Peter, 2026-09-14). So the founder
+# gets a short block that points to his page, rather than a portrait on the home page.
+body += sec('    <div class="split split--center">\n'
+            '      <div style="text-align:center"><img src="img/team/peter-abue-lg.jpg" alt="Fr. Peter Obele Abue" '
+            'style="width:220px;height:220px;border-radius:50%;object-fit:cover;margin-inline:auto" '
+            'loading="lazy" width="440" height="440"></div>\n'
+            "      <div>\n"
+            + head_block("Our founder", "Fr. Peter Obele Abue.",
+                         "CORAfrica grew out of his doctoral research at Cornell, and out of the gap he had watched "
+                         "open between the developed and the developing world. Today the organisation is an "
+                         "independent initiative carrying on his purpose: the humanitarian mission of Christ, through "
+                         "an education with Christian values, brought to the poorest of the poor across Africa and "
+                         "beginning in Nigeria.")
+            + '        <a class="button button--dark" href="%s">About our founder</a>\n' % bio_page("Fr. Peter Abue")
+            + "      </div>\n    </div>\n", cls="grad-white-paper")
 body += sec(head_block("Our philosophy", "Three convictions we build on.",
                        "CORAfrica&rsquo;s philosophy is rooted in Catholic Social Teaching, and reduces to three core "
                        "values that govern how we choose projects and how we hand them on.")
-            + grid([card(t, b) for t, b in VALUES], 3), cls="grad-white-strong")
+            + grid([card(t, b) for t, b in VALUES], 3), cls="grad-paper-warm")
 # Registration and audit detail, from the 2025 financial report. Figures converted to US
 # dollars at the report's own 2025 rate (S6), because every figure on the site is in USD.
 body += sec(head_block("Accountability", "Registered, audited, and on the record.",
@@ -585,8 +636,8 @@ body += sec(head_block("Accountability", "Registered, audited, and on the record
                     card("Independently audited", "Our financial statements are audited by Akomaye Adie &amp; Co., Chartered Accountants and Tax Practitioners, of Calabar.", "Annually"),
                     card("92.6% to programmes", "Of everything CORAfrica spent in the year ended 31 December 2025, 92.6% went to education, healthcare, economic empowerment and agriculture. Overheads were 7.4%.", "2025 accounts"),
                     card("Assets we hold", "Land, school buildings, and a farm and agricultural station, carried in our 2025 accounts at about US $114,500.", "2025 accounts"),
-                    card("Governed by two boards", "A Board of Trustees in Nigeria and another in the United States oversee the organisation, with operations directed from Ogoja in Cross River State.", "Governance")], 3),
-            cls="grad-paper-warm")
+                    card("Governed by two boards", "A Board of Trustees in Nigeria and another in the United States oversee the organisation, with operations directed from our headquarters in Abuja.", "Governance")], 3),
+            cls="grad-warm-white")
 write("who-we-are.html", head("who-we-are.html", "Who We Are — CORAfrica",
       "Our vision, mission, history and philosophy. CORAfrica has built schools in rural Nigeria since 2006, "
       "rooted in Catholic Social Teaching.", "img/gathering.jpg")
@@ -616,7 +667,7 @@ for i, (name, img, num, label, alt, txt) in enumerate(COMPONENTS):
 body = hero("Our model", "Two programmes. One community. One system.",
             "The Community Education Centre is our answer to a hard lesson: a school on its own does not keep a child "
             "in school. Hunger, illness and a family without income take more children out of class than any exam does.",
-            "farm.jpg", "A CORAfrica demonstration farm")
+            "our-model-hero.jpg", "Pupils gathered at the John Stilley Schools, Victoria-Ikom")
 # Fr. Peter's own description of the CEC, supplied 2026-09-10, rewritten with every point kept.
 body += sec(head_block("The Community Education Centre", "More than a school.",
                        "A Community Education Centre brings learning, social welfare and empowerment together for the "
@@ -629,33 +680,23 @@ body += sec(head_block("The Community Education Centre", "More than a school.",
             + '    <p class="pull">It takes a village to raise a child. <span>This is Education for Africa&rsquo;s Future.</span></p>\n',
             cls="grad-paper-warm")
 body += sec(head_block("Where the model stands", "Proven twice. Now going to Abuja.",
-                       "The model was first built at Idum-Mbube, in Ogoja, and at Victoria, in Ikom: at each, a school, "
-                       "a health centre and a farm. Both are working, and both have been handed to the St. Francis "
-                       "Humanitarian Mission, which runs them and continues to collaborate with CORAfrica on their "
-                       "funding and operation. We intend to replicate the model across Nigeria, beginning in Abuja.")
-            + grid([card("Idum-Mbube, Ogoja", "St. Joseph&rsquo;s Schools and Orphanage, the Sr. Augustina Abuo Memorial Medical Clinic, and the farm. Now run by the St. Francis Humanitarian Mission.", "Centre one"),
-                    card("Victoria, Ikom", "The John Stilley Schools, Victoria Medical Center, and the farm. Now run by the St. Francis Humanitarian Mission.", "Centre two"),
+                       "The model was first built at Idum-Mbube, in Ogoja, and at Victoria, in Ikom: at each, a "
+                       "school, a health centre and a farm. Both are working, and both are being handed to the "
+                       "institutions that will run them from 2027 &mdash; which is what they were built for. We "
+                       "intend to replicate the model across Nigeria, beginning in Abuja.")
+            + grid([card("Idum-Mbube, Ogoja", "St. Joseph&rsquo;s Schools and Orphanage, the Sr. Augustina Abuo Memorial Medical Clinic, and the farm. Being handed on in 2027.", "Centre one"),
+                    card("Victoria, Ikom", "The John Stilley Schools, Victoria Medical Center, and the farm. Being handed on in 2027.", "Centre two"),
                     card("Abuja", "Our next Community Education Centre, recently initiated. Approximately US $2 million will complete it.", "Building now")], 3)
             + '    <div class="button-row" style="margin-top:1.9rem">\n'
               '      <a class="button button--dark" href="strategic-plan.html">Read the strategic plan</a>\n    </div>\n',
             cls="grad-white-strong")
 write("our-model.html", head("our-model.html", "Our Model — CORAfrica",
       "The Community Education Centre: education and healthcare, with agriculture and economic empowerment built "
-      "into the school, because a school alone does not keep a child in school.", "img/farm.jpg")
+      "into the school, because a school alone does not keep a child in school.", "img/our-model-hero.jpg")
       + BANNER + header("our-model.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
 # ============================================================== what-we-do
-# The programmes CORAfrica still controls, per Fr. Peter (S10). Handed-over schools and
-# clinics belong on the track record, never here.
-PROGRAMMES = [
-    ("HELP-A-KID", "Scholarships for children whose families cannot afford school fees, with school uniforms and educational materials provided. It keeps a particular child in class.", "Children"),
-    ("St. Thomas Aquinas Economic Empowerment Programme", "Igoli, Ogoja. Launched in 2022 with a US $40,000 fund and commissioned by Bishop Donatus Akpan, it offers soft loans and grants so parents can build a business and keep their children in school.", "Families"),
-    ("Holy Family Economic Empowerment Programme", "Ikom. Gives parishioners access to funds for small and larger enterprises.", "Families"),
-    ("CORAfrica Economic Empowerment Programme", "Micro-credit for poor parents and guardians, especially in communities where a Community Education Centre operates. Across our empowerment programmes, 513 women have been supported so far.", "Families"),
-    ("CORA Farms Nigeria Ltd", "Our separately registered agricultural company. It grows cassava and other crops, keeps poultry and livestock, and trains rural farmers and young people.", "Agriculture"),
-    ("The Community Education Centre, Abuja", "Recently initiated, and the focus of our capital effort. Approximately US $2 million will complete it.", "Building now"),
-]
 VASAC = [
     ("Computer studies", "Functional computer laboratories with stable connectivity, reliable power with backup, trained ICT staff and proper security."),
     ("Fashion design", "Sewing, pattern drafting and fabric selection &mdash; creativity and entrepreneurship, with income from garment production."),
@@ -681,12 +722,14 @@ body = hero("What we do", "Education is the bedrock. Everything else is built on
             "Getting a good education as a child is the essential building block of a tolerant, well-adjusted, healthy "
             "and prosperous adult. Families where parents completed primary and secondary school have higher incomes, "
             "better health and longer lives &mdash; and pass all of it on.",
-            "hands.jpg", "Children at a CORAfrica school")
-body += sec(head_block("What we run today", "Programmes under our own direction.",
-                       "Most of the schools and clinics we founded now run under the St. Francis Humanitarian Mission "
-                       "&mdash; see our <a href=\"track-record.html\">track record</a>. These are the programmes "
-                       "CORAfrica runs itself.")
-            + grid([card(t, b, tag) for t, b, tag in PROGRAMMES], 3)
+            "what-we-do-hero.jpg", "A community gathered with CORAfrica for a distribution")
+body += sec(head_block("What we run today", "Five programmes, under our own direction.",
+                       "The schools and clinics we founded are being handed to the institutions that will run them "
+                       "from 2027 &mdash; see our <a href=\"track-record.html\">track record</a>. These are the "
+                       "programmes CORAfrica runs, each one answering a different reason a child stops coming to class.")
+            + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in PROGRAMMES], 3)
+            + '    <h3 class="group-label">Alongside them</h3>\n'
+            + grid([card(t, b, tag) for t, b, tag in ALSO_TODAY], 2)
             + media_pair(("livelihoods.jpg", "Women at a Special Project Funds distribution implemented by CORAfrica with support from Cuso International"),
                          ("poultry.jpg", "Collecting eggs in a poultry house")),
             cls="grad-paper-warm")
@@ -697,7 +740,7 @@ body += sec(head_block("Why it matters", "The need we are answering.",
                        "are the first to lose their education.")
             + grid([card("10 million+", "Nigerian children are out of school &mdash; about 15% of the world&rsquo;s total, according to UNICEF."),
                     card("133 million", "Nigerians were counted as multidimensionally poor in the country&rsquo;s 2022 national survey."),
-                    card("Communities under attack", "Many rural communities live with violence, including attacks by armed Fulani herdsmen and other militant groups, and in some areas Christian communities face threats from violent groups. Across the border, the conflict in Cameroon has driven refugees into Cross River State.")], 3),
+                    card("Communities under attack", "Many rural communities live with violence, including attacks by herdsmen and militant groups in Nigeria. Across the border, the conflict in Cameroon has driven refugees into Cross River State.")], 3),
             cls="bg-white")
 body += sec(head_block("Education", "A high-quality education is an inherent right of every child.",
                        "We build and equip primary and secondary schools in rural areas, creating sustainable "
@@ -708,12 +751,13 @@ body += sec(head_block("Education", "A high-quality education is an inherent rig
                     card("Tertiary and vocational", "Our educational component runs from primary through secondary to tertiary support and vocational skills acquisition.")], 3),
             cls="grad-paper-warm")
 body += sec(head_block("VASAC", "Vocational and Skills Acquisition Centres.",
-                       "We go a step beyond the conventional school system and equip our schools so students leave "
-                       "with a trade. Each centre runs pilot systems where students practise the skills that will "
-                       "sustain them for life &mdash; actively involved, hands-on, in every area below.")
-            + grid([card(t, b) for t, b in VASAC], 3)
-            + grid([card("Staffing", "Reputable staff recruited from known institutions, with experts drawn from local artisans known to us over many years &mdash; administrative staff, professional teachers and skilled labourers."),
-                    card("Equipment and certification", "Every department furnished and equipped to match its training. Partnerships with donors and bilateral organisations are intended to carry students through to certification and job placement.")], 2),
+                       "We go a step beyond the conventional school system and equip our schools so that students "
+                       "leave with a trade. Each centre runs pilot systems where students practise the skills that "
+                       "will sustain them for life &mdash; computing, fashion design, beauty and aesthetics, home "
+                       "economics, music, technical drawing, visual arts, the building trades and agriculture.")
+            + '    <div class="button-row">\n'
+              '      <a class="button button--dark" href="programme-vasac.html">Inside a skills centre</a>\n'
+              '      <a class="button button--plain" href="faq.html">Questions donors ask</a>\n    </div>\n',
             cls="grad-warm-white")
 body += sec(head_block("Healthcare", "A child too ill to learn is not being educated.",
                        "We establish health clinics inside the school system, and teach healthcare awareness and "
@@ -728,9 +772,257 @@ body += sec_wide('    <div class="panel panel--dark">\n      <p class="kicker ki
                  '      <h2 class="h2" style="color:#fff;margin-bottom:1.6rem">In CORAfrica, we hold that:</h2>\n'
                  + rl + "    </div>\n", cls="grad-white-strong", extra="section--flush-top section")
 write("what-we-do.html", head("what-we-do.html", "What We Do — CORAfrica",
-      "The programmes CORAfrica runs today — HELP-A-KID, three economic empowerment programmes, CORA Farms and a "
-      "new Community Education Centre in Abuja — and the education and healthcare approach behind them.", "img/hands.jpg")
+      "The programmes CORAfrica runs today — HELP-A-KID, economic empowerment, school clinics, demonstration farms "
+      "and skills acquisition — and the education and healthcare approach behind them.", "img/what-we-do-hero.jpg")
       + BANNER + header("what-we-do.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
+
+
+# ============================================================== programme pages
+# One page per promoted programme, from Fr. Peter's write-ups of 2026-09-14 (S15) and the
+# FAQs he sent with them. Summarised here; the pages are reached by clicking a card on the
+# home page or What We Do, and are in no menu, exactly like the bio pages.
+def programme_page(page, name, h1, lede, img, alt, desc, body_html):
+    body = hero("Our programmes", h1, lede, img, alt)
+    body += body_html
+    body += sec_wide(donate_band(), cls="bg-paper", extra="section--flush-top section--tight")
+    write(page, head(page, "%s — CORAfrica" % name, desc, og_img="img/" + img)
+          + BANNER + header("what-we-do.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
+
+
+programme_page(
+    "programme-help-a-kid.html", "HELP-A-KID", "HELP-A-KID",
+    "A child&rsquo;s poverty should not decide whether that child is educated. HELP-A-KID pays the fees and the "
+    "costs around them for acutely underprivileged children, so that they can finish the education they have "
+    "already started.",
+    "help-a-kid-hero.jpg", "Pupils lined up outside their school",
+    "HELP-A-KID: scholarships, fees and materials for acutely underprivileged children in Nigeria, at schools "
+    "CORAfrica does not run. 245 have completed primary or secondary education through it.",
+    sec(head_block("What it does", "Support for children outside our own schools.",
+                   "HELP-A-KID reaches children and students at schools and colleges across the region &mdash; not "
+                   "the ones registered under CORAfrica. We identify children in need, and provide tuition fees and "
+                   "the other charges that quietly decide whether a child stays in class.")
+        + grid([card("150 pupils", "Have completed their primary education through the programme.", "Since inception"),
+                card("95 students", "Have completed their secondary education through the programme.", "Since inception"),
+                card("Fees and everything around them", "Tuition, school uniforms and educational materials &mdash; the costs that push a family past what it can afford.", "What it covers")], 3),
+        cls="grad-paper-warm")
+    + sec('    <div class="split split--media split--center">\n'
+          '      <div class="media"><img src="img/hands.jpg" alt="Children at a CORAfrica school" loading="lazy" width="900" height="675"></div>\n'
+          "      <div>\n"
+          + head_block("Why it matters", "The difference between leaving and staying.",
+                       "The programme has made a significant difference to children who were about to withdraw from "
+                       "school because their families could not afford the fees. Some beneficiaries have been "
+                       "supported all the way from primary through secondary school.")
+          + "        <p>Many have gone on to build successful lives and to contribute to the development of their "
+            "communities. That is the second half of the design: HELP-A-KID is meant to encourage the children it "
+            "supports to give back in their turn.</p>\n"
+          + "      </div>\n    </div>\n", cls="bg-white"))
+
+programme_page(
+    "programme-empowerment.html", "Economic empowerment", "Economic empowerment",
+    "When a family cannot afford to keep a child in class, the barrier is income. The Economic Empowerment "
+    "Programme lends to the parents &mdash; interest-free &mdash; so that a business can grow into school fees.",
+    "empowerment-hero.jpg", "Women running a small food business supported by CORAfrica",
+    "CORAfrica's Economic Empowerment Programme: interest-free loans to more than 500 business owners across the "
+    "Ogoja–Ikom axis of Cross River State, with training, mentorship and supervision.",
+    sec(head_block("What it does", "Loans to parents, so children stay in school.",
+                   "The programme was established to support underprivileged business owners, above all those who "
+                   "were struggling to provide school fees for their wards. It helps parents expand a business they "
+                   "already have, and encourages willing and underserved members of our communities to start one.")
+        + grid([card("500+ business owners", "Have received interest-free loans across the Ogoja&ndash;Ikom axis of Cross River State.", "Reach"),
+                card("&#8358;500,000 to &#8358;3,000,000", "The size of a loan, set by what the business is and needs, and by the funds available.", "Loan size"),
+                card("513 women supported", "Across our three empowerment programmes, to date.", "Since inception")], 3),
+        cls="grad-paper-warm")
+    + sec(head_block("How it works", "Chosen carefully, then accompanied.",
+                     "Beneficiaries are sought through the Catholic parishes. The programme also supports graduates "
+                     "waiting to begin the compulsory year of National Youth Service, who submit a business proposal "
+                     "that is reviewed before any money moves.")
+          + grid([card("Training first", "Guidance on establishing or expanding a small business and an income-generating activity, and on the practice of repayment."),
+                  card("Mentorship and supervision", "Beneficiaries are accompanied after the loan, so that the business becomes something that lasts."),
+                  card("Around 80% repaid", "The repayment process has been about 80% successful, with minimal losses. Where it fails it is usually need, vulnerability, or a business that was never viable.")], 3),
+          cls="bg-white")
+    + sec(head_block("Three programmes", "Where the money is lent.")
+          + grid([card("St. Thomas Aquinas", "Igoli, Ogoja. Launched in 2022 with a US $40,000 fund and commissioned by Bishop Donatus Akpan, it offers soft loans and grants so that parents can build a business and keep their children in school.", "2022"),
+                  card("Holy Family", "Ikom. Gives parishioners access to funds for small and larger enterprises.", "Parish"),
+                  card("The CORAfrica programme", "Micro-credit for poor parents and guardians, especially in communities where a Community Education Centre operates.", "National")], 3),
+          cls="grad-white-strong")
+    + sec(head_block("Two beneficiaries", "What a loan turned into.")
+          + grid([card("Thomas Nsing", "Received &#8358;3,000,000 to furnish and improve his gym. He has since recorded his own account of what the programme meant.", "The gym"),
+                  card("A trader at Ikom", "Started a Point of Sale business and expanded it into phone accessories. He recently gave 20 POS machines to 20 other business owners &mdash; one loan, rippling outward.", "The ripple")], 2)
+          + '    <p class="pull">Meaningful empowerment is not simply financial assistance. <span>It is the '
+            "opportunity, the confidence and the resources to build a livelihood.</span></p>\n",
+          cls="grad-paper-warm"))
+
+programme_page(
+    "programme-school-clinics.html", "School clinics", "School clinics",
+    "A child too ill to learn is not being educated. Our clinics sit inside the school system: free to the "
+    "children who study there, affordable to everybody else in the community.",
+    "clinics-hero.jpg", "A child being attended to at a CORAfrica health outreach",
+    "CORAfrica's school clinics: free healthcare for pupils and affordable care for their communities, with "
+    "medical outreach to rural villages, refugee settlements and orphanages.",
+    sec(head_block("Why a clinic belongs in a school", "Health decides attendance.",
+                   "Healthcare turned out to be one of the largest obstacles to school attendance, to learning and "
+                   "to the general well-being of children in rural Nigeria. Many pupils could not get medical "
+                   "attention at all, because their parents and carers could not afford the bills.")
+        + grid([card("Sr. Augustina Abuo Memorial Medical Clinic", "At St. Joseph&rsquo;s Orphanage, Idum-Mbube. It has attended to close to 500 students and more than 1,000 community members since it opened.", "Idum-Mbube"),
+                card("Victoria Medical Center", "Serving the pupils of the John Stilley Schools and the surrounding community at Victoria, Ikom.", "Ikom"),
+                card("Free, then affordable", "Care is free of charge to school children, and provided at an affordable cost to other members of the communities where our schools are.", "How it is paid for")], 3),
+        cls="grad-paper-warm")
+    + sec(head_block("Medical outreach", "Where there is no clinic at all.",
+                     "Alongside the school clinics, we take healthcare to communities that have none: rural villages, "
+                     "refugee settlements, schools, orphanages and other underserved places. The outreach "
+                     "concentrates on prevention, early detection, health education and treatment.")
+          + grid([card("Screening and consultation", "Medical screening, basic consultations, and referral of anything that needs further medical attention."),
+                  card("Malaria and the everyday killers", "Malaria testing and treatment, essential medicines, and blood pressure and blood sugar checks."),
+                  card("Education alongside treatment", "Health education, hygiene teaching and counselling, so that families take on more of their own health.")], 3),
+          cls="bg-white")
+    + sec(head_block("What children are taught", "Prevention, in the school day.",
+                     "Through the clinics and the outreaches, school children are taught personal hygiene, "
+                     "environmental sanitation, proper handwashing, safe drinking water, nutrition, malaria "
+                     "prevention, and maternal and child health &mdash; and taught to seek medical attention early "
+                     "rather than waiting until an illness is severe.")
+          + grid([card("World Malaria Day", "In 2026 we worked with the Nigerian Red Cross Society and the National Commission for Refugees, Migrants and Internally Displaced Persons to reach vulnerable communities.", "Partnered"),
+                  card("Global Handwashing Day", "Marked in our schools as practical teaching, not an assembly.", "Observed"),
+                  card("World AIDS Day", "Used to encourage testing and early diagnosis, and to discourage self-medication and other harmful practices.", "Observed")], 3),
+          cls="grad-white-strong"))
+
+programme_page(
+    "programme-school-farms.html", "School demonstration farms", "School demonstration farms",
+    "Agriculture on the timetable rather than in a textbook. Pupils work a real farm through a real season, and "
+    "leave school with a skill that feeds a family.",
+    "farms-hero.jpg", "Students beside the school farm at Victoria-Ikom",
+    "CORAfrica's school demonstration farms: practical agriculture inside the school curriculum, from land "
+    "preparation to marketing and post-harvest handling.",
+    sec(head_block("What it is", "Practical agriculture, inside the curriculum.",
+                   "The demonstration farm is an integrated approach to education: agriculture is built into the "
+                   "school curriculum so that students gain hands-on knowledge and experience of every part of it. "
+                   "Pupils and students take an active part at each stage.")
+        + grid([card("Land preparation and planting", "Clearing and preparing the ground, then planting the season&rsquo;s crop."),
+                card("Weed control and maintenance", "Keeping a crop alive through a season, which is where most of the learning is."),
+                card("Harvesting", "Bringing in what the school has grown."),
+                card("Marketing", "Selling the produce &mdash; the part of farming that is usually never taught."),
+                card("Storage and post-harvest handling", "Keeping a harvest until it is worth something."),
+                card("The farm feeds the school", "What is grown supports the school that grew it, and the skill outlasts the schooling.")], 3),
+        cls="grad-paper-warm")
+    + sec('    <div class="split split--media split--center">\n'
+          '      <div class="media"><img src="img/farm.jpg" alt="A CORAfrica demonstration farm" loading="lazy" width="900" height="675"></div>\n'
+          "      <div>\n"
+          + head_block("Why it matters", "An answer to graduate unemployment.",
+                       "The initiative is meant to make graduates self-reliant, and better equipped to face "
+                       "unemployment and the over-dependence on conventional white-collar work that follows it.")
+          + "        <p>Through this hands-on approach, agriculture stops being a classroom subject and becomes a "
+            "practical skill &mdash; one that promotes food security and self-reliance in the communities our "
+            "schools serve. Our registered farming company, CORA Farms Nigeria Ltd, works the same ground on a "
+            "commercial scale and trains rural farmers alongside the pupils.</p>\n"
+          + "      </div>\n    </div>\n", cls="bg-white"))
+
+programme_page(
+    "programme-vasac.html", "Vocational and Skills Acquisition Centres",
+    "Vocational and Skills Acquisition Centres",
+    "We go a step beyond the conventional school system and equip our schools so that a student leaves with a "
+    "trade as well as a certificate. Each centre runs pilot systems where students practise the skills that will "
+    "sustain them for life.",
+    "vasac-hero.jpg", "Students and staff with their certificates",
+    "VASAC: Vocational and Skills Acquisition Centres inside CORAfrica schools — computing, fashion, beauty, home "
+    "economics, music, technical drawing, visual arts, the building trades and agriculture.",
+    sec(head_block("Inside a centre", "Nine trades, taught by hand.",
+                   "Our educational component runs from primary and secondary schooling through to tertiary support "
+                   "and vocational skills acquisition. A typical centre includes the sections below, each run as a "
+                   "working pilot rather than a lesson.")
+        + grid([card(t, b) for t, b in VASAC], 3), cls="grad-paper-warm")
+    + sec(head_block("What makes it work", "Staff, equipment, and a route out.")
+          + grid([card("Staffing", "Reputable staff recruited from known institutions, with experts drawn from local artisans known to us over many years &mdash; administrative staff, professional teachers and skilled labourers."),
+                  card("Equipment", "Every department furnished and equipped to match its training, so that a vocational track is genuinely practised and not merely described."),
+                  card("Certification and placement", "Partnerships with donors and bilateral organisations are intended to carry students through to certification and job placement.")], 3)
+          + '    <div class="button-row" style="margin-top:1.9rem">\n'
+            '      <a class="button button--dark" href="strategic-plan.html">Where we are opening more</a>\n    </div>\n',
+          cls="bg-white"))
+
+
+# ============================================================== faq
+# A selection from the FAQs Fr. Peter sent on 2026-09-14 (S15). The programme questions in
+# that document are answered by the programme pages instead, and the internal fundraising
+# talking points are left out.
+FAQS = [
+    ("What has CORAfrica achieved in twenty years, and where is it going?",
+     "We have built seven primary and seven secondary schools, educated 5,550 school children, reached 70 "
+     "communities, empowered 713 families and business owners, and carried 613 staff on our payroll &mdash; "
+     "transferring each institution, in time, to the partners we collaborate with. Founded by a Catholic priest in "
+     "2006, CORAfrica has worked in Nigeria and out of the United States ever since, on the conviction that we live "
+     "in one interdependent world. What comes next is scale: more access to education, healthcare, vocational "
+     "training and economic opportunity, by replicating the Community Education Centre model in new localities."),
+    ("Where do the children live, and who benefits from a donation?",
+     "In their own families, in their own villages. The extended family system in Africa means children live with "
+     "their families and return to them, so our purpose is to help the family become sustainable rather than to "
+     "replace it. Those families face the familiar economic challenges &mdash; poor access to quality education, "
+     "poor healthcare, poor nutrition &mdash; and donations let us put support systems around the children, mostly "
+     "inside the school system."),
+    ("What is the most important need right now?",
+     "A Community Education Centre in a new location near Abuja, to show the model outside Cross River State; a "
+     "standard skills acquisition centre in one location; and the encouragement of young people to build practical "
+     "skills for self-reliance while they are still at school."),
+    ("Which projects have made the most difference?",
+     "Three. The school system, where vocational training turns directly into employment and income. The Economic "
+     "Empowerment Programme, which helps families and individuals start businesses and become independent. And the "
+     "healthcare programme, above all the school clinic, which puts medical help in front of a child during the "
+     "school day."),
+    ("What does the Catholic faith have to do with it?",
+     "CORAfrica is built on the Social Justice agenda of the Church: the dignity of the human person, so that each "
+     "child is treated as an end and never only as a means; solidarity, because the interdependence of peoples "
+     "means the human family is one; the common good, which obliges us to grow more sensitive to children who "
+     "suffer deprivation; and self-reliance, so that communities design themselves to make young people "
+     "independent."),
+    ("Is faith formation part of the schooling?",
+     "Yes, and openly. Our mission is to help the children we serve encounter Christ, and education is the best "
+     "tool we have for it. That work assumes a healthy mind and body, which is why the healthcare programmes exist "
+     "at all. Faith formation is integrated into the ordinary school day through prayers such as the Angelus, the "
+     "Lord&rsquo;s Prayer and the Rosary, and our desire is that a child grows in knowledge, dignity and faith "
+     "together."),
+    ("Can our family be matched with a family in Nigeria?",
+     "It is possible, and we would like to do more of it. Child sponsorship works best when children are matched "
+     "with their peers between institutions, and a family-to-family partnership can let families share experiences "
+     "and build genuine friendships. The point of the exchange is not only the money: it is friendship, solidarity "
+     "and understanding between two very different places. Write to us if this interests you."),
+    ("How can a major donor leave something lasting?",
+     "By funding something that stands: a school, a medical centre, a skills acquisition centre, a school farm, a "
+     "school clinic, an economic empowerment fund. Our operational model connects a donor to a specific project, "
+     "coordinates the building of it and monitors what it does afterwards. The invitation is not to give to a "
+     "project but to join a legacy &mdash; one child, one family and one community at a time."),
+]
+COSTS = [("$570", "<strong>One primary school child</strong>, for a year &mdash; quality education, basic healthcare and good nutrition."),
+         ("$450", "<strong>One JSS student</strong> (junior secondary), for a year, on the same basis."),
+         ("$550", "<strong>One SS1 student</strong> (senior secondary), for a year, on the same basis.")]
+
+faq_rows = ""
+for q, a in FAQS:
+    faq_rows += '      <article class="faq-row">\n        <h3>%s</h3>\n        <p>%s</p>\n      </article>\n' % (q, a)
+costs = ""
+for amt, what in COSTS:
+    costs += ('      <div class="cost-row"><span class="cost-n">%s</span>'
+              '<span class="cost-w">%s</span></div>\n' % (amt, what))
+
+body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
+        '    <p class="kicker">Questions</p>\n'
+        "    <h1>The questions donors actually ask.</h1>\n"
+        '    <p class="lede">These are answered by Fr. Peter Abue, our founder, in his own words. If what you want '
+        "to know is not here, <a href=\"contact.html\">write to us</a> &mdash; and if you are after a particular "
+        "programme, each one has a page of its own from <a href=\"what-we-do.html\">What We Do</a>.</p>\n"
+        "  </div>\n</section>\n")
+body += sec('    <div class="faq-list">\n' + faq_rows + "    </div>\n",
+            cls="grad-paper-warm", extra="section--flush-top section")
+body += sec(head_block("What it costs", "What a year of school actually costs.",
+                       "These are our own estimates of what it costs CORAfrica to give one child a year of quality "
+                       "education, basic healthcare and good nutrition.")
+            + '    <div class="costs">\n' + costs + "    </div>\n"
+            + '    <p class="amounts-note">These are costs, not price tags. Every gift goes into one general fund, '
+              "which we direct to wherever the need is greatest, and no donation is assigned to a named child. A "
+              "page for giving to particular projects is on the way.</p>\n"
+            + '    <div class="button-row" style="margin-top:1.9rem">\n'
+              '      <a class="button button--accent" href="donate.html">Ways to give</a>\n    </div>\n',
+            cls="bg-white")
+write("faq.html", head("faq.html", "Questions — CORAfrica",
+      "What CORAfrica has achieved, who benefits from a donation, what the Catholic faith has to do with it, and "
+      "what a year of school costs. Answered by our founder.", "img/help-a-kid-hero.jpg")
+      + BANNER + header("faq.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
 # ============================================================== track-record
@@ -739,19 +1031,19 @@ write("what-we-do.html", head("what-we-do.html", "What We Do — CORAfrica",
 # (S12) unless marked otherwise; its board, contacts and plans are superseded and not used.
 REGISTER = [
     ("St. Joseph&rsquo;s Schools and Orphanage", "Idum-Mbube, Ogoja", "1999", "2,000+ pupils",
-     "Primary and secondary schools with an orphanage for children from five years old, opened with Abode for Children Inc. of Evans City, Pennsylvania. More than 2,000 pupils have been educated there, and the first Community Education Centre grew up around it. Now run by the St. Francis Humanitarian Mission."),
+     "Primary and secondary schools with an orphanage for children from five years old, opened with Abode for Children Inc. of Evans City, Pennsylvania. More than 2,000 pupils have been educated there, and the first Community Education Centre grew up around it. Being handed on in 2027."),
     ("Sr. Augustina Abuo Memorial Medical Clinic", "Idum-Mbube, Ogoja", "2007", "10 beds",
-     "A laboratory, a pharmacy and minor surgery, with community health workers in nine villages. By 2022 it was seeing around 120 patients a week, the only clinic with a doctor in a community of about 20,000. Named for Sr. Augustina Abuo, who served there until her death in 2013. Now run by the St. Francis Humanitarian Mission."),
-    ("Little Flower Nursery &amp; Primary School", "Ipong-Obudu", "&mdash;", "Nursery &amp; primary",
+     "A laboratory, a pharmacy and minor surgery, with community health workers in nine villages. By 2022 it was seeing around 120 patients a week, the only clinic with a doctor in a community of about 20,000. Named for Sr. Augustina Abuo, who served there until her death in 2013. Being handed on in 2027."),
+    ("Little Flower Nursery &amp; Primary School", "Ipong-Obudu", "2007", "Nursery &amp; primary",
      "One of the earliest schools initiated across the diocese, since handed to the parish and still operating."),
     ("Thomas McGettrick Institute of Technology", "Ogoja Diocese", "&mdash;", "Technical",
      "A technical institute facilitated in collaboration with the diocesan bishops, and since handed on."),
     ("John Stilley Schools", "Victoria, Ikom", "2017", "300+ students",
-     "Nursery, primary and secondary schools founded where the community had no secondary school at all. A new classroom block and a lodge for youth corps teachers followed, and the second Community Education Centre grew up around them. Now run by the St. Francis Humanitarian Mission."),
+     "Nursery, primary and secondary schools founded where the community had no secondary school at all. A new classroom block and a lodge for youth corps teachers followed, and the second Community Education Centre grew up around them. Being handed on in 2027."),
     ("Victoria Medical Center", "Victoria, Ikom", "&mdash;", "Health",
-     "The health centre of the Victoria-Ikom Community Education Centre, with medical outreach into the surrounding villages. Now run by the St. Francis Humanitarian Mission."),
+     "The health centre of the Victoria-Ikom Community Education Centre, with medical outreach into the surrounding villages. Being handed on in 2027."),
     ("John Bosco Academy", "Adagom, Ogoja", "2020", "479 pupils",
-     "Opened at Adagom 3 in October 2021 as St. Peter&rsquo;s, for refugee children from Cameroon who had no other way to go to school. It grew from 105 to 193 pupils in its first session, and later to 479 across a primary and a secondary section, four in five of them refugee children. Now run by the St. Francis Humanitarian Mission."),
+     "Founded at Adagom 3 for refugee children from Cameroon who had no other way to go to school. It grew from 105 to 193 pupils in its first session, and later to 479 across a primary and a secondary section, four in five of them refugee children. Being handed on in 2027."),
 ]
 DELIVERED = [
     ("CLASS: the CORAfrica Loans and Savings System",
@@ -763,7 +1055,7 @@ DELIVERED = [
     ("Refugee settlements around Ogoja",
      "Support in the settlements alongside UNHCR and the Cross River State Emergency Management Agency, with the CORAfrica Food Availability Programme running from 2019 to 2021, and World Refugee Day marked with UNHCR at Adagom 1 in June 2022.", "2019&ndash;22"),
     ("Cora Farms",
-     "Registered as its own company, Cora Farms grew to 180 acres at Idum-Mbube and 80 acres at Ikom, working with around 100 rural farmers and training more than 80 women and young people. By 2022 it kept 3,000 birds and some 2,000 fingerlings, planted 12,000 yam seeds, and grew plantain, cassava, beans, maize and soya. It continues today as CORA Farms Nigeria Ltd.", "Agriculture"),
+     "Registered as its own company in 2015, Cora Farms grew to 180 acres at Idum-Mbube and 80 acres at Ikom, working with around 100 rural farmers and training more than 80 women and young people. By 2022 it kept 3,000 birds and some 2,000 fingerlings, planted 12,000 yam seeds, and grew plantain, cassava, beans, maize and soya. It continues today as CORA Farms Nigeria Ltd.", "Agriculture"),
     ("ODAIP",
      "With the Diocese of Ogoja, the Ogoja Diocesan Agriculture and Investment Programme offered micro-lending, cafeterias, a furniture company, and diocesan and parish farms. It later became the ODAIP Microfinance Bank.", "2018&ndash;21"),
 ]
@@ -776,7 +1068,7 @@ PARTNERS = ["Catholic Diocese of Ogoja", "UNHCR Sub-Office, Ogoja", "National Co
             "Cross River State Emergency Management Agency", "Benue State Emergency Management Agency",
             "International Institute of Tropical Agriculture", "Federal University of Agriculture, Abeokuta",
             "Cross River State Agricultural Development Programme", "Cornell University",
-            "Franciscan University of Steubenville", "St. Francis Humanitarian Mission",
+            "Franciscan University of Steubenville",
             "Abode for Children Inc., Evans City, PA", "St. Ferdinand African Mission, Butler, PA",
             "Foundation for Justice, Development and Peace", "Catholic Women Organisation, Ogoja", "Cuso International"]
 
@@ -791,14 +1083,13 @@ for name, place, yr, stat, note in REGISTER:
 
 body = hero("Our track record", "Built where there was nothing, then handed on.",
             "For twenty years CORAfrica has founded schools, clinics and farms where the need was greatest, proved "
-            "they work, and handed them to people who will carry them on. Everything on this page is a past "
-            "achievement, and most of these institutions now run under the St. Francis Humanitarian Mission (SFHM).",
+            "they work, and handed them to the institutions that will carry them on. Everything on this page was "
+            "built by CORAfrica, and the hand-over of the schools and clinics completes in 2027.",
             "track-hero.jpg", "Children outside John Stilley Secondary School, Victoria-Ikom")
 body += sec(head_block("Institutions we founded", "Schools and clinics, now in other hands.",
                        "Handing a school on is the intended end state, not a loss &mdash; a project that cannot be "
-                       "handed on has not really been built. Our partnership with Franciscan University of "
-                       "Steubenville, begun as an extern study programme in 2022, is now the St. Francis Humanitarian "
-                       "Mission, which runs most of the institutions below.")
+                       "handed on has not really been built. Every institution below was founded by CORAfrica, and "
+                       "the hand-over to the partners who will run them completes in 2027.")
             + '    <div class="register-head"><span>Institution</span><span>Location</span><span>Founded</span><span>Scale</span></div>\n'
             + rows, cls="grad-paper-warm")
 body += sec(head_block("Programmes delivered", "Loans, training, classrooms and farms.",
@@ -816,8 +1107,8 @@ body += sec(head_block("Partners over the years", "Work done with others.",
             + '    <ul class="partners">\n' + "".join("      <li>%s</li>\n" % p for p in PARTNERS) + "    </ul>\n",
             cls="grad-paper-warm")
 write("track-record.html", head("track-record.html", "Our Track Record — CORAfrica",
-      "Twenty years of schools, clinics, farms and programmes that CORAfrica founded in rural Nigeria and has "
-      "handed on, most now run by the St. Francis Humanitarian Mission.", "img/track-hero.jpg")
+      "Twenty years of schools, clinics, farms and programmes that CORAfrica founded in rural Nigeria and is "
+      "handing on to the partners who will run them from 2027.", "img/track-hero.jpg")
       + BANNER + header("track-record.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
@@ -898,7 +1189,7 @@ PLAN = [
         ("Midline goals", [
             "Build capacity and the administrative budget of our Abuja office.",
             "Build or open CORAfrica offices in major cities such as Lagos and Abuja, so more people benefit from our programmes.",
-            "Build fundraising capacity together with the St. Francis Humanitarian Mission in Nigeria.",
+            "Build fundraising capacity together with the partners who will take on our schools.",
             "Build capacity in electronic financial systems and participatory monitoring and evaluation."]),
         ("Long-term goals", [
             "Run exchange programmes with our US office in marketing, bookkeeping and programme delivery.",
@@ -915,11 +1206,11 @@ body = hero("Strategic plan 2026&ndash;2030", "What we are building next.",
             "Our plan for 2026 to 2030 covers the development of children in rural Nigeria and the capacity to "
             "deliver it &mdash; education, healthcare, funding and administration &mdash; all within the Community "
             "Education Centre model.",
-            "empower.jpg", "The economic empowerment programme")
+            "plan-hero.jpg", "A newly built CORAfrica school block")
 body += sec(head_block("The priority", "A Community Education Centre in Abuja.",
-                       "Our first two centres, at Idum-Mbube and Victoria-Ikom, proved the model and now run under the "
-                       "St. Francis Humanitarian Mission. The next is in Abuja. It was recently initiated, and it is "
-                       "where our capital effort is going now.")
+                       "Our first two centres, at Idum-Mbube and Victoria-Ikom, proved the model, and are being "
+                       "handed to the institutions that will run them from 2027. The next is in Abuja. It was "
+                       "recently initiated, and it is where our capital effort is going now.")
             + grid([card("What it needs", "Approximately <strong>US $2 million</strong> to complete.", "Capital"),
                     card("What it will be", "A school at the centre of its community, with education and healthcare as its two programmes and agriculture and economic empowerment built in, for parents as well as pupils.", "The model"),
                     card("Why Abuja", "It is the first step in replicating the model across Nigeria, and it places the work beside the government agencies and partners our plan commits us to working with.", "Rationale")], 3),
@@ -943,7 +1234,7 @@ body += sec(head_block("Alignment", "Where our work meets the global agenda.",
             cls="bg-white")
 write("strategic-plan.html", head("strategic-plan.html", "Our Strategic Plan — CORAfrica",
       "CORAfrica's Strategic Plan 2026–2030: a new Community Education Centre in Abuja, and our goals for "
-      "education, healthcare, funding and administration.", "img/empower.jpg")
+      "education, healthcare, funding and administration.", "img/plan-hero.jpg")
       + BANNER + header("strategic-plan.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
@@ -1021,7 +1312,7 @@ body += sec(head_block("Give once", "A single gift, in any amount.",
               '      <a class="button button--accent" href="%s" rel="noopener">Give once</a>\n'
               "    </div>\n" % STRIPE_ONE_TIME
             + grid([card("Mail your cheque to", "Children of Rural Africa<br>%s<br>%s" % US_ADDRESS, "By post"),
-                    card("Questions about giving", "For a larger gift, a partnership, or anything else about giving: " + email_inline() + ".", "Contact")], 2),
+                    card("Questions about giving", "The questions donors ask us most often, answered by our founder, are on our <a href=\"faq.html\">questions page</a>. For a larger gift or a partnership: " + email_inline() + ".", "Contact")], 2),
             cls="grad-white-strong")
 
 body += sec(head_block("Where it went", "Our 2025 accounts, audited.",
@@ -1058,7 +1349,7 @@ write("donate.html", head("donate.html", "Donate — CORAfrica",
 BOARD_NG = [("Michael Ana", "Chairman"), ("Mark Okpatuma", "Member"), ("Michael Abuo", "Member"),
             ("Pamela Enamhe", "Member"), ("James Bulem", "Member"), ("Fr. Peter Abue", "Founder"),
             ("Adewale Ajayi", "Member / Secretary")]
-BOARD_US = [("Cornelius Okochi", "Chairman"), ("Jeannine Goelz", "Member"), ("Michael Abuo", "Member"),
+BOARD_US = [("Chux Okochi", "Chairman"), ("Jeannine Goelz", "Member"), ("Michael Abuo", "Member"),
             ("Ethan Suquet", "Member"), ("Fr. Peter Abue", "Founder"), ("Silvia Okoro", "Member / Secretary")]
 ADMIN = [("Adewale Ajayi", "National Programmes Coordinator"), ("Jeannine Goelz", "Country Representative, USA"),
          ("Elijah Ugani", "Projects Manager, Nigeria"), ("Silvia Okoro", "Office Coordinator, USA"),
@@ -1148,9 +1439,10 @@ BIOS = {
         "He is also a project development consultant, advising public and private stakeholders on feasibility, "
         "stakeholder alignment and execution planning for community-impact projects.",
     ],
-    # Sent as "Fr. Chux Okochi, President"; the title follows the txt (Chairman of the US board).
-    "Cornelius Okochi": [
-        "Fr. Chux Okochi chairs the Board of Trustees of Children of Rural Africa in the United States, bringing "
+    # Sent as "Fr. Chux Okochi, President" and listed in the txt as Cornelius Okochi. Fr. Peter,
+    # 2026-09-14: show him as Chux Okochi, Chairman of the US board.
+    "Chux Okochi": [
+        "Chux Okochi chairs the Board of Trustees of Children of Rural Africa in the United States, bringing "
         "steadfast leadership and a deeply rooted commitment to the organisation&rsquo;s humanitarian objectives. "
         "Since taking on the role, he has been instrumental in translating strategic vision into community-focused "
         "action.",
@@ -1166,23 +1458,28 @@ BIOS = {
         "Her work is driven by a deep dedication to the Nigerian communities CORAfrica serves, and a personal mission "
         "to see every resource used to its fullest potential.",
     ],
-    # From "OUR FOUNDER" in WEB PAGES 3.docx, which he pointed to for his bio. Kept to what the
-    # site already stands behind: the award year is 2017 (C3), no Duquesne degree (still
-    # unresolved), and John Bosco Academy left out, since it is not to be promoted.
+    # His own updated bio, sent 2026-09-14, which settles the Duquesne degree (Corporate
+    # Communication, 1994) and the award month (June 2017). John Bosco Academy is left out,
+    # since it is not to be promoted; the PhD year follows his prose and his return date, 2006.
     "Fr. Peter Abue": [
         "Born in Idum-Mbube, in the Ogoja Local Government Area of Cross River State, Fr. Peter Abue was ordained "
-        "a Catholic priest of the Diocese of Ogoja in 1985. He conceived Children of Rural Africa in 2006 as a "
-        "corollary to his doctoral research in International Development at Cornell University, and it was "
-        "granted <span class='nolig'>501(c)(3)</span> status the same year.",
-        "Since returning from his studies in 2006 he has initiated empowerment programmes and facilitated projects "
-        "across the diocese with its bishops, among them St. Joseph Primary and Secondary School and the Sr. "
-        "Augustina Abuo Memorial Medical Clinic at Idum-Mbube, Little Flower School at Ipong-Obudu, the Ogoja "
-        "Diocesan Agriculture and Investment Program, the Thomas McGettrick Institute of Technology, the John "
-        "Stilley Schools at Victoria-Ikom, and the St. Thomas Aquinas and Holy Family economic empowerment "
-        "programmes. In 2017 the Cross River State Government honoured him with a special award at its jubilee "
-        "celebrations, Cross River@50.",
-        "He is Parish Priest of Holy Family Parish, Ikom, Vicar General of the Catholic Diocese of Ogoja, and a "
-        "member of the St. Francis Humanitarian Mission in Nigeria.",
+        "a Catholic priest of the Diocese of Ogoja in 1985. He went on to further study, taking a Master&rsquo;s "
+        "degree in Corporate Communication at Duquesne University, Pittsburgh, in 1994, and a PhD in International "
+        "Development at Cornell University, Ithaca, New York, in 2006.",
+        "As a corollary to that research he conceived Children of Rural Africa, incorporated as a "
+        "<span class='nolig'>501(c)(3)</span> non-profit in the United States in 2006 and registered as an NGO with "
+        "the Corporate Affairs Commission in Nigeria in 2010. In June 2017 the Cross River State Government honoured "
+        "him with a special award during its jubilee celebrations, Cross River@50.",
+        "Since returning from his studies he has initiated empowerment programmes and facilitated projects across "
+        "the diocese, among them St. Joseph Primary and Secondary School and the Sr. Augustina Abuo Memorial Medical "
+        "Clinic at Idum-Mbube, Little Flower School at Ipong-Obudu, the Ogoja Diocesan Agriculture and Investment "
+        "Program, the Thomas McGettrick Institute of Technology, the John Stilley Nursery and Primary Schools at "
+        "Victoria-Ikom, and the St. Thomas Aquinas and Holy Family economic empowerment programmes. Those "
+        "institutions are being handed on to the partners who will run them.",
+        # The St. Francis Humanitarian Mission is not to be named anywhere on the site until Fr. Peter
+        # has finished negotiating a memorandum of understanding (Ethan, 2026-09-14). His own bio was
+        # the last place it appeared; restore this line only when he says the MoU is signed.
+        "He is Parish Priest of Holy Family Parish, Ikom, and Vicar General of the Catholic Diocese of Ogoja.",
     ],
 }
 
@@ -1220,7 +1517,7 @@ for name, paras in BIOS.items():
 body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
         '    <p class="kicker">Contact us</p>\n'
         "    <h1>Talk to the people running the work.</h1>\n"
-        '    <p class="lede">Our operations are directed from Ogoja, in Cross River State, and overseen by two Boards '
+        '    <p class="lede">Our operations are directed from our headquarters in Abuja and overseen by two Boards '
         "of Trustees, one in Nigeria and one in the United States. For partnership, grant or press enquiries, write "
         "to us and we will route you to the right person.</p>\n  </div>\n</section>\n")
 body += sec(head_block("Boards of Trustees", "Governance.")
@@ -1230,14 +1527,14 @@ body += sec(head_block("Boards of Trustees", "Governance.")
 body += sec(head_block("Administrative team", "Delivery.")
             + grid([person(n, r) for n, r in ADMIN], 4), cls="bg-white")
 body += sec(head_block("Offices", "Where to find us.")
-            + grid([card("Nigeria &mdash; operations", "No 48 Mbube Road, Opposite Govt. Technical College, Abakpa, Ogoja, Cross River State."),
-                    card("Nigeria &mdash; national office", "Abuja. Our national office directs our programmes and the new Community Education Centre."),
+            + grid([card("Nigeria &mdash; headquarters", ", ".join(NG_ADDRESS) + ". Our national office directs our programmes and the new Community Education Centre."),
+                    card("Cross River State", "Our programmes run across the Ogoja&ndash;Ikom axis of Cross River State, where the schools, clinics and empowerment programmes we founded are."),
                     card("United States", ", ".join(US_ADDRESS) + ". Our <span class='nolig'>501(c)(3)</span> entity and US board.")], 3)
             + contact_block(margin_top=True),
             cls="grad-white-strong")
 write("contact.html", head("contact.html", "Contact Us — CORAfrica",
       "CORAfrica's Boards of Trustees in Nigeria and the United States, our administrative team, and our offices "
-      "in Ogoja, Abuja and New York.")
+      "in Abuja and New York.")
       + BANNER + header("contact.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 

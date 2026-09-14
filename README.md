@@ -6,7 +6,7 @@ no build toolchain beyond one Python script.
 
 ```
 site/            ← the deployable. Upload this directory, nothing else.
-  *.html            9 pages (generated — see below)
+  *.html            24 pages (generated — see below)
   styles.css        the whole design system
   script.js         mobile nav and scroll reveals; the site works without JS
   img/              logo SVGs, photography, team/ headshots
@@ -24,8 +24,10 @@ photos/source/   ← raw photo downloads (gitignored)
 python3 build.py
 ```
 
-Regenerates all nine pages into `site/` — Home, Who We Are, Our Model, What We Do, Track Record,
-Strategic Plan, News, Donate, Contact. **The generated HTML carries a do-not-edit banner** — the
+Regenerates every page into `site/`. Nine are in the main menu — Home, Who We Are, Our Model, What We Do,
+Track Record, Strategic Plan, News, Donate, Contact — and fifteen are not: five `programme-*.html` pages, nine
+`team-*.html` bio pages, and `faq.html`. Those are reached by clicking a card, or from the footer in the case
+of the questions page. **The generated HTML carries a do-not-edit banner** — the
 header, footer and `<head>` are defined once in `build.py`, so a nav change is one edit rather
 than nine. Content lives in `build.py` too, near the page it belongs to.
 
@@ -102,18 +104,19 @@ Written in `[SQUARE BRACKETS]` so they cannot ship unnoticed. Grep for them:
 grep -rn "TO BE SUPPLIED\|\[.*NEEDED" site/*.html
 ```
 
-- **Email and phone** — the old ones are dead. Every footer, plus News, Donate and Contact. Set
-  `CONTACT_EMAIL` and `CONTACT_PHONE` at the top of `build.py` and they appear everywhere.
+- **Email** — the old address is dead and the new one has not arrived. Every footer, plus News, Donate,
+  Contact and the questions page. Set `CONTACT_EMAIL` at the top of `build.py` and it appears everywhere. The
+  phone numbers arrived on 2026-09-14 and are live (`PHONES`).
 
 The full list of what is still open with Fr. Peter is `docs/ASK-FR-PETER.md` (local only).
 
 ## 🔴 Before this goes live
 
-1. **The new email address and phone number** (above).
+1. **The new email address** (above). The phone numbers are in.
 2. **Jeannine confirms the cheque payee and US address** on the Donate page. The EIN, 68-0619454, is
    confirmed (Ethan, 2026-09-10).
-3. **Six bios still to come**: Jeannine Goelz, Ethan Suquet, Elijah Ugani, Olurotimi Padonu, Edwin
-   Okungbowa and Blessing Ana (see People).
+3. **Two bios still to come**: Jeannine Goelz and Ethan Suquet. The administrative team need a photo only,
+   not a bio (Fr. Peter, 2026-09-14), and every one of them has one.
 4. **WordPress comes down**; its GiveWP donation records and media library pass to the new site
    (Fr. Peter, 2026-09-04). Export both before anything is switched off.
 5. **DNS.** Ethan is the sole controller of the domain (Fr. Peter, 2026-09-04). Point
@@ -149,12 +152,21 @@ heroes in `site/img/`. They are WhatsApp-compressed, at most 1280px wide: fine f
 borderline for a full-width hero, so ask for originals of any that become permanent. A few older
 images from the WordPress library remain (`hero`, `hands`, `clinic`, `farm`, `empower`, `school`).
 
+**The sharpest image goes in the most prominent slot** (Fr. Peter, via Ethan, 2026-09-14). Page heroes are
+1400 × 560 and were re-cut on 2026-09-14 from the best source available, rather than being upscaled from the
+900 × 675 card crops: the home, Our Model, What We Do and Strategic Plan heroes all changed, and each
+programme page got one of its own. Sources cap at 1280px (WhatsApp) or 1920px (the old WordPress library), so
+a hero is at most a 9% upscale. Measure candidates before choosing — resolution alone is misleading, since the
+widest file on disk was also one of the softest, and it was the old home hero.
+
 Headshots live in `site/img/team/` (168 × 168, plus a larger `-lg` version for the bio pages) and are
 wired by name in `HEADSHOTS` in `build.py`; anyone without one shows their initials. **Only add a
 headshot once you are certain who is in it.** All fifteen people on the Contact page have one. Thirteen
 were matched on 2026-09-10 against Fr. Peter's messages of 2026-09-06: each board photo sits between
 that trustee's name and their details, and each admin-team photo is followed by its "Name (Role)"
-caption. Olurotimi Padonu's comes from `rotimi.docx`, and Ethan supplied his own.
+caption. Olurotimi Padonu's comes from `rotimi.docx`, and Ethan supplied his own. **Blessing Ana's was
+corrected on 2026-09-14**, when Fr. Peter identified the portrait we held as unnamed: the photo the caption
+match had put under her name is someone else, and is no longer on the site.
 
 ## People
 
@@ -163,9 +175,22 @@ them on 2026-09-04 (`BOARD_NG`, `BOARD_US` and `ADMIN` in `build.py`). **Titles 
 answer, even where a later message or a bio words them differently** (Ethan, 2026-09-10).
 
 Anyone with an entry in `BIOS` gets a page of their own, `team-<name>.html`, and their card on Contact
-becomes a link to it. Those pages are in no menu: clicking the card is the only way in. The people still
-without a bio are listed in `docs/ASK-FR-PETER.md`; add a bio to `BIOS` and the page and link appear
-on the next build.
+becomes a link to it. Those pages are in no menu: clicking the card is the only way in. **The administrative
+team need a photo only, not a bio** (Fr. Peter, 2026-09-14); the two trustees still owed are listed in
+`docs/ASK-FR-PETER.md`. Add a bio to `BIOS` and the page and link appear on the next build.
+
+## Programmes and questions
+
+The five programmes Fr. Peter asked us to promote on 2026-09-14 — HELP-A-KID, economic empowerment, school
+clinics, school demonstration farms and VASAC — each have a `programme-*.html` page, built by
+`programme_page()` from `PROGRAMMES` in `build.py`. As with the bio pages they are in no menu: the card on
+Home or What We Do is the only way in. That is deliberate — it keeps the long-form detail off the pages people
+actually navigate.
+
+`faq.html` carries nine of the twenty questions in his `FAQs.docx`, chosen for a donor reading the site cold.
+The five questions that explain a programme are left out, because the programme pages answer them; so are the
+internal fundraising talking points. It is linked from the footer, from Donate and from What We Do, not from
+the main menu, which follows the page list he sent.
 
 ## Content sourcing
 
@@ -179,8 +204,13 @@ CrossRiverWatch (2014) to Vanguard and ThisDay (2026). Nothing on the site is in
 1. **Rank sources by the date they were written, not the date they were sent.** Fr. Peter's
    written answers are the newest authority. The 70-page Organizational Profile he sent on
    2026-09-06 was written c. 2022–23, so it is used for the track record and nothing else.
-2. **Past projects stay past.** The schools and clinics now run by the St. Francis Humanitarian
-   Mission appear only on Track Record, never as run by CORAfrica today.
+2. **Past projects stay past** — and ⛔ **the St. Francis Humanitarian Mission is not named anywhere on the
+   site.** On 2026-09-14 Fr. Peter said the partnership is not official, SFHM is not yet operative and
+   **nothing is run by it**; Ethan added the same day that it cannot be mentioned at all until Fr. Peter has
+   finished negotiating a memorandum of understanding. The site keeps those institutions on Track Record,
+   names no successor, and dates the hand-over to **2027**. The line in Fr. Peter's own bio calling him a
+   member of it has been removed; restore it only when the MoU is signed. *Franciscan University of
+   Steubenville is a separate body and stays in the past-partners list.*
 3. **Two programmes, not four pillars** — Education and Healthcare, with Agriculture and Economic
    Empowerment built into the school.
 4. **Fr. Peter is shown as Founder and kept low-profile**, at his request.
