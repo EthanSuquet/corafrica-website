@@ -1452,12 +1452,15 @@ write("donate.html", head("donate.html", "Donate — CORAfrica",
 
 
 # ============================================================== contact
-# Governance and staff exactly as Fr. Peter confirmed them in writing on 2026-09-04 (S10),
-# which supersedes the single board taken from the docx. He is shown as Founder.
+# Governance and staff from Fr. Peter's written answers of 2026-09-04 (S10), which superseded
+# the single board taken from the docx. He is shown as Founder.
+# Michael Abuo sat on both boards until 2026-09-16: FINAL WEB MENU (S16) lists him on Nigeria
+# only, and Ethan — who sits on the US board himself — confirmed the same day that he is off
+# it. He keeps his Nigeria seat, his headshot and his bio page.
 BOARD_NG = [("Michael Ana", "Chairman"), ("Mark Okpatuma", "Member"), ("Michael Abuo", "Member"),
             ("Pamela Enamhe", "Member"), ("James Bulem", "Member"), ("Fr. Peter Abue", "Founder"),
             ("Adewale Ajayi", "Member / Secretary")]
-BOARD_US = [("Chux Okochi", "Chairman"), ("Jeannine Goelz", "Member"), ("Michael Abuo", "Member"),
+BOARD_US = [("Chux Okochi", "Chairman"), ("Jeannine Goelz", "Member"),
             ("Ethan Suquet", "Member"), ("Fr. Peter Abue", "Founder"), ("Silvia Okoro", "Member / Secretary")]
 ADMIN = [("Adewale Ajayi", "National Programmes Coordinator"), ("Jeannine Goelz", "Country Representative, USA"),
          ("Elijah Ugani", "Projects Manager, Nigeria"), ("Silvia Okoro", "Office Coordinator, USA"),
