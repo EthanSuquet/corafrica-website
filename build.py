@@ -277,9 +277,66 @@ def media_pair(a, b):
     return o + "    </div>\n"
 
 
+# A typical Community Education Centre, drawn to Fr. Peter's description (S16, 2026-09-16:
+# "let AI create a design of a typical CEC based on my descriptions so far"). The school is
+# the centre; the four things that keep a child in it sit around it, inside one community.
+CEC_NODES = [("Healthcare", "School clinic", "Free to the pupils"),
+             ("Agriculture", "Demonstration farm", "Worked through a real season"),
+             ("Skills", "Skills centre (VASAC)", "A trade to leave with"),
+             ("Livelihoods", "Economic empowerment", "Interest-free loans to parents")]
+# Per node: box x/y, the point on the box the connector meets, and the point on the
+# centre circle it leaves from. Measured off a 900x540 frame with the circle at 450,290 r100.
+CEC_POS = [(46, 112, 296, 156, 374.6, 224.4), (604, 112, 604, 156, 525.4, 224.4),
+           (46, 380, 296, 424, 374.6, 355.6), (604, 380, 604, 424, 525.4, 355.6)]
+
+
+def cec_diagram():
+    """The schematic, plus the same four elements as a plain list for narrow screens —
+    generated from one list, so the drawing and the fallback cannot drift apart."""
+    nodes = ""
+    for (tag, title, note), (nx, ny, ex, ey, sx, sy) in zip(CEC_NODES, CEC_POS):
+        nodes += ('      <line class="cec-link" x1="%s" y1="%s" x2="%s" y2="%s"></line>\n' % (sx, sy, ex, ey)
+                  + '      <g class="cec-node">\n'
+                    '        <rect x="%d" y="%d" width="250" height="88" rx="20"></rect>\n' % (nx, ny)
+                  + '        <text class="cec-tag" x="%d" y="%d">%s</text>\n' % (nx + 22, ny + 27, tag.upper())
+                  + '        <text class="cec-name" x="%d" y="%d">%s</text>\n' % (nx + 22, ny + 52, title)
+                  + '        <text class="cec-note" x="%d" y="%d">%s</text>\n' % (nx + 22, ny + 72, note)
+                  + "      </g>\n")
+    rows = "".join('      <li><span class="cec-row-tag">%s</span><strong>%s</strong><span>%s</span></li>\n'
+                   % (t, n, d) for t, n, d in CEC_NODES)
+    return ('    <figure class="cec-figure">\n'
+            '      <svg class="cec-svg" viewBox="0 0 900 540" role="img" aria-labelledby="cec-t cec-d">\n'
+            '        <title id="cec-t">A typical Community Education Centre</title>\n'
+            '        <desc id="cec-d">A school at the centre, with a school clinic, a demonstration farm, a '
+            'skills acquisition centre and an economic empowerment programme around it, all inside one '
+            'community.</desc>\n'
+            '        <rect class="cec-bound" x="16" y="76" width="868" height="418" rx="56"></rect>\n'
+            '        <rect class="cec-pill" x="386" y="62" width="128" height="28" rx="14"></rect>\n'
+            '        <text class="cec-pill-t" x="450" y="81">The community</text>\n'
+            + nodes
+            + '        <circle class="cec-core" cx="450" cy="290" r="100"></circle>\n'
+              '        <text class="cec-core-t" x="450" y="285">The school</text>\n'
+              '        <text class="cec-core-s" x="450" y="312">Primary &amp; secondary</text>\n'
+              '      </svg>\n'
+            + '      <ul class="cec-list">\n%s      </ul>\n' % rows
+            + '      <figcaption>A typical Community Education Centre: the school at the centre, and the four '
+              'things that keep a child in it.</figcaption>\n    </figure>\n')
+
+
+def shot_grid(items):
+    """A row of photographs with captions: each item is (file, alt, caption)."""
+    o = '    <div class="shot-grid">\n'
+    for img, alt, cap in items:
+        o += ('      <figure class="shot">\n'
+              '        <div class="media"><img src="img/%s" alt="%s" loading="lazy" width="900" height="675"></div>\n'
+              % (img, alt)
+              + '        <figcaption>%s</figcaption>\n      </figure>\n' % cap)
+    return o + "    </div>\n"
+
+
 REVEAL = ("card", "tier", "person", "press-card", "press-row", "register-row",
           "tl-row", "photo-card", "media", "panel", "alt-row", "section-head", "cred",
-          "cost-row", "partners", "pull", "group-label", "pending", "faq-row")
+          "cost-row", "partners", "pull", "group-label", "pending", "faq-row", "cec-figure")
 
 
 def add_reveals(html):
@@ -306,13 +363,19 @@ def write(page, html):
 
 
 # ============================================================== shared data
-# Fr. Peter's figures as at September 2026 (CONTENT-FACTS S10). They count the schools and
-# clinics CORAfrica founded, which it still runs: the hand-over to the partners who will
-# take them on is set for 2027, and the 61 staff are CORAfrica's until then (S15).
-STATS = [("2,550", "Children in school", "Enrolled today in the schools we founded"),
+# Fr. Peter's figures, revised by him in FINAL WEB MENU (S16, 2026-09-16), which adds the
+# cumulative "children educated" and "small businesses" counts to the five he gave in S10.
+# They count the schools and clinics CORAfrica founded, which it still runs: the hand-over to
+# the partners who will take them on is set for 2027, and the 61 staff are CORAfrica's until
+# then. 61 is the payroll today; the 613 in the FAQ is everyone carried over twenty years —
+# two different counts, not a contradiction. S16 writes "2026 hand-over" here and 2027 six
+# times elsewhere in the same document, so 2027 stands.
+STATS = [("7,330", "Children educated", "Graduated from our schools since we were founded"),
+         ("2,550", "Children in school", "Enrolled today in the schools we founded"),
          ("7", "Schools and clinics", "Founded by CORAfrica and operating today"),
          ("64", "Communities", "Reached through our programmes"),
          ("61", "Staff and teachers", "On our payroll, until the 2027 hand-over"),
+         ("805", "Small businesses supported", "Through our empowerment programmes, to date"),
          ("513", "Women supported", "Through our empowerment programmes, to date")]
 
 # The model is two programmes with two more built into the school (S10, 2026-09-04),
@@ -327,19 +390,19 @@ PILLARS = [("Education", "Primary and secondary schools where none exist, with v
 # the Abuja centre follow as plain cards: real work, but not part of that five.
 PROGRAMMES = [
     ("HELP-A-KID", "programme-help-a-kid.html", "Children",
-     "School fees, uniforms and materials for children who would otherwise leave school. 245 have completed primary or secondary education through it."),
+     "A child&rsquo;s poverty should not decide whether that child is educated. HELP-A-KID pays the fees, and the costs around them, for acutely underprivileged children, so that they can finish the education they have already started."),
     ("Economic empowerment", "programme-empowerment.html", "Families",
-     "Interest-free loans to more than 500 business owners across the Ogoja&ndash;Ikom axis, so parents can trade their way to school fees."),
+     "When a family cannot afford to keep a child in class, the barrier is income. The Economic Empowerment Programme lends to the parents &mdash; interest-free &mdash; so that a business can grow into school fees."),
     ("School clinics", "programme-school-clinics.html", "Health",
-     "Clinics inside our school system, free to pupils and affordable to their communities, with medical outreach to villages that have neither."),
+     "A child too ill to learn is not being educated. Our clinics sit inside the school system: free to the children who study there, and affordable to everybody else in the community."),
     ("School demonstration farms", "programme-school-farms.html", "Agriculture",
-     "Agriculture on the timetable rather than in a textbook: pupils prepare the land, plant, weed, harvest, store and sell."),
+     "Agriculture on the timetable rather than in a textbook. Pupils work a real farm through a real season, and leave school with a skill that feeds a family."),
     ("Vocational and skills acquisition", "programme-vasac.html", "Skills",
-     "VASAC centres inside our schools, so a student leaves with a trade as well as a certificate &mdash; from tailoring and computing to building and solar."),
+     "We go a step beyond the conventional school system, and equip our schools so that a student leaves with a certificate. Each centre runs pilot systems where students practise the skills that will sustain them for life."),
 ]
 ALSO_TODAY = [
     ("CORA Farms Nigeria Ltd", "Our registered farming company, founded in 2015: crops, poultry and livestock, and a training ground for rural farmers.", "Agriculture"),
-    ("A new centre in Abuja", "Our next Community Education Centre, recently begun. About US $2 million will complete it.", "Building now"),
+    ("A new centre in New Karu", "Our next Community Education Centre, recently begun, in New Karu, Nasarawa State, near Abuja. About US $2 million will complete it.", "Building now"),
 ]
 
 CREDS = ["Registered <span class='nolig'>501(c)(3)</span> since 2006", "Registered in Nigeria since 2010",
@@ -425,7 +488,7 @@ def stats_panel():
             '        <p class="kicker">Twenty years on the ground</p>\n'
             '        <p class="panel-note">As at September 2026, across every school, clinic and programme CORAfrica founded</p>\n'
             "      </div>\n"
-            '      <div class="stats stats--5">\n%s      </div>\n    </div>\n' % s)
+            '      <div class="stats stats--7">\n%s      </div>\n    </div>\n' % s)
 
 
 def creds_strip():
@@ -475,9 +538,11 @@ def person(name, role):
 # ============================================================== index
 body = hero("Education for Africa&rsquo;s Future",
             "A school, and everything that keeps a child in it.",
-            "CORAfrica builds primary and secondary schools in rural Nigeria where none exist &mdash; then adds "
-            "the clinic, the farm and the support for parents that keep children coming back. Founded in 2006, "
-            "and now building our next Community Education Centre, in Abuja.",
+            "CORAfrica builds Community Education Centres in rural Nigeria where no school exists &mdash; then "
+            "adds a demonstration farm, a school clinic and a skills acquisition centre, so that children can stay "
+            "within their own community. We provide economic empowerment for their parents, which is what keeps "
+            "them coming back. Founded in 2006, and now building our next centre in New Karu, Nasarawa State, "
+            "near Abuja.",
             "hero.jpg", "Pupils at their desks at a CORAfrica school", page_hero=False,
             actions='      <div class="button-row">\n'
                     '        <a class="button button--accent" href="donate.html">Donate</a>\n'
@@ -489,9 +554,9 @@ body += sec('    <div class="split split--center">\n      <div>\n'
             + head_block("The Community Education Centre",
                          "A school on its own does not keep a child in school.",
                          "Hunger, illness and a family with no income take more children out of class than any exam "
-                         "does. So each of our centres runs two programmes, education and healthcare, and builds "
-                         "agriculture and economic empowerment into the school itself &mdash; for parents as well as "
-                         "pupils. It takes a village to raise a child.")
+                         "does. So a Community Education Centre does not only run a school: it integrates "
+                         "healthcare, agriculture and economic empowerment into the school itself &mdash; for "
+                         "parents, pupils and the community around them. It takes a village to raise a child.")
             + '        <a class="button button--dark" href="our-model.html">How the model works</a>\n'
             + "      </div>\n"
             + grid([card(n, b, tag=t, ic=i) for n, b, i, t in PILLARS], 2)
@@ -529,7 +594,7 @@ body += sec('    <div class="split split--media split--center">\n'
                          "schools forever. We build where there is nothing, prove that the model works, and hand it "
                          "to the institutions that will carry it on. Our first two Community Education Centres, at "
                          "Idum-Mbube and Victoria-Ikom, have done exactly that, and their hand-over completes in "
-                         "2027. So we have begun again, in Abuja.")
+                         "2027. So we have begun again, at New Karu in Nasarawa State.")
             + '        <a class="button button--dark" href="track-record.html">See our track record</a>\n'
             + "      </div>\n    </div>\n", cls="grad-strong-paper")
 
@@ -645,56 +710,94 @@ write("who-we-are.html", head("who-we-are.html", "Who We Are — CORAfrica",
 
 
 # ============================================================== our-model
-COMPONENTS = [
+# Replaced wholesale from Fr. Peter's FINAL WEB MENU (S16, 2026-09-16) — "please replace
+# everything on OUR MODEL with above content". Three changes of substance: the four equal
+# components become the two programmes he names, education and healthcare, with agriculture,
+# economic empowerment and HELP-A-KID described inside them; the next centre is New Karu in
+# Nasarawa State, not "Abuja"; and "How a centre works" and "The priority" move here from the
+# strategic plan page, which is where his document places them.
+PROGRAMME_BLOCKS = [
     ("Education", "classroom.jpg", "01", "Programme", "Pupils at their desks in a classroom",
-     "Primary and secondary schools, built where children have no educational opportunity at all, and equipped where schools exist but lack the basics. Small classes, good teaching, and a holistic education that grows a child academically, personally and spiritually &mdash; with vocational training and skills acquisition at its heart."),
-    ("Healthcare", "clinic.jpg", "02", "Programme", "A CORAfrica clinic",
-     "A clinic inside the school system, so a child&rsquo;s health is never the reason they miss class. We concentrate on diarrhoeal disease and malaria in the under-fives, and invest heavily in the first 1,000 days of life, the window that sets brain development, growth and immune strength. Child welfare carries the same premium, through our HELP-A-KID programme."),
-    ("Agriculture", "school-farm.jpg", "03", "Built into the school", "Students in school uniform working on a school farm",
-     "School farms where children learn agriculture with their hands, not from a textbook. The farm feeds the school, the skill outlasts the schooling, and where support is available, parents and guardians receive agricultural incentives too."),
-    ("Economic empowerment", "livelihoods.jpg", "04", "Built into the school", "Women at a livelihoods distribution run by CORAfrica",
-     "When a family cannot afford to keep a child in class, the barrier is income. Where it is available, micro-credit lets parents and guardians start small businesses and farms. 513 women have been supported through our empowerment programmes so far."),
+     "Our primary and secondary schools are centred where children have no educational opportunity at all, and equipped where schools exist but lack the basics. Small classes, good teaching, and a holistic education that grows a child academically, personally and spiritually &mdash; with vocational training and skills acquisition at its heart.",
+     ["We run economic empowerment programmes inside our centres, so that poor parents can take soft loans to start the small businesses and farms that lift their livelihoods.",
+      "The HELP-A-KID programme reaches children who are not in a CORAfrica-supported school at all, so that a poorer child is encouraged into an adequate education in spite of their vulnerability."]),
+    ("Healthcare", "clinic.jpg", "02", "Programme", "A CORAfrica school clinic",
+     "Our school clinic is built inside the school system, so a child&rsquo;s health is never the reason they miss class. We concentrate on prevention, early detection, health education, and the treatment of diarrhoeal disease and malaria in the under-fives. We invest heavily in the first 1,000 days of life, the window that sets brain development, growth and immune strength. Child welfare carries the same premium, through HELP-A-KID.",
+     ["The clinics run medical outreach to underserved places that have none of their own &mdash; rural communities, refugee settlements, schools and orphanages.",
+      "Through them, school children are taught personal hygiene, environmental sanitation, proper handwashing and safe drinking water."]),
 ]
 blocks = ""
-for i, (name, img, num, label, alt, txt) in enumerate(COMPONENTS):
+for i, (name, img, num, label, alt, txt, points) in enumerate(PROGRAMME_BLOCKS):
     media = ('        <div class="media"><img src="img/%s" alt="%s" loading="lazy" width="900" height="675"></div>\n'
              % (img, alt))
+    pts = "".join("            <li>%s</li>\n" % x for x in points)
     copy = ('        <div>\n          <p class="alt-num"><span>%s</span><span class="alt-rule"></span></p>\n'
             '          <span class="card-tag">%s</span>\n'
-            "          <h3>%s</h3>\n          <p>%s</p>\n        </div>\n" % (num, label, name, txt))
+            "          <h3>%s</h3>\n          <p>%s</p>\n" % (num, label, name, txt)
+            + '          <ul class="sub-points">\n%s          </ul>\n        </div>\n' % pts)
     blocks += '      <div class="alt-row">\n%s      </div>\n' % ((media + copy) if i % 2 == 0 else (copy + media))
 
-body = hero("Our model", "Two programmes. One community. One system.",
-            "The Community Education Centre is our answer to a hard lesson: a school on its own does not keep a child "
-            "in school. Hunger, illness and a family without income take more children out of class than any exam does.",
+body = hero("Our model", "A school on its own does not keep a child in school.",
+            "Hunger, illness and a family with no income take more children out of class than any exam does. So a "
+            "Community Education Centre does not only run a school: we integrate healthcare, agriculture and "
+            "economic empowerment into the school itself &mdash; for parents, pupils and community members alike. "
+            "It takes a village to raise a child.",
             "our-model-hero.jpg", "Pupils gathered at the John Stilley Schools, Victoria-Ikom")
-# Fr. Peter's own description of the CEC, supplied 2026-09-10, rewritten with every point kept.
-body += sec(head_block("The Community Education Centre", "More than a school.",
-                       "A Community Education Centre brings learning, social welfare and empowerment together for the "
-                       "African child, inside the child&rsquo;s own community &mdash; above all for the child who would "
-                       "otherwise have no hope of a sustainable livelihood. It rests on two programmes, education and "
-                       "healthcare, with agriculture and economic empowerment built into the school, so that the whole "
-                       "community gathers around its children in a school system that provides for parents as well as "
-                       "pupils.")
-            + blocks
-            + '    <p class="pull">It takes a village to raise a child. <span>This is Education for Africa&rsquo;s Future.</span></p>\n',
-            cls="grad-paper-warm")
-body += sec(head_block("Where the model stands", "Proven twice. Now going to Abuja.",
-                       "The model was first built at Idum-Mbube, in Ogoja, and at Victoria, in Ikom: at each, a "
-                       "school, a health centre and a farm. Both are working, and both are being handed to the "
-                       "institutions that will run them from 2027 &mdash; which is what they were built for. We "
-                       "intend to replicate the model across Nigeria, beginning in Abuja.")
-            + grid([card("Idum-Mbube, Ogoja", "St. Joseph&rsquo;s Schools and Orphanage, the Sr. Augustina Abuo Memorial Medical Clinic, and the farm. Being handed on in 2027.", "Centre one"),
-                    card("Victoria, Ikom", "The John Stilley Schools, Victoria Medical Center, and the farm. Being handed on in 2027.", "Centre two"),
-                    card("Abuja", "Our next Community Education Centre, recently initiated. Approximately US $2 million will complete it.", "Building now")], 3)
-            + '    <div class="button-row" style="margin-top:1.9rem">\n'
-              '      <a class="button button--dark" href="strategic-plan.html">Read the strategic plan</a>\n    </div>\n',
+body += sec(head_block("The Community Education Centre", "Two programmes. One community. Several systems.",
+                       "The Community Education Centre is our answer to a hard lesson: a school on its own does not "
+                       "keep a child in school. Hunger, illness and a family without income take more children out "
+                       "of class than any exam does. This is Education for Africa&rsquo;s Future.")
+            + cec_diagram(), cls="grad-paper-warm")
+body += sec(head_block("Inside a centre", "More than a school.",
+                       "A Community Education Centre brings learning, social welfare and empowerment together for "
+                       "the African child, inside the child&rsquo;s own community &mdash; above all for the child "
+                       "who would otherwise have no hope of a sustainable livelihood. It rests on education and "
+                       "healthcare, but it also has agriculture and economic empowerment built into the school, so "
+                       "that the whole community gathers its children into a school system that provides for "
+                       "parents as well as pupils.")
+            + blocks, cls="bg-white")
+body += sec(head_block("Where the model stands", "Proven twice. Now going to Karu, Nasarawa State.",
+                       "The model was first built at Idum-Mbube, in Ogoja, and at Victoria, in Ikom. At each, a "
+                       "school, a health centre and a farm were built. Both are working, and both are now being "
+                       "handed to the institutions that will run them from 2027 &mdash; which is what they were "
+                       "built for. We intend to replicate the model across Nigeria, beginning in Karu, in "
+                       "Nasarawa State.")
+            + grid([card("Idum-Mbube, Ogoja", "St. Joseph&rsquo;s Schools and Orphanage, the Sr. Augustina Abuo Memorial Medical Clinic and the CORA Farms &mdash; a demonstration of the CEC model. Today it is being handed on.", "Centre one"),
+                    card("Victoria, Ikom", "The John Stilley Schools, the Victoria Medical Center and the CORA Farms. Being handed on.", "Centre two"),
+                    card("New Karu, Nasarawa State", "Our next Community Education Centre, recently initiated, near Abuja. Approximately US $2 million will complete it.", "Building now")], 3)
+            + shot_grid([("clinic.jpg", "The Sr. Augustina Abuo Memorial Medical Clinic",
+                          "The Sr. Augustina Abuo Memorial Medical Clinic &mdash; Idum-Mbube, Ogoja"),
+                         ("classroom.jpg", "Pupils at their desks in a classroom",
+                          "A classroom at one of the schools CORAfrica founded"),
+                         ("js-welcome.jpg", "Children outside John Stilley Secondary School",
+                          "The John Stilley Schools &mdash; Victoria, Ikom"),
+                         ("school-farm.jpg", "Students in school uniform working on a school farm",
+                          "The school demonstration farm, worked by the pupils themselves")]),
             cls="grad-white-strong")
+body += sec(head_block("How a centre works", "Study teams, not just classes.",
+                       "Through our Vocational and Skills Acquisition Centres, pilot systems are operated in which "
+                       "children and young people form study teams together with parents, teachers and community "
+                       "members. A skill practised alongside the adults who will employ or finance it is a skill "
+                       "that survives leaving school.")
+            + grid([card("Children and parents together", "The school provides for parents and guardians as well as pupils, through farming support and micro-credit where it is available."),
+                    card("Skills that outlast school", "Trades from computing and fashion design to building, solar installation and farming, taught hands-on."),
+                    card("Built to be handed on", "Each centre is designed to be run by its community and partners, so that CORAfrica can move on and begin the next.")], 3),
+            cls="grad-warm-white")
+body += sec(head_block("The priority", "A Community Education Centre at New Karu.",
+                       "Our first two centres, at Idum-Mbube and Victoria-Ikom, proved the model, and are being "
+                       "handed to the institutions that will run them from 2027. The next is in Karu, in Nasarawa "
+                       "State. It was recently initiated, and it is where our capital effort is going now.")
+            + grid([card("What it needs", "Approximately <strong>US $2 million</strong> to complete.", "Capital"),
+                    card("What it will be", "A school at the centre of the Nasarawa community, with education and healthcare as its two programmes and agriculture and economic empowerment built in, for parents as well as pupils.", "The model"),
+                    card("Why Karu", "It is the first step in replicating the model across Nigeria, and it places the work beside the government agencies and partners our plan commits us to working with.", "Rationale")], 3)
+            + '    <div class="button-row" style="margin-top:1.9rem">\n'
+              '      <a class="button button--dark" href="strategic-plan.html">Read the strategic plan</a>\n    </div>\n'
+            + '    <p class="pull">It takes a village to raise a child. <span>This is Education for Africa&rsquo;s Future.</span></p>\n',
+            cls="bg-paper")
 write("our-model.html", head("our-model.html", "Our Model — CORAfrica",
       "The Community Education Centre: education and healthcare, with agriculture and economic empowerment built "
       "into the school, because a school alone does not keep a child in school.", "img/our-model-hero.jpg")
       + BANNER + header("our-model.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
-
 
 # ============================================================== what-we-do
 VASAC = [
@@ -726,7 +829,8 @@ body = hero("What we do", "Education is the bedrock. Everything else is built on
 body += sec(head_block("What we run today", "Five programmes, under our own direction.",
                        "The schools and clinics we founded are being handed to the institutions that will run them "
                        "from 2027 &mdash; see our <a href=\"track-record.html\">track record</a>. These are the "
-                       "programmes CORAfrica runs, each one answering a different reason a child stops coming to class.")
+                       "programmes CORAfrica runs day to day, alongside our Community Education Centres, each one "
+                       "answering a different reason a child stops coming to class.")
             + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in PROGRAMMES], 3)
             + '    <h3 class="group-label">Alongside them</h3>\n'
             + grid([card(t, b, tag) for t, b, tag in ALSO_TODAY], 2)
@@ -944,12 +1048,13 @@ programme_page(
 # talking points are left out.
 FAQS = [
     ("What has CORAfrica achieved in twenty years, and where is it going?",
-     "We have built seven primary and seven secondary schools, educated 5,550 school children, reached 70 "
-     "communities, empowered 713 families and business owners, and carried 613 staff on our payroll &mdash; "
-     "transferring each institution, in time, to the partners we collaborate with. Founded by a Catholic priest in "
-     "2006, CORAfrica has worked in Nigeria and out of the United States ever since, on the conviction that we live "
-     "in one interdependent world. What comes next is scale: more access to education, healthcare, vocational "
-     "training and economic opportunity, by replicating the Community Education Centre model in new localities."),
+     "We have built four primary schools and four secondary schools, educated 7,330 school children, reached 64 "
+     "communities, and empowered 805 families and business owners, 513 of them women. 613 staff have been carried "
+     "on our payroll over those twenty years, and each institution is transferred, in time, to the partners we "
+     "collaborate with. Founded by a Catholic priest in 2006, CORAfrica has worked in Nigeria and out of the United "
+     "States ever since, on the conviction that we live in one interdependent world and are here to share the story "
+     "with anyone willing to collaborate. What comes next is scale: building on that foundation to replicate the "
+     "Community Education Centre model in new localities, and to open more partnerships."),
     ("Where do the children live, and who benefits from a donation?",
      "In their own families, in their own villages. The extended family system in Africa means children live with "
      "their families and return to them, so our purpose is to help the family become sustainable rather than to "
@@ -957,9 +1062,13 @@ FAQS = [
      "poor healthcare, poor nutrition &mdash; and donations let us put support systems around the children, mostly "
      "inside the school system."),
     ("What is the most important need right now?",
-     "A Community Education Centre in a new location near Abuja, to show the model outside Cross River State; a "
-     "standard skills acquisition centre in one location; and the encouragement of young people to build practical "
-     "skills for self-reliance while they are still at school."),
+     "A Community Education Centre at New Karu, near Abuja, to show the model outside Cross River State; a skills "
+     "acquisition centre inside it; and the encouragement of young people to build practical skills for "
+     "self-reliance while they are still at school."),
+    ("What is the Community Education Centre model?",
+     "It combines education and healthcare inside one school system, with agriculture and economic empowerment "
+     "added as programmes around them. Vocational and Skills Acquisition Centres inside the schools let a child "
+     "leave with a skill that will sustain a livelihood for the future."),
     ("Which projects have made the most difference?",
      "Three. The school system, where vocational training turns directly into employment and income. The Economic "
      "Empowerment Programme, which helps families and individuals start businesses and become independent. And the "
@@ -982,6 +1091,20 @@ FAQS = [
      "with their peers between institutions, and a family-to-family partnership can let families share experiences "
      "and build genuine friendships. The point of the exchange is not only the money: it is friendship, solidarity "
      "and understanding between two very different places. Write to us if this interests you."),
+    ("How large is an economic empowerment loan?",
+     "A beneficiary receives between &#8358;500,000 and &#8358;3,000,000, depending on the funds available. One "
+     "used &#8358;3,000,000 to furnish and improve a gym business; another took &#8358;500,000, started a "
+     "point-of-sale business, and later expanded it into the sale of phone accessories."),
+    ("How are those loans decided, and are they repaid?",
+     "Beneficiaries are sought through the Catholic parishes before any money is released, and are trained in good "
+     "repayment practice before they receive it. Repayment has run at about 80% so far, with minimal losses. The "
+     "difficulties are the ones you would expect: the depth of a family&rsquo;s need, the viability of the business "
+     "proposed, and the applicant&rsquo;s own commitment to managing the support productively."),
+    ("How much does a school clinic actually do?",
+     "The Sr. Augustina Abuo Memorial Medical Clinic alone has attended to close to 500 students and more than "
+     "1,000 community members. Care is free to the children who study at the school and affordable to everybody "
+     "else, and the clinics run medical outreach into rural communities, refugee settlements, schools and "
+     "orphanages that have no clinic of their own."),
     ("How can a major donor leave something lasting?",
      "By funding something that stands: a school, a medical centre, a skills acquisition centre, a school farm, a "
      "school clinic, an economic empowerment fund. Our operational model connects a donor to a specific project, "
@@ -1031,19 +1154,19 @@ write("faq.html", head("faq.html", "Questions — CORAfrica",
 # (S12) unless marked otherwise; its board, contacts and plans are superseded and not used.
 REGISTER = [
     ("St. Joseph&rsquo;s Schools and Orphanage", "Idum-Mbube, Ogoja", "1999", "2,000+ pupils",
-     "Primary and secondary schools with an orphanage for children from five years old, opened with Abode for Children Inc. of Evans City, Pennsylvania. More than 2,000 pupils have been educated there, and the first Community Education Centre grew up around it. Being handed on in 2027."),
+     "Primary and secondary schools with an orphanage for children from five years old, opened with Abode for Children Inc. of Evans City, Pennsylvania. More than 4,000 pupils have been educated there, and the first Community Education Centre grew up around it. Being handed on in 2027."),
     ("Sr. Augustina Abuo Memorial Medical Clinic", "Idum-Mbube, Ogoja", "2007", "10 beds",
      "A laboratory, a pharmacy and minor surgery, with community health workers in nine villages. By 2022 it was seeing around 120 patients a week, the only clinic with a doctor in a community of about 20,000. Named for Sr. Augustina Abuo, who served there until her death in 2013. Being handed on in 2027."),
     ("Little Flower Nursery &amp; Primary School", "Ipong-Obudu", "2007", "Nursery &amp; primary",
      "One of the earliest schools initiated across the diocese, since handed to the parish and still operating."),
     ("Thomas McGettrick Institute of Technology", "Ogoja Diocese", "&mdash;", "Technical",
-     "A technical institute facilitated in collaboration with the diocesan bishops, and since handed on."),
+     "A technical institute facilitated in collaboration with the diocesan bishop. CORAfrica provided major facilities &mdash; road networks, the gate house and laboratories &mdash; and handed it on to the Catholic Diocese of Ogoja."),
     ("John Stilley Schools", "Victoria, Ikom", "2017", "300+ students",
-     "Nursery, primary and secondary schools founded where the community had no secondary school at all. A new classroom block and a lodge for youth corps teachers followed, and the second Community Education Centre grew up around them. Being handed on in 2027."),
+     "Nursery, primary and secondary schools founded where the community had no secondary school at all. A new classroom block and a lodge for youth corps teachers followed, and the second Community Education Centre grew up around them. More than 1,000 pupils have been educated there. Being handed on in 2027."),
     ("Victoria Medical Center", "Victoria, Ikom", "&mdash;", "Health",
-     "The health centre of the Victoria-Ikom Community Education Centre, with medical outreach into the surrounding villages. Being handed on in 2027."),
+     "The health centre of the Victoria-Ikom Community Education Centre, still under construction, with medical outreach into the surrounding villages. Being handed on in 2027."),
     ("John Bosco Academy", "Adagom, Ogoja", "2020", "479 pupils",
-     "Founded at Adagom 3 for refugee children from Cameroon who had no other way to go to school. It grew from 105 to 193 pupils in its first session, and later to 479 across a primary and a secondary section, four in five of them refugee children. Being handed on in 2027."),
+     "Founded at Adagom 3 for refugee children from Cameroon who had no other way to go to school. It grew from 105 to 193 pupils in its first session, and later to 479 across a primary and a secondary section, four in five of them refugee children. More than 1,000 pupils have been educated there in all. Being handed on in 2027."),
 ]
 DELIVERED = [
     ("CLASS: the CORAfrica Loans and Savings System",
@@ -1207,24 +1330,9 @@ body = hero("Strategic plan 2026&ndash;2030", "What we are building next.",
             "deliver it &mdash; education, healthcare, funding and administration &mdash; all within the Community "
             "Education Centre model.",
             "plan-hero.jpg", "A newly built CORAfrica school block")
-body += sec(head_block("The priority", "A Community Education Centre in Abuja.",
-                       "Our first two centres, at Idum-Mbube and Victoria-Ikom, proved the model, and are being "
-                       "handed to the institutions that will run them from 2027. The next is in Abuja. It was "
-                       "recently initiated, and it is where our capital effort is going now.")
-            + grid([card("What it needs", "Approximately <strong>US $2 million</strong> to complete.", "Capital"),
-                    card("What it will be", "A school at the centre of its community, with education and healthcare as its two programmes and agriculture and economic empowerment built in, for parents as well as pupils.", "The model"),
-                    card("Why Abuja", "It is the first step in replicating the model across Nigeria, and it places the work beside the government agencies and partners our plan commits us to working with.", "Rationale")], 3),
-            cls="grad-paper-warm")
-body += sec(head_block("How a centre works", "Study teams, not just classes.",
-                       "Through our Vocational and Skills Acquisition Centres, pilot systems are operated in which "
-                       "children and young people form study teams together with parents, teachers and community "
-                       "members. A skill practised alongside the adults who will employ or finance it is a skill "
-                       "that survives leaving school.")
-            + grid([card("Children and parents together", "The school provides for parents and guardians as well as pupils, through farming support and micro-credit where it is available."),
-                    card("Skills that outlast school", "Trades from computing and fashion design to building, solar installation and farming, taught hands-on."),
-                    card("Built to be handed on", "Each centre is designed to be run by its community and partners, so that CORAfrica can move on and begin the next.")], 3),
-            cls="grad-white-strong")
-backgrounds = ["grad-warm-white", "bg-white", "grad-paper-warm", "grad-white-strong"]
+# "The priority" and "How a centre works" used to sit here. S16 (2026-09-16) puts both on
+# Our Model, so this page is now the four goal areas and the SDG alignment, nothing else.
+backgrounds = ["grad-paper-warm", "bg-white", "grad-warm-white", "grad-white-strong"]
 for i, (area, h2, tiers) in enumerate(PLAN):
     body += sec(head_block("The plan &middot; " + area, h2)
                 + grid([goals_card(t, items) for t, items in tiers], 3), cls=backgrounds[i])
@@ -1233,8 +1341,8 @@ body += sec(head_block("Alignment", "Where our work meets the global agenda.",
             + grid([card(t, b, tag) for t, b, tag in SDGS], 3),
             cls="bg-white")
 write("strategic-plan.html", head("strategic-plan.html", "Our Strategic Plan — CORAfrica",
-      "CORAfrica's Strategic Plan 2026–2030: a new Community Education Centre in Abuja, and our goals for "
-      "education, healthcare, funding and administration.", "img/plan-hero.jpg")
+      "CORAfrica's Strategic Plan 2026–2030: a new Community Education Centre at New Karu, Nasarawa State, and "
+      "our goals for education, healthcare, funding and administration.", "img/plan-hero.jpg")
       + BANNER + header("strategic-plan.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
@@ -1286,7 +1394,7 @@ body += sec(head_block("Give monthly", "Monthly gifts are what let us plan.",
                        "and Stripe handles the rest.")
             + '    <div class="amounts">\n' + amounts + "    </div>\n"
             + '    <p class="amounts-note">Every gift goes into one general fund, which we direct to wherever the need '
-              "is greatest &mdash; including the Community Education Centre now being built in Abuja. We don&rsquo;t "
+              "is greatest &mdash; including the Community Education Centre now being built at New Karu, Nasarawa State. We don&rsquo;t "
               "promise that a particular dollar buys a particular thing, because we could not honestly keep that "
               "promise. A page for giving to named projects is on the way. Online gifts are in US dollars.</p>\n",
             cls="grad-paper-warm")

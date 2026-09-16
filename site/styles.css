@@ -763,3 +763,58 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .faq-row { grid-template-columns: 1fr; gap: 10px; padding: 22px 0 24px; }
   .faq-row h3 { font-size: 20px; }
 }
+
+/* ---- 2026-09-16 FINAL WEB MENU: seven figures, the CEC schematic, two-programme model ---- */
+/* Seven stats on a 12-column bed: four across, then three, so both rows fill the width. */
+.stats--7 { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 30px 24px; }
+.stats--7 > div { grid-column: span 3; }
+.stats--7 > div:nth-child(n + 5) { grid-column: span 4; }
+.stats--7 .stat-n { font-size: 44px; }
+
+.sub-points { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+.sub-points li { position: relative; padding-left: 17px; font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+.sub-points li::before { content: ""; position: absolute; left: 1px; top: 0.66em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+.shot-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 1.9rem; }
+.shot { margin: 0; }
+.shot .media img { height: 230px; }
+.shot figcaption { margin-top: 11px; font-size: 12.5px; line-height: 1.45; color: var(--ink-muted); }
+
+.cec-figure { margin: 2.4rem 0 0; }
+.cec-svg { display: block; width: 100%; height: auto; }
+.cec-bound { fill: none; stroke: var(--line-strong); stroke-width: 2; stroke-dasharray: 9 9; }
+.cec-pill { fill: var(--accent-tint); }
+.cec-pill-t { text-anchor: middle; font-family: "Manrope", sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; fill: var(--accent); }
+.cec-link { stroke: var(--line-strong); stroke-width: 2; }
+.cec-node rect { fill: #fff; stroke: var(--line); stroke-width: 1.5; }
+.cec-tag { font-family: "Manrope", sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; fill: var(--ink-muted); }
+.cec-name { font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.035em; fill: var(--ink); }
+.cec-note { font-family: "Manrope", sans-serif; font-size: 12.5px; fill: var(--ink-soft); }
+.cec-core { fill: var(--accent); }
+.cec-core-t { text-anchor: middle; font-family: "Space Grotesk", sans-serif; font-size: 25px; font-weight: 600; letter-spacing: -0.04em; fill: #fff; }
+.cec-core-s { text-anchor: middle; font-family: "Manrope", sans-serif; font-size: 13px; fill: rgba(255, 255, 255, 0.82); }
+.cec-list { display: none; }
+.cec-figure figcaption { margin-top: 1.1rem; font-size: 13.5px; line-height: 1.5; color: var(--ink-muted); }
+
+@media (max-width: 1023px) {
+  .stats--7 > div, .stats--7 > div:nth-child(n + 5) { grid-column: span 4; }
+  .stats--7 > div:last-child { grid-column: 1 / -1; }
+  .shot-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 719px) {
+  /* Below this the schematic's labels stop being legible, so the same four elements
+     render as a plain list instead. */
+  .cec-svg { display: none; }
+  .cec-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .cec-list li { display: grid; gap: 3px; padding: 15px 17px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+  .cec-row-tag { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .cec-list strong { font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.035em; color: var(--ink); }
+  .cec-list li > span:last-child { font-size: 13.5px; color: var(--ink-soft); }
+}
+@media (max-width: 639px) {
+  .stats--7 > div, .stats--7 > div:nth-child(n + 5) { grid-column: span 6; }
+  .stats--7 > div:last-child { grid-column: 1 / -1; }
+  .stats--7 .stat-n { font-size: 40px; }
+  .shot-grid { grid-template-columns: 1fr; }
+  .shot .media img { height: 240px; }
+}
