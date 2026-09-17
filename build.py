@@ -515,7 +515,7 @@ HEADSHOTS = {
     "Edwin Okungbowa": "team/edwin-okungbowa.jpg",
     "Blessing Ana": "team/blessing-ana.jpg",
     "Ethan Suquet": "team/ethan-suquet.jpg",  # supplied by Ethan, 2026-09-10
-    "Olurotimi Akinkunmi Padonu": "team/rotimi.jpg",  # rotimi.docx, supplied 2026-09-06
+    "Olurotimi Akinkunmi Padonu": "team/olurotimi-padonu.jpg",  # rotimi.docx, supplied 2026-09-06
 }
 
 
@@ -666,7 +666,7 @@ HISTORY = [
     ("2010", "Registered in Nigeria",
      "CORAfrica is incorporated under the Companies and Allied Matters Act on 6 September 2010 as a Registered Trustee of an NGO, certificate CAC/IT/NO 40479 &mdash; giving the work a legal footing in both countries it operates in."),
     ("2010s", "Support from Western Pennsylvania",
-     "Ray Ferguson, Fr. Jim Murphy, Anne Goetler, Tom Rooney, Jeannine Goelz and Ethan Suquet join. With Abode for Children Inc. of Evans City, led by Tom and Mary Rutkoski, they upgrade St. Joseph&rsquo;s Schools and Orphanage and CORAfrica Farms."),
+     "Ray Ferguson, Fr. Jim Murphy, Anne Goetler, Tom Rooney and Jeannine Goelz join. With Abode for Children Inc. of Evans City, led by Tom and Mary Rutkoski, they upgrade St. Joseph&rsquo;s Schools and Orphanage and CORAfrica Farms."),
     ("2017", "The John Stilley Schools",
      "Nursery, primary and secondary schools open at Victoria, Ikom, where the community had no secondary school at all. The same year, Fr. Peter is honoured at Cross River@50, the state&rsquo;s golden jubilee."),
     ("2020&ndash;22", "Refugees and displaced families",
@@ -993,7 +993,7 @@ programme_page(
                 card("Fees and everything around them", "Tuition, school uniforms and educational materials &mdash; the costs that push a family past what it can afford.", "What it covers")], 3),
         cls="grad-paper-warm")
     + sec('    <div class="split split--media split--center">\n'
-          '      <div class="media"><img src="img/hands.jpg" alt="Children at a CORAfrica school" loading="lazy" width="900" height="675"></div>\n'
+          '      <div class="media"><img src="img/help-a-kid-distribution.jpg" alt="A child receives supplies at a CORAfrica distribution" loading="lazy" width="900" height="675"></div>\n'
           "      <div>\n"
           + head_block("Why it matters", "The difference between leaving and staying.",
                        "The programme has made a significant difference to children who were about to withdraw from "
@@ -1679,6 +1679,52 @@ BIOS = {
     # His own updated bio, sent 2026-09-14, which settles the Duquesne degree (Corporate
     # Communication, 1994) and the award month (June 2017). John Bosco Academy is left out,
     # since it is not to be promoted; the PhD year follows his prose and his return date, 2006.
+    "Olurotimi Akinkunmi Padonu": [
+        "Olurotimi Akinkunmi Padonu is a seasoned executive and development finance specialist, supporting "
+        "CORAfrica&rsquo;s mission to transform rural communities. With more than 30 years of leadership experience "
+        "across the United Kingdom, Africa and the United States, he brings deep expertise in project finance, clean "
+        "energy and community-centred development. His strategic guidance strengthens CORAfrica&rsquo;s ability to "
+        "scale its impact and expand opportunities for children and families.",
+    ],
+    # His own bio opens "Elijah Ugani is programme Manager", which is Edwin Okungbowa's title in
+    # the list Fr. Peter confirmed on 2026-09-04. Brought into line with the list, as the other
+    # bios were; flagged in docs/ASK-FR-PETER.md for him to settle.
+    "Elijah Ugani": [
+        "Elijah Ugani is Projects Manager of CORAfrica, contributing to initiatives focused on education, economic "
+        "empowerment and support for vulnerable communities. His experience includes programmes designed to improve "
+        "educational opportunities for disadvantaged children and young people, and his particular interest is in "
+        "livelihood and skills-development work with economically vulnerable populations and refugees.",
+        "A development and community mobilisation specialist, he has worked with minority communities across public "
+        "health advocacy and civic engagement. His work is driven by a commitment to improving the lives of "
+        "vulnerable and underserved people &mdash; connecting communities with the skills, resources, opportunities "
+        "and practical development interventions that promote dignity, resilience and self-reliance.",
+    ],
+    "Blessing Ana": [
+        "Blessing Iyaji Ana is a leader and advocate for human capital development, with more than two decades of "
+        "experience in strategic leadership, business development, stakeholder management and organisational growth.",
+        "She holds a Master of Business Administration from the Franciscan University of Steubenville, Ohio, an "
+        "Executive Master&rsquo;s in Project Management and a Higher National Diploma in Accounting. She is a Fellow "
+        "of the West Africa Association of Customer Service Professionals and a Fellow of the Institute of Credit "
+        "Administration.",
+        "A wife and mother of three, Blessing believes that family is the foundation for nurturing faith, discipline, "
+        "compassion and service &mdash; the values essential to shaping future leaders.",
+    ],
+    "Edwin Okungbowa": [
+        "Edwin Okungbowa is a businessman, entrepreneur, content creator and creative professional, with a strong "
+        "interest in hospitality, entertainment, real estate, digital media and business development.",
+        "As an entrepreneur he is committed to identifying opportunities, building sustainable ventures, and creating "
+        "platforms that connect people, ideas and businesses. His interests span hospitality management, property "
+        "development, entertainment, lifestyle and digital entrepreneurship.",
+        "Beyond business and entertainment, Edwin is driven by innovation, leadership and the desire to create "
+        "opportunities for others. His approach combines business thinking with creativity, allowing him to work "
+        "across different industries while continually exploring new ideas and ventures.",
+    ],
+    "Ethan Suquet": [
+        "Ethan Suquet is CORAfrica&rsquo;s IT Coordinator and a member of its United States Board of Trustees, "
+        "which he joined in July 2025. He has served as the board&rsquo;s Vice Chairman since September 2026.",
+        "A software developer by profession, he builds and maintains CORAfrica&rsquo;s website and the systems "
+        "behind it &mdash; the charity&rsquo;s public face, and the way most of its supporters first find the work.",
+    ],
     "Fr. Peter Abue": [
         "Born in Idum-Mbube, in the Ogoja Local Government Area of Cross River State, Fr. Peter Abue was ordained "
         "a Catholic priest of the Diocese of Ogoja in 1985. He went on to further study, taking a Master&rsquo;s "
