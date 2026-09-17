@@ -786,12 +786,13 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 .cec-pill { fill: var(--accent-tint); }
 .cec-pill-t { text-anchor: middle; font-family: "Manrope", sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; fill: var(--accent); }
 .cec-link { stroke: var(--line-strong); stroke-width: 2; }
-.cec-node rect { fill: #fff; stroke: var(--line); stroke-width: 1.5; }
-.cec-tag { font-family: "Manrope", sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; fill: var(--ink-muted); }
-.cec-name { font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.035em; fill: var(--ink); }
-.cec-note { font-family: "Manrope", sans-serif; font-size: 12.5px; fill: var(--ink-soft); }
+.cec-head { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.5; }
+.cec-head-t { font-family: "Space Grotesk", sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.035em; fill: var(--accent); }
+.cec-spine { stroke: var(--line-strong); stroke-width: 2; }
+.cec-chip { fill: #fff; stroke: var(--line); stroke-width: 1.5; }
+.cec-chip-t { font-family: "Manrope", sans-serif; font-size: 14px; font-weight: 600; fill: var(--ink-soft); }
 .cec-core { fill: var(--accent); }
-.cec-core-t { text-anchor: middle; font-family: "Space Grotesk", sans-serif; font-size: 25px; font-weight: 600; letter-spacing: -0.04em; fill: #fff; }
+.cec-core-t { text-anchor: middle; font-family: "Space Grotesk", sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.04em; fill: #fff; }
 .cec-core-s { text-anchor: middle; font-family: "Manrope", sans-serif; font-size: 13px; fill: rgba(255, 255, 255, 0.82); }
 .cec-list { display: none; }
 .cec-figure figcaption { margin-top: 1.1rem; font-size: 13.5px; line-height: 1.5; color: var(--ink-muted); }
@@ -806,10 +807,12 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
      render as a plain list instead. */
   .cec-svg { display: none; }
   .cec-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-  .cec-list li { display: grid; gap: 3px; padding: 15px 17px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+  .cec-list > li { display: grid; gap: 3px; padding: 15px 17px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
   .cec-row-tag { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
-  .cec-list strong { font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.035em; color: var(--ink); }
-  .cec-list li > span:last-child { font-size: 13.5px; color: var(--ink-soft); }
+  .cec-list strong { display: block; font-family: "Space Grotesk", sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.035em; color: var(--ink); }
+  .cec-list ul { margin: 9px 0 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+  .cec-list ul li { position: relative; padding-left: 16px; font-size: 14px; line-height: 1.45; color: var(--ink-soft); }
+  .cec-list ul li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 }
 @media (max-width: 639px) {
   .stats--7 > div, .stats--7 > div:nth-child(n + 5) { grid-column: span 6; }

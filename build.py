@@ -277,50 +277,58 @@ def media_pair(a, b):
     return o + "    </div>\n"
 
 
-# A typical Community Education Centre, drawn to Fr. Peter's description (S16, 2026-09-16:
-# "let AI create a design of a typical CEC based on my descriptions so far"). The school is
-# the centre; the four things that keep a child in it sit around it, inside one community.
-CEC_NODES = [("Healthcare", "School clinic", "Free to the pupils"),
-             ("Agriculture", "Demonstration farm", "Worked through a real season"),
-             ("Skills", "Skills centre (VASAC)", "A trade to leave with"),
-             ("Livelihoods", "Economic empowerment", "Interest-free loans to parents")]
-# Per node: box x/y, the point on the box the connector meets, and the point on the
-# centre circle it leaves from. Measured off a 900x540 frame with the circle at 450,290 r100.
-CEC_POS = [(46, 112, 296, 156, 374.6, 224.4), (604, 112, 604, 156, 525.4, 224.4),
-           (46, 380, 296, 424, 374.6, 355.6), (604, 380, 604, 424, 525.4, 355.6)]
+# A typical Community Education Centre. Redrawn 2026-09-17 after Fr. Peter rejected the first
+# attempt (S17, B4): "too simple… Looks like the way you [have] it, things are muddled up."
+# The point he wanted made is hierarchy, not four peers — TWO programmes, with everything else
+# sitting under one of them. His own list, verbatim:
+#   EDUCATION  — School farms (Agric), Help-A-Kid, EEP, VASAC
+#   HEALTHCARE — School Clinics, Medical Outreach, Hygiene and Sanitation
+CEC_TREE = [("Education", ["School farms (agriculture)", "HELP-A-KID", "Economic empowerment",
+                           "Skills centres (VASAC)"]),
+            ("Healthcare", ["School clinics", "Medical outreach", "Hygiene and sanitation"])]
 
 
 def cec_diagram():
-    """The schematic, plus the same four elements as a plain list for narrow screens —
-    generated from one list, so the drawing and the fallback cannot drift apart."""
-    nodes = ""
-    for (tag, title, note), (nx, ny, ex, ey, sx, sy) in zip(CEC_NODES, CEC_POS):
-        nodes += ('      <line class="cec-link" x1="%s" y1="%s" x2="%s" y2="%s"></line>\n' % (sx, sy, ex, ey)
-                  + '      <g class="cec-node">\n'
-                    '        <rect x="%d" y="%d" width="250" height="88" rx="20"></rect>\n' % (nx, ny)
-                  + '        <text class="cec-tag" x="%d" y="%d">%s</text>\n' % (nx + 22, ny + 27, tag.upper())
-                  + '        <text class="cec-name" x="%d" y="%d">%s</text>\n' % (nx + 22, ny + 52, title)
-                  + '        <text class="cec-note" x="%d" y="%d">%s</text>\n' % (nx + 22, ny + 72, note)
-                  + "      </g>\n")
-    rows = "".join('      <li><span class="cec-row-tag">%s</span><strong>%s</strong><span>%s</span></li>\n'
-                   % (t, n, d) for t, n, d in CEC_NODES)
+    """The schematic, plus the same tree as a plain nested list for narrow screens —
+    both generated from CEC_TREE, so the drawing and the fallback cannot drift apart."""
+    svg = ""
+    for col, (name, items) in enumerate(CEC_TREE):
+        hx = 50 + col * 470                      # header/spine column origin
+        sx, cx = hx + 16, hx + 34                # spine x, chip x
+        last = 290 + (len(items) - 1) * 54 + 22
+        svg += ('      <line class="cec-spine" x1="%d" y1="270" x2="%d" y2="%d"></line>\n' % (sx, sx, last)
+                + '      <rect class="cec-head" x="%d" y="214" width="330" height="56" rx="18"></rect>\n' % hx
+                + '      <text class="cec-head-t" x="%d" y="249">%s</text>\n' % (hx + 22, name))
+        for i, label in enumerate(items):
+            y = 290 + i * 54
+            svg += ('      <line class="cec-spine" x1="%d" y1="%d" x2="%d" y2="%d"></line>\n' % (sx, y + 22, cx, y + 22)
+                    + '      <rect class="cec-chip" x="%d" y="%d" width="296" height="44" rx="14"></rect>\n' % (cx, y)
+                    + '      <text class="cec-chip-t" x="%d" y="%d">%s</text>\n' % (cx + 18, y + 28, label))
+    rows = ""
+    for name, items in CEC_TREE:
+        rows += ('      <li><span class="cec-row-tag">Programme</span><strong>%s</strong>\n' % name
+                 + '        <ul>\n%s        </ul>\n      </li>\n'
+                 % "".join("          <li>%s</li>\n" % i for i in items))
     return ('    <figure class="cec-figure">\n'
-            '      <svg class="cec-svg" viewBox="0 0 900 540" role="img" aria-labelledby="cec-t cec-d">\n'
+            '      <svg class="cec-svg" viewBox="0 0 900 548" role="img" aria-labelledby="cec-t cec-d">\n'
             '        <title id="cec-t">A typical Community Education Centre</title>\n'
-            '        <desc id="cec-d">A school at the centre, with a school clinic, a demonstration farm, a '
-            'skills acquisition centre and an economic empowerment programme around it, all inside one '
-            'community.</desc>\n'
-            '        <rect class="cec-bound" x="16" y="76" width="868" height="418" rx="56"></rect>\n'
-            '        <rect class="cec-pill" x="386" y="62" width="128" height="28" rx="14"></rect>\n'
-            '        <text class="cec-pill-t" x="450" y="81">The community</text>\n'
-            + nodes
-            + '        <circle class="cec-core" cx="450" cy="290" r="100"></circle>\n'
-              '        <text class="cec-core-t" x="450" y="285">The school</text>\n'
-              '        <text class="cec-core-s" x="450" y="312">Primary &amp; secondary</text>\n'
+            '        <desc id="cec-d">One school at the centre of its community, running two programmes. '
+            'Education carries the school farms, HELP-A-KID, economic empowerment and the skills centres. '
+            'Healthcare carries the school clinics, medical outreach, and hygiene and sanitation.</desc>\n'
+            '        <rect class="cec-bound" x="16" y="64" width="868" height="456" rx="48"></rect>\n'
+            '        <rect class="cec-pill" x="386" y="50" width="128" height="28" rx="14"></rect>\n'
+            '        <text class="cec-pill-t" x="450" y="69">The community</text>\n'
+            '        <line class="cec-link" x1="450" y1="172" x2="216" y2="214"></line>\n'
+            '        <line class="cec-link" x1="450" y1="172" x2="686" y2="214"></line>\n'
+            + svg
+            + '        <rect class="cec-core" x="270" y="92" width="360" height="80" rx="24"></rect>\n'
+              '        <text class="cec-core-t" x="450" y="128">Community Education Centre</text>\n'
+              '        <text class="cec-core-s" x="450" y="152">one school, at the heart of its community</text>\n'
               '      </svg>\n'
             + '      <ul class="cec-list">\n%s      </ul>\n' % rows
-            + '      <figcaption>A typical Community Education Centre: the school at the centre, and the four '
-              'things that keep a child in it.</figcaption>\n    </figure>\n')
+            + '      <figcaption>A Community Education Centre runs two programmes. Everything else &mdash; the '
+              'farms, HELP-A-KID, economic empowerment, the skills centres &mdash; sits under one of them.'
+              '</figcaption>\n    </figure>\n')
 
 
 def shot_grid(items):
@@ -378,30 +386,55 @@ STATS = [("7,330", "Children educated", "Graduated from our schools since we wer
          ("805", "Small businesses supported", "Through our empowerment programmes, to date"),
          ("513", "Women supported", "Through our empowerment programmes, to date")]
 
-# The model is two programmes with two more built into the school (S10, 2026-09-04),
-# not the four equal pillars the site was first built on.
-PILLARS = [("Education", "Primary and secondary schools where none exist, with vocational and skills training at their heart.", "book", "Programme"),
-           ("Healthcare", "A clinic inside the school system, and care concentrated on a child&rsquo;s first 1,000 days.", "heart", "Programme"),
-           ("Agriculture", "School farms where children learn the trade by hand, and farming support for parents and guardians where it is available.", "leaf", "Built in"),
-           ("Economic empowerment", "Micro-credit for parents and guardians, so a family can afford to keep its child in class.", "coin", "Built in")]
+# 🔴 A Community Education Centre runs TWO programmes, and only two. Fr. Peter said so on
+# WhatsApp (2026-09-16) and again in ASK-FR-PETER3 (S17, 2026-09-17): "Do Not mention
+# Agriculture and Economic Empowerment anymore as a major program… they are all under the
+# school programmes in our CEC model." School farms, HELP-A-KID, economic empowerment and
+# VASAC sit UNDER education; clinics, outreach and hygiene sit UNDER healthcare. Nothing on
+# this site may present agriculture or economic empowerment as a programme in its own right.
+PILLARS = [("Education", "Primary and secondary schools where none exist &mdash; and, built into them, the school farms, HELP-A-KID, economic empowerment for parents, and the skills centres that send a child out with a trade.", "book", "Programme one"),
+           ("Healthcare", "A clinic inside the school system, medical outreach to villages that have none, and hygiene and sanitation taught as part of school life.", "heart", "Programme two")]
 
-# The five programmes Fr. Peter asked us to promote (S15, 2026-09-14). Each has a page of
-# its own, and the card is the only way in, exactly as with the bio pages. CORA Farms and
-# the Abuja centre follow as plain cards: real work, but not part of that five.
-PROGRAMMES = [
+# The five programme pages, grouped under the programme each belongs to. Each page is
+# reached only by clicking its card, exactly as with the bio pages.
+EDUCATION_PROGRAMMES = [
+    ("School demonstration farms", "programme-school-farms.html", "Agriculture",
+     "Agriculture on the timetable rather than in a textbook. Pupils work a real farm through a real season, and leave school with a skill that feeds a family."),
     ("HELP-A-KID", "programme-help-a-kid.html", "Children",
      "A child&rsquo;s poverty should not decide whether that child is educated. HELP-A-KID pays the fees, and the costs around them, for acutely underprivileged children, so that they can finish the education they have already started."),
     ("Economic empowerment", "programme-empowerment.html", "Families",
      "When a family cannot afford to keep a child in class, the barrier is income. The Economic Empowerment Programme lends to the parents &mdash; interest-free &mdash; so that a business can grow into school fees."),
-    ("School clinics", "programme-school-clinics.html", "Health",
-     "A child too ill to learn is not being educated. Our clinics sit inside the school system: free to the children who study there, and affordable to everybody else in the community."),
-    ("School demonstration farms", "programme-school-farms.html", "Agriculture",
-     "Agriculture on the timetable rather than in a textbook. Pupils work a real farm through a real season, and leave school with a skill that feeds a family."),
     ("Vocational and skills acquisition", "programme-vasac.html", "Skills",
      "We go a step beyond the conventional school system, and equip our schools so that a student leaves with a certificate. Each centre runs pilot systems where students practise the skills that will sustain them for life."),
 ]
+HEALTHCARE_PROGRAMMES = [
+    ("School clinics", "programme-school-clinics.html", "Health",
+     "A child too ill to learn is not being educated. Our clinics sit inside the school system: free to the children who study there, and affordable to everybody else in the community."),
+]
+# The two parts of healthcare that have no page of their own; they are described on the
+# clinics page, and appear here so the programme is shown whole.
+HEALTHCARE_ALSO = [
+    ("Medical outreach", "Our clinics go out to the places that have none &mdash; rural communities, refugee settlements, schools and orphanages.", "Health"),
+    ("Hygiene and sanitation", "Personal hygiene, environmental sanitation, proper handwashing and safe drinking water, taught to school children as part of school life.", "Health"),
+]
+PROGRAMMES = EDUCATION_PROGRAMMES + HEALTHCARE_PROGRAMMES
+# Which programme each page sits under — used for its kicker, so a reader arriving straight
+# on a programme page still sees the hierarchy.
+PARENT_OF = dict([(href, "Under education") for _, href, _, _ in EDUCATION_PROGRAMMES]
+                 + [(href, "Under healthcare") for _, href, _, _ in HEALTHCARE_PROGRAMMES])
+
+
+def programme_groups(cols=2):
+    """The five programme pages, always shown under their parent programme."""
+    return ('    <h3 class="group-label">Education</h3>\n'
+            + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in EDUCATION_PROGRAMMES], cols)
+            + '    <h3 class="group-label">Healthcare</h3>\n'
+            + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in HEALTHCARE_PROGRAMMES]
+                   + [card(t, b, tag) for t, b, tag in HEALTHCARE_ALSO], cols))
+
+
 ALSO_TODAY = [
-    ("CORA Farms Nigeria Ltd", "Our registered farming company, founded in 2015: crops, poultry and livestock, and a training ground for rural farmers.", "Agriculture"),
+    ("CORA Farms Nigeria Ltd", "Our registered farming company, founded in 2015: crops, poultry and livestock, and a training ground for rural farmers. A company, not one of our programmes.", "Our company"),
     ("A new centre in New Karu", "Our next Community Education Centre, recently begun, in New Karu, Nasarawa State, near Abuja. About US $2 million will complete it.", "Building now"),
 ]
 
@@ -554,17 +587,17 @@ body += sec('    <div class="split split--center">\n      <div>\n'
             + head_block("The Community Education Centre",
                          "A school on its own does not keep a child in school.",
                          "Hunger, illness and a family with no income take more children out of class than any exam "
-                         "does. So a Community Education Centre does not only run a school: it integrates "
-                         "healthcare, agriculture and economic empowerment into the school itself &mdash; for "
-                         "parents, pupils and the community around them. It takes a village to raise a child.")
+                         "does. So a Community Education Centre runs two programmes, education and healthcare "
+                         "&mdash; and builds the school farms, the fee support, the micro-credit for parents and "
+                         "the skills centres into the education itself. It takes a village to raise a child.")
             + '        <a class="button button--dark" href="our-model.html">How the model works</a>\n'
             + "      </div>\n"
-            + grid([card(n, b, tag=t, ic=i) for n, b, i, t in PILLARS], 2)
+            + grid([card(n, b, tag=t, ic=i) for n, b, i, t in PILLARS], 1)
             + "    </div>\n", cls="grad-warm-white")
-body += sec(head_block("What we run today", "Five programmes, and what each one is for.",
-                       "Each of these runs inside the school system or alongside it, and each answers a different "
-                       "reason a child stops coming to class.")
-            + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in PROGRAMMES], 2)
+body += sec(head_block("What we run today", "Two programmes, and what sits under each.",
+                       "Everything CORAfrica runs belongs to education or to healthcare. Each part answers a "
+                       "different reason a child stops coming to class.")
+            + programme_groups(2)
             + '    <h3 class="group-label">Alongside them</h3>\n'
             + grid([card(t, b, tag) for t, b, tag in ALSO_TODAY], 2)
             + '    <div class="button-row" style="margin-top:1.9rem">\n'
@@ -739,9 +772,9 @@ for i, (name, img, num, label, alt, txt, points) in enumerate(PROGRAMME_BLOCKS):
 
 body = hero("Our model", "A school on its own does not keep a child in school.",
             "Hunger, illness and a family with no income take more children out of class than any exam does. So a "
-            "Community Education Centre does not only run a school: we integrate healthcare, agriculture and "
-            "economic empowerment into the school itself &mdash; for parents, pupils and community members alike. "
-            "It takes a village to raise a child.",
+            "Community Education Centre runs two programmes, education and healthcare &mdash; and builds the school "
+            "farms, HELP-A-KID, economic empowerment and the skills centres into the education itself, for parents "
+            "and community members as well as pupils. It takes a village to raise a child.",
             "our-model-hero.jpg", "Pupils gathered at the John Stilley Schools, Victoria-Ikom")
 body += sec(head_block("The Community Education Centre", "Two programmes. One community. Several systems.",
                        "The Community Education Centre is our answer to a hard lesson: a school on its own does not "
@@ -752,9 +785,9 @@ body += sec(head_block("Inside a centre", "More than a school.",
                        "A Community Education Centre brings learning, social welfare and empowerment together for "
                        "the African child, inside the child&rsquo;s own community &mdash; above all for the child "
                        "who would otherwise have no hope of a sustainable livelihood. It rests on education and "
-                       "healthcare, but it also has agriculture and economic empowerment built into the school, so "
-                       "that the whole community gathers its children into a school system that provides for "
-                       "parents as well as pupils.")
+                       "healthcare alone. Agriculture, economic empowerment and skills training are not separate "
+                       "programmes but parts of the education itself, so that the whole community gathers its "
+                       "children into a school system that provides for parents as well as pupils.")
             + blocks, cls="bg-white")
 body += sec(head_block("Where the model stands", "Proven twice. Now going to Karu, Nasarawa State.",
                        "The model was first built at Idum-Mbube, in Ogoja, and at Victoria, in Ikom. At each, a "
@@ -826,12 +859,12 @@ body = hero("What we do", "Education is the bedrock. Everything else is built on
             "and prosperous adult. Families where parents completed primary and secondary school have higher incomes, "
             "better health and longer lives &mdash; and pass all of it on.",
             "what-we-do-hero.jpg", "A community gathered with CORAfrica for a distribution")
-body += sec(head_block("What we run today", "Five programmes, under our own direction.",
+body += sec(head_block("What we run today", "Two programmes, under our own direction.",
                        "The schools and clinics we founded are being handed to the institutions that will run them "
                        "from 2027 &mdash; see our <a href=\"track-record.html\">track record</a>. These are the "
                        "programmes CORAfrica runs day to day, alongside our Community Education Centres, each one "
                        "answering a different reason a child stops coming to class.")
-            + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in PROGRAMMES], 3)
+            + programme_groups(3)
             + '    <h3 class="group-label">Alongside them</h3>\n'
             + grid([card(t, b, tag) for t, b, tag in ALSO_TODAY], 2)
             + media_pair(("livelihoods.jpg", "Women at a Special Project Funds distribution implemented by CORAfrica with support from Cuso International"),
@@ -886,7 +919,7 @@ write("what-we-do.html", head("what-we-do.html", "What We Do — CORAfrica",
 # FAQs he sent with them. Summarised here; the pages are reached by clicking a card on the
 # home page or What We Do, and are in no menu, exactly like the bio pages.
 def programme_page(page, name, h1, lede, img, alt, desc, body_html):
-    body = hero("Our programmes", h1, lede, img, alt)
+    body = hero(PARENT_OF.get(page, "Our programmes"), h1, lede, img, alt)
     body += body_html
     body += sec_wide(donate_band(), cls="bg-paper", extra="section--flush-top section--tight")
     write(page, head(page, "%s — CORAfrica" % name, desc, og_img="img/" + img)
