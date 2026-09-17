@@ -213,7 +213,11 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(10px);
 }
 .brand { display: inline-flex; flex: 0 0 auto; }
-.brand img { height: 46px; width: auto; }
+.brand img { height: 58px; width: auto; }
+/* The full lockup carries the two lines Fr. Peter asked for (2026-09-17). It needs the
+   width to stay legible, so below the nav breakpoint the compact mark takes over --
+   otherwise the header overflows a phone and pushes the menu button off-screen. */
+.brand-compact { display: none; }
 
 .site-nav { display: flex; align-items: center; gap: 26px; }
 .site-nav a {
@@ -538,7 +542,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
 .site-footer { background: var(--charcoal-deep); color: #e9e5df; padding: 46px 0 34px; }
 .footer-grid { display: grid; grid-template-columns: 22rem 1fr; gap: 4rem; align-items: start; }
-.footer-brand img { height: 50px; width: auto; margin-bottom: 16px; }
+.footer-brand img { height: 74px; width: auto; margin-bottom: 16px; }
 .footer-brand p { margin: 0; font-size: 13.5px; line-height: 1.5; color: rgba(233, 229, 223, 0.72); }
 .footer-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
 .footer-h { font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(233, 229, 223, 0.55); margin-bottom: 9px; }
@@ -595,7 +599,9 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
   /* Nav collapses. Donate never hides behind the menu — it is the primary action. */
   .site-header { padding: 12px var(--gutter); }
-  .brand img { height: 34px; }
+  .brand-full { display: none; }
+  .brand-compact { display: block; }
+  .brand img { height: 40px; }
   .nav-toggle { display: flex; }
   .site-nav {
     position: fixed; inset: var(--header-h) 0 auto 0;
@@ -830,3 +836,6 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 .shot--wide .media--wide img { height: auto; aspect-ratio: 960 / 408; }
 .shot--wide figcaption { text-align: center; font-size: 13px; }
 .cost-row--total { border-top: 1px solid var(--line-strong); padding-top: 15px; }
+.shot--single { margin: 2.1rem auto 0; max-width: 720px; }
+.shot--single .media img { height: auto; aspect-ratio: 4 / 3; }
+.shot--single figcaption { text-align: center; }

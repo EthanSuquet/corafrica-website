@@ -156,7 +156,8 @@ def header(page):
     return (
         '<header class="site-header">\n'
         '  <a class="brand" href="index.html" aria-label="CORAfrica home">'
-        '<img src="img/corafrica-lockup-white.svg" alt="CORAfrica" width="1010" height="348"></a>\n'
+        '<img class="brand-full" src="img/corafrica-lockup-full-white.svg" alt="CORAfrica" width="1445" height="285">'
+        '<img class="brand-compact" src="img/corafrica-lockup-white.svg" alt="CORAfrica" width="1010" height="348"></a>\n'
         '  <nav class="site-nav" id="site-nav" data-nav aria-label="Main">\n' + links + "  </nav>\n"
         '  <div class="header-actions">\n'
         '    <a class="button button--accent button--sm" href="donate.html">Donate</a>\n'
@@ -171,7 +172,7 @@ FOOTER_TEMPLATE = """<footer class="site-footer">
   <div class="shell">
     <div class="footer-grid">
       <div class="footer-brand">
-        <img src="img/corafrica-lockup-white.svg" alt="CORAfrica" width="1010" height="348">
+        <img src="img/corafrica-lockup-full-white.svg" alt="CORAfrica" width="1445" height="285">
         <p>Education for Africa&rsquo;s Future. A registered <span class='nolig'>501(c)(3)</span> non-profit in the
           United States and a registered NGO in Nigeria, working with rural communities from Cross River State to Abuja.</p>
       </div>
@@ -594,7 +595,7 @@ body += sec(creds_strip(), cls="bg-paper", extra="section--flush-top")
 body += sec_wide(stats_panel(), cls="grad-paper-warm", extra="section--tight")
 body += sec('    <div class="split split--center">\n      <div>\n'
             + head_block("The Community Education Centre",
-                         "A school on its own does not keep a child in school.",
+                         "A school on its own does not keep a child in class.",
                          "Hunger, illness and a family with no income take more children out of class than any exam "
                          "does. So a Community Education Centre runs two programmes, education and healthcare "
                          "&mdash; and builds the school farms, the fee support, the micro-credit for parents and "
@@ -779,7 +780,7 @@ for i, (name, img, num, label, alt, txt, points) in enumerate(PROGRAMME_BLOCKS):
             + '          <ul class="sub-points">\n%s          </ul>\n        </div>\n' % pts)
     blocks += '      <div class="alt-row">\n%s      </div>\n' % ((media + copy) if i % 2 == 0 else (copy + media))
 
-body = hero("Our model", "A school on its own does not keep a child in school.",
+body = hero("Our model", "A school on its own does not keep a child in class.",
             "Hunger, illness and a family with no income take more children out of class than any exam does. So a "
             "Community Education Centre runs two programmes, education and healthcare &mdash; and builds the school "
             "farms, HELP-A-KID, economic empowerment and the skills centres into the education itself, for parents "
@@ -787,7 +788,7 @@ body = hero("Our model", "A school on its own does not keep a child in school.",
             "our-model-hero.jpg", "Pupils gathered at the John Stilley Schools, Victoria-Ikom")
 body += sec(head_block("The Community Education Centre", "Two programmes. One community. Several systems.",
                        "The Community Education Centre is our answer to a hard lesson: a school on its own does not "
-                       "keep a child in school. Hunger, illness and a family without income take more children out "
+                       "keep a child in class. Hunger, illness and a family without income take more children out "
                        "of class than any exam does. This is Education for Africa&rsquo;s Future.")
             + cec_diagram(), cls="grad-paper-warm")
 body += sec(head_block("Inside a centre", "More than a school.",
@@ -838,7 +839,7 @@ body += sec(head_block("The priority", "A Community Education Centre at New Karu
             cls="bg-paper")
 write("our-model.html", head("our-model.html", "Our Model — CORAfrica",
       "The Community Education Centre: education and healthcare, with agriculture and economic empowerment built "
-      "into the school, because a school alone does not keep a child in school.", "img/our-model-hero.jpg")
+      "into the school, because a school alone does not keep a child in class.", "img/our-model-hero.jpg")
       + BANNER + header("our-model.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 # ============================================================== what-we-do
@@ -1035,6 +1036,15 @@ programme_page(
     + sec(head_block("Two beneficiaries", "What a loan turned into.")
           + grid([card("Thomas Nsing", "Received &#8358;3,000,000 to furnish and improve his gym. He has since recorded his own account of what the programme meant.", "The gym"),
                   card("A trader at Ikom", "Started a Point of Sale business and expanded it into phone accessories. He recently gave 20 POS machines to 20 other business owners &mdash; one loan, rippling outward.", "The ripple")], 2)
+          # Sent 2026-09-17 with "Please share these pics and video under the EEP system". The
+          # shop is stocked with phone accessories, which is the trader at Ikom above; he is not
+          # named here because Fr. Peter named only the man in the video, Thomas Nsing.
+          + '    <figure class="shot shot--single">\n'
+            '      <div class="media"><img src="img/empowerment-shop.jpg" alt="A shopkeeper standing '
+            'in his shop, its shelves stocked with phone cases, power banks and earphones" '
+            'loading="lazy" width="900" height="675"></div>\n'
+            '      <figcaption>A shop stocked from an interest-free loan &mdash; photographed for us '
+            'under the empowerment programme.</figcaption>\n    </figure>\n'
           + '    <p class="pull">Meaningful empowerment is not simply financial assistance. <span>It is the '
             "opportunity, the confidence and the resources to build a livelihood.</span></p>\n",
           cls="grad-paper-warm"))
@@ -1570,8 +1580,8 @@ BOARD_NG = [("Michael Ana", "Chairman"), ("Mark Okpatuma", "Member"), ("Michael 
 BOARD_US = [("Chux Okochi", "Chairman"), ("Jeannine Goelz", "Member"),
             ("Ethan Suquet", "Member"), ("Fr. Peter Abue", "Founder"), ("Silvia Okoro", "Member / Secretary")]
 ADMIN = [("Adewale Ajayi", "National Programmes Coordinator"), ("Jeannine Goelz", "Country Representative, USA"),
-         ("Elijah Ugani", "Projects Manager, Nigeria"), ("Silvia Okoro", "Office Coordinator, USA"),
-         ("Olurotimi Akinkunmi Padonu", "Grants Coordinator"), ("Edwin Okungbowa", "Programmes Manager, Nigeria"),
+         ("Elijah Ugani", "Project Manager I, Nigeria"), ("Silvia Okoro", "Office Coordinator, USA"),
+         ("Olurotimi Akinkunmi Padonu", "Grants Coordinator"), ("Edwin Okungbowa", "Project Manager II, Nigeria"),
          ("Ethan Suquet", "IT Coordinator"), ("Blessing Ana", "Logistics, Nigeria")]
 # Titles stay as the written answers give them. Ethan, 2026-09-10: use the txt, even where
 # Fr. Peter's later WhatsApp list or a bio words a title differently.
@@ -1690,7 +1700,7 @@ BIOS = {
     # the list Fr. Peter confirmed on 2026-09-04. Brought into line with the list, as the other
     # bios were; flagged in docs/ASK-FR-PETER.md for him to settle.
     "Elijah Ugani": [
-        "Elijah Ugani is Projects Manager of CORAfrica, contributing to initiatives focused on education, economic "
+        "Elijah Ugani is Project Manager I of CORAfrica, contributing to initiatives focused on education, economic "
         "empowerment and support for vulnerable communities. His experience includes programmes designed to improve "
         "educational opportunities for disadvantaged children and young people, and his particular interest is in "
         "livelihood and skills-development work with economically vulnerable populations and refugees.",
@@ -1710,8 +1720,9 @@ BIOS = {
         "compassion and service &mdash; the values essential to shaping future leaders.",
     ],
     "Edwin Okungbowa": [
-        "Edwin Okungbowa is a businessman, entrepreneur, content creator and creative professional, with a strong "
-        "interest in hospitality, entertainment, real estate, digital media and business development.",
+        "Edwin Okungbowa is Project Manager II of CORAfrica, in Abuja, where he coordinates projects and office "
+        "affairs across the Nasarawa axis. A businessman, entrepreneur and creative professional, he comes with "
+        "a strong background in digital media and business development.",
         "As an entrepreneur he is committed to identifying opportunities, building sustainable ventures, and creating "
         "platforms that connect people, ideas and businesses. His interests span hospitality management, property "
         "development, entertainment, lifestyle and digital entrepreneurship.",
