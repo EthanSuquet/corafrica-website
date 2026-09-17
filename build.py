@@ -331,6 +331,15 @@ def cec_diagram():
               '</figcaption>\n    </figure>\n')
 
 
+def wide_shot(img, alt, cap):
+    """One wide photograph with a caption &mdash; for the architect&rsquo;s renderings, which are
+    banner-shaped and would be cropped to nothing in the square media boxes."""
+    return ('    <figure class="shot shot--wide">\n'
+            '      <div class="media media--wide"><img src="img/%s" alt="%s" loading="lazy" '
+            'width="960" height="408"></div>\n'
+            '      <figcaption>%s</figcaption>\n    </figure>\n' % (img, alt, cap))
+
+
 def shot_grid(items):
     """A row of photographs with captions: each item is (file, alt, caption)."""
     o = '    <div class="shot-grid">\n'
@@ -392,7 +401,7 @@ STATS = [("7,330", "Children educated", "Graduated from our schools since we wer
 # school programmes in our CEC model." School farms, HELP-A-KID, economic empowerment and
 # VASAC sit UNDER education; clinics, outreach and hygiene sit UNDER healthcare. Nothing on
 # this site may present agriculture or economic empowerment as a programme in its own right.
-PILLARS = [("Education", "Primary and secondary schools where none exist &mdash; and, built into them, the school farms, HELP-A-KID, economic empowerment for parents, and the skills centres that send a child out with a trade.", "book", "Programme one"),
+PILLARS = [("Education", "Primary and secondary schools where none exist &mdash; and, built into them, the school farms, HELP-A-KID, economic empowerment for parents, and the skills centres designed to send a child out with a trade.", "book", "Programme one"),
            ("Healthcare", "A clinic inside the school system, medical outreach to villages that have none, and hygiene and sanitation taught as part of school life.", "heart", "Programme two")]
 
 # The five programme pages, grouped under the programme each belongs to. Each page is
@@ -405,7 +414,7 @@ EDUCATION_PROGRAMMES = [
     ("Economic empowerment", "programme-empowerment.html", "Families",
      "When a family cannot afford to keep a child in class, the barrier is income. The Economic Empowerment Programme lends to the parents &mdash; interest-free &mdash; so that a business can grow into school fees."),
     ("Vocational and skills acquisition", "programme-vasac.html", "Skills",
-     "We go a step beyond the conventional school system, and equip our schools so that a student leaves with a certificate. Each centre runs pilot systems where students practise the skills that will sustain them for life."),
+     "We go a step beyond the conventional school system, and equip our schools so that a student leaves with a trade as well as a certificate. The centres are designed as working pilots rather than lessons, and the first purpose-built one is planned for Ogoja."),
 ]
 HEALTHCARE_PROGRAMMES = [
     ("School clinics", "programme-school-clinics.html", "Health",
@@ -808,12 +817,12 @@ body += sec(head_block("Where the model stands", "Proven twice. Now going to Kar
                           "The school demonstration farm, worked by the pupils themselves")]),
             cls="grad-white-strong")
 body += sec(head_block("How a centre works", "Study teams, not just classes.",
-                       "Through our Vocational and Skills Acquisition Centres, pilot systems are operated in which "
+                       "Our Vocational and Skills Acquisition Centres are designed around pilot systems in which "
                        "children and young people form study teams together with parents, teachers and community "
                        "members. A skill practised alongside the adults who will employ or finance it is a skill "
                        "that survives leaving school.")
             + grid([card("Children and parents together", "The school provides for parents and guardians as well as pupils, through farming support and micro-credit where it is available."),
-                    card("Skills that outlast school", "Trades from computing and fashion design to building, solar installation and farming, taught hands-on."),
+                    card("Skills that outlast school", "Trades from computing and fashion design to building, solar installation and farming, to be taught hands-on."),
                     card("Built to be handed on", "Each centre is designed to be run by its community and partners, so that CORAfrica can move on and begin the next.")], 3),
             cls="grad-warm-white")
 body += sec(head_block("The priority", "A Community Education Centre at New Karu.",
@@ -844,6 +853,46 @@ VASAC = [
     ("Building trades", "Masonry, blocklaying and concreting, carpentry and joinery, furniture and upholstery, plumbing, tiling, painting and interior finishing, aluminium work, and solar PV installation and maintenance."),
     ("Agriculture", "Mechanised agriculture and operations, and livestock farming &mdash; beekeeping, poultry and animal husbandry."),
 ]
+OGOJA_DEPTS = [
+    ("Vocational", "Handicrafts, photography, music and hairdressing."),
+    ("Computer", "Website design, desktop publishing, graphics, computer networking and network installation, "
+                 "digital marketing, computer hardware and <span class=\'nolig\'>GSM</span> repair, social media "
+                 "communication, and digital media production."),
+    ("Technical", "Electrical installation, electronics, auto mechanics, auto-body work, welding and fabrication, "
+                  "blacksmithing, motorcycle and tricycle repair, vulcanising and tyre repair, refrigeration and air "
+                  "conditioning, and automobile <span class=\'nolig\'>CNG</span> conversion."),
+    ("Fashion", "Tailoring and design, beadmaking, shoemaking, interior design and decoration, and cosmetology."),
+    ("Building", "Masonry, bricklaying, blocklaying and concreting, woodwork, carpentry and joinery, furniture and "
+                 "upholstery, plumbing and pipefitting, tiling, floor cladding and interlocking, painting, decoration "
+                 "and interior finishing, draughting, aluminium work, and solar <span class=\'nolig\'>PV</span> "
+                 "installation and maintenance."),
+    ("Agriculture", "Mechanised agriculture &mdash; mechanics and operations &mdash; and livestock farming: "
+                    "beekeeping, poultry and animal husbandry."),
+]
+# Who it is for. The brochure names four groups; the last two are the reason the centre is
+# sited at Ogoja rather than anywhere else — the refugee and displacement work already on
+# our track record happens in the same place.
+OGOJA_FOR = [
+    ("Leavers with a profession and no trade",
+     "Graduands of the Thomas McGettrick Institute of Technology and of St. Joseph&rsquo;s Orphanage and Schools, "
+     "who want a specific skill on top of their training to make them employable."),
+    ("Young people out of work",
+     "The great majority of Ogoja&rsquo;s young people, who are not in work and have nowhere to train. Students "
+     "would learn a skill of their choice and be attached to a local artisan for the practical."),
+    ("Refugees from Cameroon",
+     "Young people displaced from their homes by the conflict in Cameroon, who crossed into Cross River State at "
+     "Adagom, in Ogoja, and have no way to earn."),
+    ("Displaced from Benue",
+     "Internally displaced young people from neighbouring Benue State, made homeless by herdsmen on their land and "
+     "robbed of their schooling."),
+]
+# US dollars, as printed in the appeal. 120 + 155 + 35 + 10 = 320.
+OGOJA_COSTS = [("$120,000", "Structural building and finishing"),
+               ("$155,000", "Furnishing and equipment"),
+               ("$35,000", "Power"),
+               ("$10,000", "Running costs for the first year"),
+               ("$320,000", "<strong>Total</strong>")]
+
 RIGHTS = [
     "Every child has the right to a standard of living adequate for their health and well-being.",
     "Every child has the right to learn how to work, to free choice of employment, to just and favourable conditions of work, and to protection against unemployment.",
@@ -889,9 +938,10 @@ body += sec(head_block("Education", "A high-quality education is an inherent rig
             cls="grad-paper-warm")
 body += sec(head_block("VASAC", "Vocational and Skills Acquisition Centres.",
                        "We go a step beyond the conventional school system and equip our schools so that students "
-                       "leave with a trade. Each centre runs pilot systems where students practise the skills that "
-                       "will sustain them for life &mdash; computing, fashion design, beauty and aesthetics, home "
-                       "economics, music, technical drawing, visual arts, the building trades and agriculture.")
+                       "leave with a trade. A centre is designed as a set of working pilots rather than lessons "
+                       "&mdash; computing, fashion design, beauty and aesthetics, home economics, music, technical "
+                       "drawing, visual arts, the building trades and agriculture &mdash; and the first "
+                       "purpose-built one is planned for Ogoja.")
             + '    <div class="button-row">\n'
               '      <a class="button button--dark" href="programme-vasac.html">Inside a skills centre</a>\n'
               '      <a class="button button--plain" href="faq.html">Questions donors ask</a>\n    </div>\n',
@@ -1056,22 +1106,52 @@ programme_page(
     "programme-vasac.html", "Vocational and Skills Acquisition Centres",
     "Vocational and Skills Acquisition Centres",
     "We go a step beyond the conventional school system and equip our schools so that a student leaves with a "
-    "trade as well as a certificate. Each centre runs pilot systems where students practise the skills that will "
-    "sustain them for life.",
+    "trade as well as a certificate. The centres are designed as working pilots rather than lessons, and the "
+    "first purpose-built one is planned for Ogoja.",
     "vasac-hero.jpg", "Students and staff with their certificates",
     "VASAC: Vocational and Skills Acquisition Centres inside CORAfrica schools — computing, fashion, beauty, home "
-    "economics, music, technical drawing, visual arts, the building trades and agriculture.",
-    sec(head_block("Inside a centre", "Nine trades, taught by hand.",
+    "economics, music, technical drawing, visual arts, the building trades and agriculture. The first purpose-built "
+    "centre is proposed for Ogoja, Cross River State.",
+    sec(head_block("The design", "Nine sections, hands-on.",
                    "Our educational component runs from primary and secondary schooling through to tertiary support "
-                   "and vocational skills acquisition. A typical centre includes the sections below, each run as a "
-                   "working pilot rather than a lesson.")
+                   "and vocational skills acquisition. A skills centre is designed to include the sections below, "
+                   "each one run as a working pilot rather than a lesson.")
         + grid([card(t, b) for t, b in VASAC], 3), cls="grad-paper-warm")
-    + sec(head_block("What makes it work", "Staff, equipment, and a route out.")
-          + grid([card("Staffing", "Reputable staff recruited from known institutions, with experts drawn from local artisans known to us over many years &mdash; administrative staff, professional teachers and skilled labourers."),
-                  card("Equipment", "Every department furnished and equipped to match its training, so that a vocational track is genuinely practised and not merely described."),
+    + sec(head_block("The first centre", "Purpose-built, for Ogoja.",
+                     "Ogoja is farming country &mdash; yams, cassava, corn, rice, palm oil and kernels &mdash; with "
+                     "a young population and very little work for it. By our own feasibility work, around one in ten "
+                     "young people there reaches higher education, and most of those who do must leave to find it. "
+                     "Those who finish school and can neither train nor trade go to the cities as house helps, "
+                     "nannies and street children. A centre of their own is what we have put to donors: somewhere to "
+                     "learn a trade without leaving home.")
+          + wide_shot("vasac-proposed.jpg",
+                      "Architect&rsquo;s impression of the proposed Vocational and Skills Acquisition Centre",
+                      "The proposed centre at Ogoja, as drawn for us. <strong>It is not built.</strong> This is what "
+                      "the appeal below is for.")
+          + grid([card(t, b) for t, b in OGOJA_FOR], 2), cls="bg-white")
+    + sec(head_block("Six departments", "What it would teach.",
+                     "The centre is planned in six departments. Between them they carry close to fifty trades "
+                     "&mdash; and this is the list we costed, not a wish list written afterwards.")
+          + grid([card(t, b) for t, b in OGOJA_DEPTS], 3), cls="grad-paper-warm")
+    + sec(head_block("What it would cost", "US $320,000 to build it and open it.",
+                     "The estimate in our appeal, which covers the first year of running costs as well as the "
+                     "building itself. Nothing here has been spent: the centre is proposed, and this is the "
+                     "figure we are raising.")
+          + '    <div class="costs">\n'
+          + "".join('      <div class="cost-row%s"><span class="cost-n">%s</span>'
+                    '<span class="cost-w">%s</span></div>\n'
+                    % ((" cost-row--total" if i == len(OGOJA_COSTS) - 1 else "",) + r)
+                    for i, r in enumerate(OGOJA_COSTS))
+          + "    </div>\n"
+          + '    <div class="button-row" style="margin-top:1.9rem">\n'
+            '      <a class="button button--accent" href="donate.html">Give towards it</a>\n    </div>\n',
+          cls="grad-white-strong")
+    + sec(head_block("What it takes to work", "Staff, equipment, and a route out.")
+          + grid([card("Staffing", "Staff are to be recruited from known institutions, with experts drawn from local artisans known to us over many years &mdash; administrative staff, professional teachers and skilled labourers."),
+                  card("Equipment", "Every department is to be furnished and equipped to match its training, so that a vocational track is genuinely practised and not merely described."),
                   card("Certification and placement", "Partnerships with donors and bilateral organisations are intended to carry students through to certification and job placement.")], 3)
           + '    <div class="button-row" style="margin-top:1.9rem">\n'
-            '      <a class="button button--dark" href="strategic-plan.html">Where we are opening more</a>\n    </div>\n',
+            '      <a class="button button--dark" href="strategic-plan.html">Where we plan to open more</a>\n    </div>\n',
           cls="bg-white"))
 
 

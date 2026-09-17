@@ -821,3 +821,12 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .shot-grid { grid-template-columns: 1fr; }
   .shot .media img { height: 240px; }
 }
+
+/* ---- 2026-09-17 The skills-centre brochure: the proposed-centre rendering ---- */
+/* Architects' renderings arrive banner-shaped (960x408). The square media boxes would
+   crop them to a strip of roof, so they get their own figure: natural size, centred,
+   never upscaled past the pixels we actually have. */
+.shot--wide { margin: 2.1rem auto 0; max-width: 960px; }
+.shot--wide .media--wide img { height: auto; aspect-ratio: 960 / 408; }
+.shot--wide figcaption { text-align: center; font-size: 13px; }
+.cost-row--total { border-top: 1px solid var(--line-strong); padding-top: 15px; }
