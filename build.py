@@ -372,7 +372,7 @@ def write(page, html):
 # times elsewhere in the same document, so 2027 stands.
 STATS = [("7,330", "Children educated", "Graduated from our schools since we were founded"),
          ("2,550", "Children in school", "Enrolled today in the schools we founded"),
-         ("7", "Schools and clinics", "Founded by CORAfrica and operating today"),
+         ("7", "Schools and clinics", "Five schools and two clinics, all founded by CORAfrica"),
          ("64", "Communities", "Reached through our programmes"),
          ("61", "Staff and teachers", "On our payroll, until the 2027 hand-over"),
          ("805", "Small businesses supported", "Through our empowerment programmes, to date"),
@@ -1080,12 +1080,6 @@ FAQS = [
      "means the human family is one; the common good, which obliges us to grow more sensitive to children who "
      "suffer deprivation; and self-reliance, so that communities design themselves to make young people "
      "independent."),
-    ("Is faith formation part of the schooling?",
-     "Yes, and openly. Our mission is to help the children we serve encounter Christ, and education is the best "
-     "tool we have for it. That work assumes a healthy mind and body, which is why the healthcare programmes exist "
-     "at all. Faith formation is integrated into the ordinary school day through prayers such as the Angelus, the "
-     "Lord&rsquo;s Prayer and the Rosary, and our desire is that a child grows in knowledge, dignity and faith "
-     "together."),
     ("Can our family be matched with a family in Nigeria?",
      "It is possible, and we would like to do more of it. Child sponsorship works best when children are matched "
      "with their peers between institutions, and a family-to-family partnership can let families share experiences "
@@ -1111,7 +1105,7 @@ FAQS = [
      "coordinates the building of it and monitors what it does afterwards. The invitation is not to give to a "
      "project but to join a legacy &mdash; one child, one family and one community at a time."),
 ]
-COSTS = [("$570", "<strong>One primary school child</strong>, for a year &mdash; quality education, basic healthcare and good nutrition."),
+COSTS = [("$370", "<strong>One primary school child</strong>, for a year &mdash; quality education, basic healthcare and good nutrition."),
          ("$450", "<strong>One JSS student</strong> (junior secondary), for a year, on the same basis."),
          ("$550", "<strong>One SS1 student</strong> (senior secondary), for a year, on the same basis.")]
 
@@ -1160,7 +1154,7 @@ REGISTER = [
     ("Little Flower Nursery &amp; Primary School", "Ipong-Obudu", "2007", "Nursery &amp; primary",
      "One of the earliest schools initiated across the diocese, since handed to the parish and still operating."),
     ("Thomas McGettrick Institute of Technology", "Ogoja Diocese", "&mdash;", "Technical",
-     "A technical institute facilitated in collaboration with the diocesan bishop. CORAfrica provided major facilities &mdash; road networks, the gate house and laboratories &mdash; and handed it on to the Catholic Diocese of Ogoja."),
+     "Built by the Catholic Diocese of Ogoja, not by CORAfrica. Working in collaboration with the diocesan bishop, CORAfrica facilitated major works on the site &mdash; road networks, the gate house and laboratories &mdash; and the institute remains with the diocese."),
     ("John Stilley Schools", "Victoria, Ikom", "2017", "300+ students",
      "Nursery, primary and secondary schools founded where the community had no secondary school at all. A new classroom block and a lodge for youth corps teachers followed, and the second Community Education Centre grew up around them. More than 1,000 pupils have been educated there. Being handed on in 2027."),
     ("Victoria Medical Center", "Victoria, Ikom", "&mdash;", "Health",
