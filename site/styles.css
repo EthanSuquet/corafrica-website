@@ -787,19 +787,6 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 .shot figcaption { margin-top: 11px; font-size: 12.5px; line-height: 1.45; color: var(--ink-muted); }
 
 .cec-figure { margin: 2.4rem 0 0; }
-.cec-svg { display: block; width: 100%; height: auto; }
-.cec-bound { fill: none; stroke: var(--line-strong); stroke-width: 2; stroke-dasharray: 9 9; }
-.cec-pill { fill: var(--accent-tint); }
-.cec-pill-t { text-anchor: middle; font-family: "Manrope", sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; fill: var(--accent); }
-.cec-link { stroke: var(--line-strong); stroke-width: 2; }
-.cec-head { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.5; }
-.cec-head-t { font-family: "Space Grotesk", sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.035em; fill: var(--accent); }
-.cec-spine { stroke: var(--line-strong); stroke-width: 2; }
-.cec-chip { fill: #fff; stroke: var(--line); stroke-width: 1.5; }
-.cec-chip-t { font-family: "Manrope", sans-serif; font-size: 14px; font-weight: 600; fill: var(--ink-soft); }
-.cec-core { fill: var(--accent); }
-.cec-core-t { text-anchor: middle; font-family: "Space Grotesk", sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.04em; fill: #fff; }
-.cec-core-s { text-anchor: middle; font-family: "Manrope", sans-serif; font-size: 13px; fill: rgba(255, 255, 255, 0.82); }
 .cec-list { display: none; }
 .cec-figure figcaption { margin-top: 1.1rem; font-size: 13.5px; line-height: 1.5; color: var(--ink-muted); }
 
@@ -809,9 +796,8 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .shot-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 719px) {
-  /* Below this the schematic's labels stop being legible, so the same four elements
-     render as a plain list instead. */
-  .cec-svg { display: none; }
+  /* Below this the wheel's labels stop being legible, so the same structure
+     renders as a plain list instead. The wheel hides itself further down. */
   .cec-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
   .cec-list > li { display: grid; gap: 3px; padding: 15px 17px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
   .cec-row-tag { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
@@ -839,3 +825,37 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 .shot--single { margin: 2.1rem auto 0; max-width: 720px; }
 .shot--single .media img { height: auto; aspect-ratio: 4 / 3; }
 .shot--single figcaption { text-align: center; }
+
+/* ---- 2026-09-17 The CEC wheel ----------------------------------------------
+   Fr. Peter asked for "another sophisticated image of our CEC" with the structure corrected:
+   two programmes, one community, several systems. The wheel keeps the shape of the old
+   four-part diagram he likes and fixes what it said. Below 719px the nested list takes over,
+   exactly as the tree did -- wedge labels stop being legible well before that. */
+.cw-figure { margin: 2.6rem 0 0; }
+.cw-svg { display: block; width: 100%; max-width: 860px; height: auto; margin-inline: auto; }
+.cw-bound { fill: var(--paper-warm); stroke: var(--line-strong); stroke-width: 2.5; stroke-dasharray: 10 10; }
+.cw-hub { fill: #fff; stroke: var(--line-strong); stroke-width: 2; }
+.cw-seg { stroke: #fffdf9; stroke-width: 3; }
+.cw-band { stroke: #fffdf9; stroke-width: 3; }
+.cw-glyph path { fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.cw-seg-t {
+  text-anchor: middle; fill: #fff; font-family: "Space Grotesk", sans-serif;
+  font-size: 21px; font-weight: 600; letter-spacing: -0.02em;
+}
+.cw-prog {
+  fill: #fff; font-family: "Manrope", sans-serif; font-size: 25px; font-weight: 800;
+  letter-spacing: 0.17em; text-anchor: middle;
+}
+.cw-pill { fill: #fff; stroke: var(--accent); stroke-width: 2; }
+.cw-pill-t {
+  text-anchor: middle; fill: var(--accent); font-family: "Manrope", sans-serif;
+  font-size: 15px; font-weight: 800; letter-spacing: 0.15em;
+}
+.cw-figure figcaption {
+  margin: 1.5rem auto 0; max-width: 62ch; text-align: center;
+  font-size: 13.5px; line-height: 1.55; color: var(--ink-muted);
+}
+@media (max-width: 719px) {
+  .cw-svg, .cw-figure figcaption { display: none; }
+}
+.cw-seal path { fill: var(--ink); }

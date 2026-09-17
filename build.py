@@ -11,7 +11,8 @@ Every fact is sourced from docs/CONTENT-FACTS.md. Placeholders awaiting
 Fr. Peter are written in [SQUARE BRACKETS] so they cannot ship unnoticed.
 """
 import hashlib
-import os
+import io
+import math, os
 import re
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
@@ -289,47 +290,177 @@ CEC_TREE = [("Education", ["School farms (agriculture)", "HELP-A-KID", "Economic
             ("Healthcare", ["School clinics", "Medical outreach", "Hygiene and sanitation"])]
 
 
+# Glyphs for the wheel, drawn in a 24x24 box as strokes. The card icons in ICONS are set at
+# 21px on a light ground; these sit reversed out of a colour field at 34px, so they are their
+# own set rather than a resize of those.
+CEC_GLYPHS = {
+    "leaf":  "M20 4c0 8.5-5 13-11 13 0-7.5 4-12 11-13zM6 21c1.4-4.7 3.7-7.5 7.4-9.4",
+    "child": "M12 4.6a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8zM12 9.4v5.2M7.6 11.4h8.8"
+             "M9 20.2l3-5.6 3 5.6",
+    "coin":  "M12 4v16M15.9 7.6c-.8-1.1-2.3-1.8-4-1.8-2.2 0-4 1.1-4 2.9 0 3.9 8 2.1 8 6 "
+             "0 1.8-1.8 2.9-4 2.9-1.9 0-3.5-.7-4.2-2",
+    "cross": "M12 5.4v13.2M5.4 12h13.2",
+    "pin":   "M12 21s6-6.2 6-10.2A6 6 0 0 0 6 10.8C6 14.8 12 21 12 21zM12 8.6a2.2 2.2 0 1 0 "
+             "0 4.4 2.2 2.2 0 0 0 0-4.4z",
+    "drop":  "M12 3.6c3.4 4.4 5.4 7 5.4 9.6a5.4 5.4 0 0 1-10.8 0c0-2.6 2-5.2 5.4-9.6z",
+}
+
+
+def _gear():
+    """The skills-centre glyph, generated rather than hand-drawn: a hub and eight teeth."""
+    d = ["M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2z"]
+    for k in range(8):
+        a = math.radians(k * 45)
+        c, s_ = math.cos(a), math.sin(a)
+        d.append("M%.1f %.1fL%.1f %.1f" % (12 + 6.4 * c, 12 + 6.4 * s_,
+                                           12 + 9.6 * c, 12 + 9.6 * s_))
+    return "".join(d)
+
+
+CEC_GLYPHS["gear"] = _gear()
+
+# The wheel. Fr. Peter, 2026-09-17: "create a new design[/]model based on the explanations I
+# have given about our new CEC: Two programs ~ One Community. Several Systems!" -- sent with a
+# photograph of the old four-part wheel, which he called "sophisticated... though now obsolete".
+#
+# So this keeps the shape of the diagram he likes and fixes what he said was wrong with the
+# structure. The two programmes are the two halves, the way EDUCATION and LIVELIHOOD were the
+# top and bottom of his old one; the systems are wedges inside their own programme's half, not
+# peers of it; the community is the boundary drawn round the whole thing.
+#
+# Geometry is all derived from CEC_TREE, so the wheel, the labels and the narrow-screen list
+# cannot drift apart -- add a system to the data and it gets a wedge.
+CX = CY = 450.0
+R_BOUND = 414.0                      # the dashed community boundary
+R_SEG_O, R_SEG_I = 388.0, 268.0      # the system wedges
+R_PROG_O, R_PROG_I = 252.0, 172.0    # the two programme bands
+R_HUB = 152.0                        # the centre disc
+PROG_STYLE = [                       # (band, wedge tones light->dark, glyphs)
+    ("#a83f04", ["#fb600a", "#ef5a08", "#e25307", "#d24c06"],
+     ["leaf", "child", "coin", "gear"]),
+    ("#5a1c0b", ["#9c3313", "#8d2d11", "#7d270f"],
+     ["cross", "pin", "drop"]),
+]
+
+
+def _pt(r, deg):
+    a = math.radians(deg)
+    return CX + r * math.cos(a), CY + r * math.sin(a)
+
+
+def _sector(r_o, r_i, a0, a1):
+    """One annular sector, swept clockwise from a0 to a1 (degrees, 0 = east, y down)."""
+    la = 1 if (a1 - a0) % 360 > 180 else 0
+    x1, y1 = _pt(r_o, a0); x2, y2 = _pt(r_o, a1)
+    x3, y3 = _pt(r_i, a1); x4, y4 = _pt(r_i, a0)
+    return ("M%.1f %.1fA%.1f %.1f 0 %d 1 %.1f %.1fL%.1f %.1fA%.1f %.1f 0 %d 0 %.1f %.1fZ"
+            % (x1, y1, r_o, r_o, la, x2, y2, x3, y3, r_i, r_i, la, x4, y4))
+
+
+def _arc(r, a0, a1, sweep):
+    la = 1 if abs(a1 - a0) > 180 else 0
+    x1, y1 = _pt(r, a0); x2, y2 = _pt(r, a1)
+    return "M%.1f %.1fA%.1f %.1f 0 %d %d %.1f %.1f" % (x1, y1, r, r, la, sweep, x2, y2)
+
+
+def _glyph(kind, cx, cy, size=34):
+    k = size / 24.0
+    return ('      <g class="cw-glyph" transform="translate(%.1f %.1f) scale(%.3f)">'
+            '<path d="%s"/></g>\n' % (cx - size / 2, cy - size / 2, k, CEC_GLYPHS[kind]))
+
+
+def _seal_path():
+    """The seal's traced path, lifted out of img/corafrica-seal.svg and fitted to the hub."""
+    src = io.open(os.path.join(OUT, "img", "corafrica-seal.svg"), encoding="utf-8").read()
+    d = re.search(r'<path fill="[^"]+" d="([^"]+)"', src).group(1)
+    vx, vy, vw, _ = (float(v) for v in re.search(r'viewBox="([^"]+)"', src).group(1).split())
+    size = 218.0
+    k = size / vw
+    # the source file carries fill-rule="evenodd" on its root <svg>; lifting the path out
+    # without it fills every counter and the seal renders as a solid disc
+    return ('      <g class="cw-seal" fill-rule="evenodd" '
+            'transform="translate(%.2f %.2f) scale(%.4f)">'
+            '<path d="%s"/></g>\n'
+            % (CX - size / 2 - vx * k, CY - size / 2 - vy * k, k, d))
+
+
 def cec_diagram():
-    """The schematic, plus the same tree as a plain nested list for narrow screens —
-    both generated from CEC_TREE, so the drawing and the fallback cannot drift apart."""
-    svg = ""
-    for col, (name, items) in enumerate(CEC_TREE):
-        hx = 50 + col * 470                      # header/spine column origin
-        sx, cx = hx + 16, hx + 34                # spine x, chip x
-        last = 290 + (len(items) - 1) * 54 + 22
-        svg += ('      <line class="cec-spine" x1="%d" y1="270" x2="%d" y2="%d"></line>\n' % (sx, sx, last)
-                + '      <rect class="cec-head" x="%d" y="214" width="330" height="56" rx="18"></rect>\n' % hx
-                + '      <text class="cec-head-t" x="%d" y="249">%s</text>\n' % (hx + 22, name))
-        for i, label in enumerate(items):
-            y = 290 + i * 54
-            svg += ('      <line class="cec-spine" x1="%d" y1="%d" x2="%d" y2="%d"></line>\n' % (sx, y + 22, cx, y + 22)
-                    + '      <rect class="cec-chip" x="%d" y="%d" width="296" height="44" rx="14"></rect>\n' % (cx, y)
-                    + '      <text class="cec-chip-t" x="%d" y="%d">%s</text>\n' % (cx + 18, y + 28, label))
-    rows = ""
+    """The wheel, plus the same structure as a plain nested list for narrow screens -- both
+    generated from CEC_TREE, so the drawing and the fallback cannot drift apart."""
+    n = sum(len(items) for _, items in CEC_TREE)
+    step = 360.0 / n                                  # every system gets an equal wedge
+    svg, defs, a = "", "", 180.0                      # start at 9 o'clock, sweep over the top
+    for gi, (name, items) in enumerate(CEC_TREE):
+        band, tones, glyphs = PROG_STYLE[gi]
+        span = step * len(items)
+        # the programme band, and its name set along the band's own arc
+        svg += '      <path class="cw-band" fill="%s" d="%s"/>\n' % (
+            band, _sector(R_PROG_O, R_PROG_I, a, a + span))
+        top = (a + span / 2.0) % 360 > 180            # over the top: read left to right
+        r_t = (R_PROG_O + R_PROG_I) / 2.0 - (6 if top else -6)
+        defs += '    <path id="cw-t%d" d="%s"/>\n' % (
+            gi, _arc(r_t, a + 3, a + span - 3, 1) if top
+            else _arc(r_t, a + span - 3, a + 3, 0))
+        svg += ('      <text class="cw-prog"><textPath href="#cw-t%d" startOffset="50%%">'
+                '%s</textPath></text>\n' % (gi, name.upper()))
+        # one wedge per system, tone stepping inward through the programme's own colour
+        for si, item in enumerate(items):
+            w0, w1 = a + si * step, a + (si + 1) * step
+            svg += '      <path class="cw-seg" fill="%s" d="%s"/>\n' % (
+                tones[si % len(tones)], _sector(R_SEG_O, R_SEG_I, w0, w1))
+            mid = ((w0 + w1) / 2.0) % 360.0       # the sweep runs past 360; normalise first
+            mid = 360.0 if mid == 0 else mid      # due east belongs to the upper branch below
+            mx, my = _pt((R_SEG_O + R_SEG_I) / 2.0, mid)
+            words = item.split()
+            lines = [item] if len(item) <= 14 else None
+            if lines is None:                          # break onto two balanced lines
+                best, score = 1, 1e9
+                for k in range(1, len(words)):
+                    d = abs(len(" ".join(words[:k])) - len(" ".join(words[k:])))
+                    if d < score:
+                        best, score = k, d
+                lines = [" ".join(words[:best]), " ".join(words[best:])]
+            # Labels run along the tangent, never radially: a horizontal label on a wedge at
+            # 3 or 9 o'clock would point straight out of the band and overflow it. Rotating
+            # into (-90, 90) also guarantees no label is ever upside down.
+            top = mid > 180
+            rot = mid - 270 if top else mid - 90
+            # Offsets are in the rotated frame and must NOT flip with the half: the rotation
+            # already guarantees upright text, so flipping them as well reverses the reading
+            # order of a two-line label. Glyph above its words, lines top to bottom, always.
+            nl = len(lines)
+            svg += '      <g transform="rotate(%.2f %.1f %.1f)">\n' % (rot, mx, my)
+            svg += _glyph(glyphs[si % len(glyphs)], mx, my - 28 - 12 * (nl - 1))
+            for li, ln in enumerate(lines):
+                svg += ('        <text class="cw-seg-t" x="%.1f" y="%.1f">%s</text>\n'
+                        % (mx, my + 2 - 12 * (nl - 1) + li * 23, ln))
+            svg += "      </g>\n"
+        a += span
+    # the community boundary, the hub, and the seal at the centre of it all
+    svg = ('      <circle class="cw-bound" cx="450" cy="450" r="%.1f"/>\n' % R_BOUND) + svg
+    svg += ('      <circle class="cw-hub" cx="450" cy="450" r="%.1f"/>\n' % R_HUB
+            + _seal_path())
+    pill_w = 212.0
+    svg += ('      <rect class="cw-pill" x="%.1f" y="%.1f" width="%.1f" height="40" rx="20"/>\n'
+            % (450 - pill_w / 2, R_BOUND * 0 + 450 - R_BOUND - 20, pill_w)
+            + '      <text class="cw-pill-t" x="450" y="%.1f">ONE COMMUNITY</text>\n'
+            % (450 - R_BOUND + 6))
+    lis = ""
     for name, items in CEC_TREE:
-        rows += ('      <li><span class="cec-row-tag">Programme</span><strong>%s</strong>\n' % name
-                 + '        <ul>\n%s        </ul>\n      </li>\n'
-                 % "".join("          <li>%s</li>\n" % i for i in items))
-    return ('    <figure class="cec-figure">\n'
-            '      <svg class="cec-svg" viewBox="0 0 900 548" role="img" aria-labelledby="cec-t cec-d">\n'
-            '        <title id="cec-t">A typical Community Education Centre</title>\n'
-            '        <desc id="cec-d">One school at the centre of its community, running two programmes. '
-            'Education carries the school farms, HELP-A-KID, economic empowerment and the skills centres. '
-            'Healthcare carries the school clinics, medical outreach, and hygiene and sanitation.</desc>\n'
-            '        <rect class="cec-bound" x="16" y="64" width="868" height="456" rx="48"></rect>\n'
-            '        <rect class="cec-pill" x="386" y="50" width="128" height="28" rx="14"></rect>\n'
-            '        <text class="cec-pill-t" x="450" y="69">The community</text>\n'
-            '        <line class="cec-link" x1="450" y1="172" x2="216" y2="214"></line>\n'
-            '        <line class="cec-link" x1="450" y1="172" x2="686" y2="214"></line>\n'
-            + svg
-            + '        <rect class="cec-core" x="270" y="92" width="360" height="80" rx="24"></rect>\n'
-              '        <text class="cec-core-t" x="450" y="128">Community Education Centre</text>\n'
-              '        <text class="cec-core-s" x="450" y="152">one school, at the heart of its community</text>\n'
-              '      </svg>\n'
-            + '      <ul class="cec-list">\n%s      </ul>\n' % rows
-            + '      <figcaption>A Community Education Centre runs two programmes. Everything else &mdash; the '
-              'farms, HELP-A-KID, economic empowerment, the skills centres &mdash; sits under one of them.'
-              '</figcaption>\n    </figure>\n')
+        lis += ('      <li><span class="cec-row-tag">Programme</span><strong>%s</strong>\n'
+                '        <ul>%s</ul>\n      </li>\n'
+                % (name, "".join("<li>%s</li>" % i for i in items)))
+    return ('    <figure class="cec-figure cw-figure">\n'
+            '      <svg class="cw-svg" viewBox="0 0 900 900" role="img" '
+            'aria-label="The Community Education Centre: two programmes, education and '
+            'healthcare, with their systems inside them and one community around them.">\n'
+            '    <defs>\n' + defs + "    </defs>\n" + svg + "      </svg>\n"
+            '      <ul class="cec-list">\n' + lis + "      </ul>\n"
+            '      <figcaption>Read it from the outside in: one community, then the two '
+            'programmes we run inside it, then the systems that sit under each. Nothing in the '
+            'outer ring stands beside education or healthcare &mdash; each one belongs to a '
+            'programme, and the centre is the school they are all built around.</figcaption>\n'
+            '    </figure>\n')
 
 
 def wide_shot(img, alt, cap):
