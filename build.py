@@ -1722,8 +1722,22 @@ BIOS = {
     "Ethan Suquet": [
         "Ethan Suquet is CORAfrica&rsquo;s IT Coordinator and a member of its United States Board of Trustees, "
         "which he joined in July 2025. He has served as the board&rsquo;s Vice Chairman since September 2026.",
-        "A software developer by profession, he builds and maintains CORAfrica&rsquo;s website and the systems "
-        "behind it &mdash; the charity&rsquo;s public face, and the way most of its supporters first find the work.",
+        "A software developer by profession, he works for The Storyhaus Agency in Zelienople, Pennsylvania. For "
+        "CORAfrica he builds and maintains the website and the systems behind it &mdash; the charity&rsquo;s public "
+        "face, and the way most of its supporters first find the work.",
+        "A devout Catholic, he is a member of Most Precious Blood of Jesus Parish and lives in Evans City, "
+        "Pennsylvania. He was introduced to CORAfrica by Jeannine Goelz.",
+    ],
+    "Jeannine Goelz": [
+        "Jeannine M. Goelz has been associated with CORAfrica&rsquo;s projects in Nigeria since 2005, and her "
+        "familiarity with the charity&rsquo;s history has shaped its direction and its decisions ever since.",
+        "For thirteen years she served as Sponsor Relations Coordinator for St. Joseph&rsquo;s Orphanage and School "
+        "in Ogoja. She was instrumental in finding new sponsors, and in sourcing the funding for a much-needed "
+        "medical clinic and for a school bus.",
+        "For the last ten years she has maintained the operation and the reporting of CORAfrica&rsquo;s American "
+        "side, and has hosted Fr. Peter in his work during his visits to the United States. She is dedicated to the "
+        "mission, with a long record of projects conceived, built from the ground up, and kept well maintained into "
+        "the future.",
     ],
     "Fr. Peter Abue": [
         "Born in Idum-Mbube, in the Ogoja Local Government Area of Cross River State, Fr. Peter Abue was ordained "
