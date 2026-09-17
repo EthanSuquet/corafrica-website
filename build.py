@@ -533,8 +533,8 @@ STATS = [("7,330", "Children educated", "Graduated from our schools since we wer
 # school programmes in our CEC model." School farms, HELP-A-KID, economic empowerment and
 # VASAC sit UNDER education; clinics, outreach and hygiene sit UNDER healthcare. Nothing on
 # this site may present agriculture or economic empowerment as a programme in its own right.
-PILLARS = [("Education", "Primary and secondary schools where none exist &mdash; and, built into them, the school farms, HELP-A-KID, economic empowerment for parents, and the skills centres designed to send a child out with a trade.", "book", "Programme one"),
-           ("Healthcare", "A clinic inside the school system, medical outreach to villages that have none, and hygiene and sanitation taught as part of school life.", "heart", "Programme two")]
+PILLARS = [("Education", "Primary and secondary schools where none exist &mdash; and, built into them, the demonstration farms, HELP-A-KID, economic empowerment for parents, and the skills centres designed to send a child out with a trade.", "book", "Programme one"),
+           ("Healthcare", "A clinic inside the school system, medical outreach to villages that have none, and hygiene and sanitation taught as part of everyday lessons.", "heart", "Programme two")]
 
 # The five programme pages, grouped under the programme each belongs to. Each page is
 # reached only by clicking its card, exactly as with the bio pages.
@@ -546,7 +546,7 @@ EDUCATION_PROGRAMMES = [
     ("Economic empowerment", "programme-empowerment.html", "Families",
      "When a family cannot afford to keep a child in class, the barrier is income. The Economic Empowerment Programme lends to the parents &mdash; interest-free &mdash; so that a business can grow into school fees."),
     ("Vocational and skills acquisition", "programme-vasac.html", "Skills",
-     "We go a step beyond the conventional school system, and equip our schools so that a student leaves with a trade as well as a certificate. The centres are designed as working pilots rather than lessons, and the first purpose-built one is planned for Ogoja."),
+     "We go a step beyond the conventional classroom, and equip our schools so that a student leaves with a trade as well as a certificate. The centres are designed as working pilots rather than lessons, and the first purpose-built one is planned for Ogoja."),
 ]
 HEALTHCARE_PROGRAMMES = [
     ("School clinics", "programme-school-clinics.html", "Health",
@@ -556,7 +556,7 @@ HEALTHCARE_PROGRAMMES = [
 # clinics page, and appear here so the programme is shown whole.
 HEALTHCARE_ALSO = [
     ("Medical outreach", "Our clinics go out to the places that have none &mdash; rural communities, refugee settlements, schools and orphanages.", "Health"),
-    ("Hygiene and sanitation", "Personal hygiene, environmental sanitation, proper handwashing and safe drinking water, taught to school children as part of school life.", "Health"),
+    ("Hygiene and sanitation", "Personal hygiene, environmental sanitation, proper handwashing and safe drinking water, taught to pupils as part of school life.", "Health"),
 ]
 PROGRAMMES = EDUCATION_PROGRAMMES + HEALTHCARE_PROGRAMMES
 # Which programme each page sits under — used for its kicker, so a reader arriving straight
@@ -712,7 +712,7 @@ def person(name, role):
 # ============================================================== index
 body = hero("Education for Africa&rsquo;s Future",
             "A school, and everything that keeps a child in it.",
-            "CORAfrica builds Community Education Centres in rural Nigeria where no school exists &mdash; then "
+            "CORAfrica builds Community Education Centres in rural Nigeria where none exists &mdash; then "
             "adds a demonstration farm, a school clinic and a skills acquisition centre, so that children can stay "
             "within their own community. We provide economic empowerment for their parents, which is what keeps "
             "them coming back. Founded in 2006, and now building our next centre in New Karu, Nasarawa State, "
@@ -800,7 +800,7 @@ HISTORY = [
     ("2010s", "Support from Western Pennsylvania",
      "Ray Ferguson, Fr. Jim Murphy, Anne Goetler, Tom Rooney and Jeannine Goelz join. With Abode for Children Inc. of Evans City, led by Tom and Mary Rutkoski, they upgrade St. Joseph&rsquo;s Schools and Orphanage and CORAfrica Farms."),
     ("2017", "The John Stilley Schools",
-     "Nursery, primary and secondary schools open at Victoria, Ikom, where the community had no secondary school at all. The same year, Fr. Peter is honoured at Cross River@50, the state&rsquo;s golden jubilee."),
+     "Nursery, primary and secondary schools open at Victoria, Ikom, where the community had none at all. The same year, Fr. Peter is honoured at Cross River@50, the state&rsquo;s golden jubilee."),
     ("2020&ndash;22", "Refugees and displaced families",
      "A school for refugee children from Cameroon opens at Adagom; 1,000 refugees, migrants and displaced people are trained in agribusiness with UNHCR and the International Institute of Tropical Agriculture; and six classrooms are built in an IDP camp in Benue State."),
     ("Today", "Handed on, and beginning again",
@@ -892,11 +892,11 @@ write("who-we-are.html", head("who-we-are.html", "Who We Are — CORAfrica",
 # strategic plan page, which is where his document places them.
 PROGRAMME_BLOCKS = [
     ("Education", "classroom.jpg", "01", "Programme", "Pupils at their desks in a classroom",
-     "Our primary and secondary schools are centred where children have no educational opportunity at all, and equipped where schools exist but lack the basics. Small classes, good teaching, and a holistic education that grows a child academically, personally and spiritually &mdash; with vocational training and skills acquisition at its heart.",
+     "Our primary and secondary schools are centred where children have no educational opportunity at all, and equipped where they exist but lack the basics. Small classes, good teaching, and a holistic education that grows a child academically, personally and spiritually &mdash; with vocational training and skills acquisition at its heart.",
      ["We run economic empowerment programmes inside our centres, so that poor parents can take soft loans to start the small businesses and farms that lift their livelihoods.",
       "The HELP-A-KID programme reaches children who are not in a CORAfrica-supported school at all, so that a poorer child is encouraged into an adequate education in spite of their vulnerability."]),
     ("Healthcare", "clinic.jpg", "02", "Programme", "A CORAfrica school clinic",
-     "Our school clinic is built inside the school system, so a child&rsquo;s health is never the reason they miss class. We concentrate on prevention, early detection, health education, and the treatment of diarrhoeal disease and malaria in the under-fives. We invest heavily in the first 1,000 days of life, the window that sets brain development, growth and immune strength. Child welfare carries the same premium, through HELP-A-KID.",
+     "Our clinic is built inside the school system, so a child&rsquo;s health is never the reason they miss class. We concentrate on prevention, early detection, health education, and the treatment of diarrhoeal disease and malaria in the under-fives. We invest heavily in the first 1,000 days of life, the window that sets brain development, growth and immune strength. Child welfare carries the same premium, through HELP-A-KID.",
      ["The clinics run medical outreach to underserved places that have none of their own &mdash; rural communities, refugee settlements, schools and orphanages.",
       "Through them, school children are taught personal hygiene, environmental sanitation, proper handwashing and safe drinking water."]),
 ]
@@ -1063,13 +1063,13 @@ body += sec(head_block("Why it matters", "The need we are answering.",
 body += sec(head_block("Education", "A high-quality education is an inherent right of every child.",
                        "We build and equip primary and secondary schools in rural areas, creating sustainable "
                        "livelihoods for indigent children and preventing the poverty, abuse and exploitation that "
-                       "follow when a child is out of school.")
+                       "follow when a child is out of class.")
             + grid([card("Primary and secondary", "Conventional schooling, run properly &mdash; small classes, quality instruction, and preparation for an increasingly globalised world."),
                     card("Holistic by design", "Children are encouraged to grow academically, personally and spiritually, in an environment of curiosity, creativity and enthusiasm."),
                     card("Tertiary and vocational", "Our educational component runs from primary through secondary to tertiary support and vocational skills acquisition.")], 3),
             cls="grad-paper-warm")
 body += sec(head_block("VASAC", "Vocational and Skills Acquisition Centres.",
-                       "We go a step beyond the conventional school system and equip our schools so that students "
+                       "We go a step beyond the conventional classroom and equip our schools so that students "
                        "leave with a trade. A centre is designed as a set of working pilots rather than lessons "
                        "&mdash; computing, fashion design, beauty and aesthetics, home economics, music, technical "
                        "drawing, visual arts, the building trades and agriculture &mdash; and the first "
@@ -1079,8 +1079,8 @@ body += sec(head_block("VASAC", "Vocational and Skills Acquisition Centres.",
               '      <a class="button button--plain" href="faq.html">Questions donors ask</a>\n    </div>\n',
             cls="grad-warm-white")
 body += sec(head_block("Healthcare", "A child too ill to learn is not being educated.",
-                       "We establish health clinics inside the school system, and teach healthcare awareness and "
-                       "sanitation as part of school life. We place particular emphasis on preventing and treating "
+                       "We establish clinics inside the school system, and teach healthcare awareness and "
+                       "sanitation as part of everyday lessons. We place particular emphasis on preventing and treating "
                        "diarrhoeal disease and malaria in children under five, and on the first 1,000 days of life. "
                        "Our investment extends to the health of their mothers.")
             + grid([card("Preventive first", "Preventive care, combating malnutrition, and community education on preventing the transmission of HIV."),
@@ -1193,10 +1193,10 @@ programme_page(
                    "attention at all, because their parents and carers could not afford the bills.")
         + grid([card("Sr. Augustina Abuo Memorial Medical Clinic", "At St. Joseph&rsquo;s Orphanage, Idum-Mbube. It has attended to close to 500 students and more than 1,000 community members since it opened.", "Idum-Mbube"),
                 card("Victoria Medical Center", "Serving the pupils of the John Stilley Schools and the surrounding community at Victoria, Ikom.", "Ikom"),
-                card("Free, then affordable", "Care is free of charge to school children, and provided at an affordable cost to other members of the communities where our schools are.", "How it is paid for")], 3),
+                card("Free, then affordable", "Care is free of charge to pupils, and provided at an affordable cost to other members of the communities where our schools are.", "How it is paid for")], 3),
         cls="grad-paper-warm")
     + sec(head_block("Medical outreach", "Where there is no clinic at all.",
-                     "Alongside the school clinics, we take healthcare to communities that have none: rural villages, "
+                     "Alongside the clinics, we take healthcare to communities that have none: rural villages, "
                      "refugee settlements, schools, orphanages and other underserved places. The outreach "
                      "concentrates on prevention, early detection, health education and treatment.")
           + grid([card("Screening and consultation", "Medical screening, basic consultations, and referral of anything that needs further medical attention."),
@@ -1229,7 +1229,7 @@ programme_page(
                 card("Harvesting", "Bringing in what the school has grown."),
                 card("Marketing", "Selling the produce &mdash; the part of farming that is usually never taught."),
                 card("Storage and post-harvest handling", "Keeping a harvest until it is worth something."),
-                card("The farm feeds the school", "What is grown supports the school that grew it, and the skill outlasts the schooling.")], 3),
+                card("Food, and a skill", "What is grown supports the school that grew it, and the skill outlasts the classroom.")], 3),
         cls="grad-paper-warm")
     + sec('    <div class="split split--media split--center">\n'
           '      <div class="media"><img src="img/farm.jpg" alt="A CORAfrica demonstration farm" loading="lazy" width="900" height="675"></div>\n'
@@ -1246,7 +1246,7 @@ programme_page(
 programme_page(
     "programme-vasac.html", "Vocational and Skills Acquisition Centres",
     "Vocational and Skills Acquisition Centres",
-    "We go a step beyond the conventional school system and equip our schools so that a student leaves with a "
+    "We go a step beyond the conventional classroom and equip our schools so that a student leaves with a "
     "trade as well as a certificate. The centres are designed as working pilots rather than lessons, and the "
     "first purpose-built one is planned for Ogoja.",
     "vasac-hero.jpg", "Students and staff with their certificates",
@@ -1302,7 +1302,7 @@ programme_page(
 # talking points are left out.
 FAQS = [
     ("What has CORAfrica achieved in twenty years, and where is it going?",
-     "We have built four primary schools and four secondary schools, educated 7,330 school children, reached 64 "
+     "We have built four primary and four secondary schools, educated 7,330 children, reached 64 "
      "communities, and empowered 805 families and business owners, 513 of them women. 613 staff have been carried "
      "on our payroll over those twenty years, and each institution is transferred, in time, to the partners we "
      "collaborate with. Founded by a Catholic priest in 2006, CORAfrica has worked in Nigeria and out of the United "
@@ -1326,7 +1326,7 @@ FAQS = [
     ("Which projects have made the most difference?",
      "Three. The school system, where vocational training turns directly into employment and income. The Economic "
      "Empowerment Programme, which helps families and individuals start businesses and become independent. And the "
-     "healthcare programme, above all the school clinic, which puts medical help in front of a child during the "
+     "healthcare programme, above all the clinic, which puts medical help in front of a child during the "
      "school day."),
     ("What does the Catholic faith have to do with it?",
      "CORAfrica is built on the Social Justice agenda of the Church: the dignity of the human person, so that each "
@@ -1350,12 +1350,12 @@ FAQS = [
      "proposed, and the applicant&rsquo;s own commitment to managing the support productively."),
     ("How much does a school clinic actually do?",
      "The Sr. Augustina Abuo Memorial Medical Clinic alone has attended to close to 500 students and more than "
-     "1,000 community members. Care is free to the children who study at the school and affordable to everybody "
+     "1,000 community members. Care is free to the children who study there and affordable to everybody "
      "else, and the clinics run medical outreach into rural communities, refugee settlements, schools and "
      "orphanages that have no clinic of their own."),
     ("How can a major donor leave something lasting?",
-     "By funding something that stands: a school, a medical centre, a skills acquisition centre, a school farm, a "
-     "school clinic, an economic empowerment fund. Our operational model connects a donor to a specific project, "
+     "By funding something that stands: a school, a medical centre, a skills acquisition centre, a demonstration "
+     "farm, a clinic, an economic empowerment fund. Our operational model connects a donor to a specific project, "
      "coordinates the building of it and monitors what it does afterwards. The invitation is not to give to a "
      "project but to join a legacy &mdash; one child, one family and one community at a time."),
 ]
@@ -1410,7 +1410,7 @@ REGISTER = [
     ("Thomas McGettrick Institute of Technology", "Ogoja Diocese", "&mdash;", "Technical",
      "Built by the Catholic Diocese of Ogoja, not by CORAfrica. Working in collaboration with the diocesan bishop, CORAfrica facilitated major works on the site &mdash; road networks, the gate house and laboratories &mdash; and the institute remains with the diocese."),
     ("John Stilley Schools", "Victoria, Ikom", "2017", "300+ students",
-     "Nursery, primary and secondary schools founded where the community had no secondary school at all. A new classroom block and a lodge for youth corps teachers followed, and the second Community Education Centre grew up around them. More than 1,000 pupils have been educated there. Being handed on in 2027."),
+     "Nursery, primary and secondary schools founded where there had been none at all. A new classroom block and a lodge for youth corps teachers followed, and the second Community Education Centre grew up around them. More than 1,000 pupils have been educated there. Being handed on in 2027."),
     ("Victoria Medical Center", "Victoria, Ikom", "&mdash;", "Health",
      "The health centre of the Victoria-Ikom Community Education Centre, still under construction, with medical outreach into the surrounding villages. Being handed on in 2027."),
     ("John Bosco Academy", "Adagom, Ogoja", "2020", "479 pupils",
@@ -1491,7 +1491,7 @@ PLAN = [
         ("Essential goals", [
             "Re-establish existing schools for refugees, migrants and internally displaced people.",
             "Upgrade existing schools, and build more in poor localities as Community Education Centres.",
-            "Build better schools, and provide better facilities for the schools that already exist.",
+            "Build better schools, and provide better facilities for those that already exist.",
             "Seek government support for dilapidated schools.",
             "Train staff and teachers in crop cultivation and animal husbandry.",
             "Acquire farm equipment and farmland for training facilities.",
