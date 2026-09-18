@@ -157,7 +157,7 @@ def header(page):
     return (
         '<header class="site-header">\n'
         '  <a class="brand" href="index.html" aria-label="CORAfrica home">'
-        '<img src="img/corafrica-lockup-full-white.svg" alt="CORAfrica" width="1001" height="281"></a>\n'
+        '<img src="img/corafrica-lockup-full-white.svg" alt="CORAfrica" width="1055" height="333"></a>\n'
         '  <nav class="site-nav" id="site-nav" data-nav aria-label="Main">\n' + links + "  </nav>\n"
         '  <div class="header-actions">\n'
         '    <a class="button button--accent button--sm" href="donate.html">Donate</a>\n'
@@ -172,7 +172,7 @@ FOOTER_TEMPLATE = """<footer class="site-footer">
   <div class="shell">
     <div class="footer-grid">
       <div class="footer-brand">
-        <img src="img/corafrica-lockup-full-white.svg" alt="CORAfrica" width="1001" height="281">
+        <img src="img/corafrica-lockup-full-white.svg" alt="CORAfrica" width="1055" height="333">
         <p>Education for Africa&rsquo;s Future. A registered <span class='nolig'>501(c)(3)</span> non-profit in the
           United States and a registered NGO in Nigeria, working with rural communities from Cross River State to Abuja.</p>
       </div>
@@ -455,10 +455,6 @@ def cec_diagram():
             'healthcare, with their systems inside them and one community around them.">\n'
             '    <defs>\n' + defs + "    </defs>\n" + svg + "      </svg>\n"
             '      <ul class="cec-list">\n' + lis + "      </ul>\n"
-            '      <figcaption>Read it from the outside in: one community, then the two '
-            'programmes we run inside it, then the systems that sit under each. Nothing in the '
-            'outer ring stands beside education or healthcare &mdash; each one belongs to a '
-            'programme, and the centre is the school they are all built around.</figcaption>\n'
             '    </figure>\n')
 
 

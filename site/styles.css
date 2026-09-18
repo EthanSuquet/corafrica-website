@@ -45,7 +45,7 @@
   --shell-wide: 1360px;
   --gutter: 40px;
 
-  --header-h: 74px;
+  --header-h: 70px;
 }
 
 *,
@@ -213,7 +213,7 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(10px);
 }
 .brand { display: inline-flex; flex: 0 0 auto; }
-.brand img { height: 58px; width: auto; }
+.brand img { height: 68px; width: auto; }
 
 .site-nav { display: flex; align-items: center; gap: 26px; }
 .site-nav a {
@@ -595,7 +595,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
   /* Nav collapses. Donate never hides behind the menu — it is the primary action. */
   .site-header { padding: 12px var(--gutter); }
-  .brand img { height: 40px; }
+  .brand img { height: 46px; }
   .nav-toggle { display: flex; }
   .site-nav {
     position: fixed; inset: var(--header-h) 0 auto 0;
@@ -782,7 +782,6 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
 .cec-figure { margin: 2.4rem 0 0; }
 .cec-list { display: none; }
-.cec-figure figcaption { margin-top: 1.1rem; font-size: 13.5px; line-height: 1.5; color: var(--ink-muted); }
 
 @media (max-width: 1023px) {
   .stats--7 > div, .stats--7 > div:nth-child(n + 5) { grid-column: span 4; }
@@ -845,11 +844,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   text-anchor: middle; fill: var(--accent); font-family: "Manrope", sans-serif;
   font-size: 15px; font-weight: 800; letter-spacing: 0.15em;
 }
-.cw-figure figcaption {
-  margin: 1.5rem auto 0; max-width: 62ch; text-align: center;
-  font-size: 13.5px; line-height: 1.55; color: var(--ink-muted);
-}
 @media (max-width: 719px) {
-  .cw-svg, .cw-figure figcaption { display: none; }
+  .cw-svg { display: none; }
 }
 .cw-seal path { fill: var(--ink); }
