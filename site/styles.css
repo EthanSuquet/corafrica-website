@@ -320,8 +320,8 @@ h1, h2, h3, h4 {
   align-self: stretch; text-align: center; max-width: none;
   margin: 40px 0 auto;
   font-family: "Space Grotesk", Manrope, sans-serif;
-  font-size: 62px; font-weight: 600; letter-spacing: -0.05em; line-height: 1.05;
-  color: #fff;
+  font-size: 62px; font-weight: 500; letter-spacing: -0.05em; line-height: 1.05;
+  color: var(--accent);
 }
 
 .eyebrow {
