@@ -1825,7 +1825,7 @@ BIOS = {
     ],
     "James Bulem": [
         "James is an entrepreneur, media practitioner and public servant, with a B.A. Ed. in English and Education "
-        "from the University of Lagos. His background is in broadcast media, entertainment and cultural "
+        "from Lagos State University. His background is in broadcast media, entertainment and cultural "
         "storytelling.",
         "He serves as a Commission Member and Head of Planning, Research and Statistics at the Cross River State "
         "Carnival Commission, following his contributions to the state&rsquo;s Tourism Cluster. He is committed to "
