@@ -837,8 +837,11 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 /* The first film on the site (2026-09-18). It was shot on a phone, so it is portrait, and it
    is held to a phone's width rather than stretched across the column. */
 .shot--clip { margin: 2.1rem auto 0; max-width: 340px; }
+.shot--clip-wide { max-width: 640px; }
 .shot--clip .media--clip { background: #17161a; }
-.shot--clip video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; }
+/* No aspect-ratio here: the shape comes from each video's own width and height attributes, so a
+   landscape clip is not letterboxed into a portrait box. */
+.shot--clip video { display: block; width: 100%; height: auto; }
 .shot--clip figcaption { text-align: center; }
 
 .shot--single { margin: 2.1rem auto 0; max-width: 720px; }

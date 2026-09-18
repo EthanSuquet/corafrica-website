@@ -473,14 +473,18 @@ def single_shot(img, alt, cap, w=900, h=675):
             % (img, alt, w, h, cap))
 
 
-def clip(mp4, poster, cap):
+def clip(mp4, poster, cap, w, h):
     """A short film. The site had no video until 2026-09-18; this is the whole of the machinery.
-    preload=metadata so a phone on a rural connection does not fetch it until it is asked to."""
-    return ('    <figure class="shot shot--clip">\n'
-            '      <div class="media media--clip"><video controls playsinline preload="metadata" '
-            'poster="img/%s" width="360" height="640"><source src="video/%s" type="video/mp4">'
+    preload=metadata so a phone on a rural connection does not fetch it until it is asked to.
+
+    w and h are the DISPLAYED size, which is not always the coded size -- a phone clip can be
+    stored 360x640 and tagged to play 640x360. Read them off the poster frame, never off the
+    container, and let the attributes give the box its shape rather than fixing one in the CSS."""
+    return ('    <figure class="shot shot--clip%s">\n' % ("" if h > w else " shot--clip-wide")
+            + '      <div class="media media--clip"><video controls playsinline preload="metadata" '
+            'poster="img/%s" width="%d" height="%d"><source src="video/%s" type="video/mp4">'
             '</video></div>\n      <figcaption>%s</figcaption>\n    </figure>\n'
-            % (poster, mp4, cap))
+            % (poster, w, h, mp4, cap))
 
 
 def wide_shot(img, alt, cap):
@@ -883,7 +887,13 @@ body += sec('    <div class="split split--center">\n'
                          "an education with Christian values, brought to the poorest of the poor across Africa and "
                          "beginning in Nigeria.")
             + '        <a class="button button--dark" href="%s">About our founder</a>\n' % bio_page("Fr. Peter Abue")
-            + "      </div>\n    </div>\n", cls="grad-white-paper")
+            + "      </div>\n    </div>\n"
+            # 2026-09-18, at his own asking. It sits against "I wish to remain less visible, not
+            # totally absent" (2026-09-14), but the later instruction is his, and it is two
+            # minutes of the work rather than two minutes of him.
+            + clip("refugee-outreach.mp4", "refugee-outreach-poster.jpg",
+                   "Fr. Peter among refugee children, in the villages CORAfrica works in.",
+                   640, 360), cls="grad-white-paper")
 body += sec(head_block("Our philosophy", "Three convictions we build on.",
                        "CORAfrica&rsquo;s philosophy is rooted in Catholic Social Teaching, and reduces to three core "
                        "values that govern how we choose projects and how we hand them on.")
@@ -1202,7 +1212,7 @@ programme_page(
                         "power banks and earphones",
                         "Thomas Nsing in his shop, stocked from an interest-free loan.")
           + clip("thomas-nsing-shop.mp4", "thomas-nsing-shop-poster.jpg",
-                 "Fifteen seconds along his shelves, filmed for us.")
+                 "Fifteen seconds along his shelves, filmed for us.", 360, 640)
           # 2.5:1 as it was taken, so it goes in the wide frame; the 4:3 one would cut the
           # children out of their own photograph.
           + wide_shot("fr-peter-with-children.jpg",
