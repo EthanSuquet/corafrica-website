@@ -719,7 +719,7 @@ body = hero("Education for Africa&rsquo;s Future",
             "within their own community. We provide economic empowerment for their parents, which is what keeps "
             "them coming back. Founded in 2006, and now building our next centre in New Karu, Nasarawa State, "
             "near Abuja.",
-            "hero.jpg", "Pupils at their desks at a CORAfrica school", page_hero=False,
+            "hero.jpg", "Pupils working the rows on a CORAfrica school farm", page_hero=False,
             kicker_mark="corafrica-tagline.svg",
             actions='      <div class="button-row">\n'
                     '        <a class="button button--accent" href="donate.html">Donate</a>\n'
