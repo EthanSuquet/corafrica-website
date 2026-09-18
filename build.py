@@ -206,13 +206,34 @@ FOOTER = (FOOTER_TEMPLATE.replace("USADDR", "<br>".join(US_ADDRESS))
           .replace("CONTACTLINES", contact_lines()).replace("EINNUM", EIN))
 
 
+# Fr. Peter's five, 2026-09-18, cycled above the home hero. Order matters: the two that name
+# children open and close the loop, so it starts and ends on who the work is for.
+HERO_PHRASES = [
+    "Helping Children Thrive",
+    "Improving Children&rsquo;s Healthcare Through School Clinics",
+    "Helping Small Business Owners Scale Up",
+    "Providing Micro Credit Opportunities for Parents",
+    "Demonstration Farms Motivate Children Through Agriculture",
+]
+
+
+def hero_rotator():
+    """The phrases stacked on one another and cross-faded, one at a time. All five are in the
+    document and in reading order, so a screen reader gets the list rather than a flicker; the
+    cycling is opacity only. --i is the phrase's place in the loop, which the CSS turns into its
+    delay, so adding or removing a phrase needs no other change."""
+    o = '  <div class="hero-rotator">\n'
+    for i, phrase in enumerate(HERO_PHRASES):
+        o += '    <p class="hero-phrase" style="--i:%d">%s</p>\n' % (i, phrase)
+    return o + "  </div>\n"
+
+
 def hero(kicker, h1, lede, img, alt, page_hero=True, actions="", kicker_big=False):
-    """kicker_big lifts the kicker out of the card altogether: the home page carries its tagline
-    above the photograph, in the white between the header and the card, rather than as a label
-    inside it."""
+    """kicker_big drops the kicker and puts the cycling phrases above the card instead, in the
+    white between the header and the photograph. The kicker itself is then unused on that page."""
     cls = "hero-card hero-card--page" if page_hero else "hero-card"
     top = "" if kicker_big else '      <span class="eyebrow">%s</span>\n' % kicker
-    lead = '  <p class="hero-tagline">%s</p>\n' % kicker if kicker_big else ""
+    lead = hero_rotator() if kicker_big else ""
     return (
         '<section class="hero">\n' + lead + '  <div class="%s">\n' % cls
         + '    <img src="img/%s" alt="%s" width="1400" height="560" fetchpriority="high">\n' % (img, alt)

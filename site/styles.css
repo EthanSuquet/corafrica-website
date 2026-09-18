@@ -311,14 +311,44 @@ h1, h2, h3, h4 {
    follows it at every breakpoint by changing this one number. margin-bottom: auto does the
    lifting -- the hero body is bottom-aligned, so an auto margin on the first child swallows the
    free space and carries it to the top, leaving the headline and the rest where they were. */
-/* The home page's tagline, in the white between the header and the card rather than on the
-   photograph. It carries the card's own measure and centring, so it reads as the card's title
-   rather than as a stray line of page copy. */
-.hero-tagline {
-  max-width: var(--shell-wide); margin: 10px auto 26px; text-align: center;
+/* The home page's phrases, in the white between the header and the card rather than on the
+   photograph. They are stacked on one another and cross-faded one at a time, so the band keeps
+   a constant height however long the phrase is -- 2.3em holds the longest of them at two lines,
+   and each is centred in that box rather than sitting on its top edge. The rise is the hero's
+   own heroRise easing, a beat slower: this reads as the section breathing, not as a ticker. */
+.hero-rotator {
+  position: relative; max-width: var(--shell-wide); margin: 12px auto 26px;
+  min-height: 2.4em; font-size: 42px;
+}
+.hero-phrase {
+  position: absolute; inset: 0; margin: 0;
+  display: flex; align-items: center; justify-content: center; text-align: center;
   font-family: "Space Grotesk", Manrope, sans-serif;
-  font-size: 62px; font-weight: 500; letter-spacing: -0.05em; line-height: 1.05;
+  font-size: 1em; font-weight: 500; letter-spacing: -0.045em; line-height: 1.12;
   color: var(--accent);
+  opacity: 0;
+}
+/* Five phrases, five seconds each: up in three quarters of a second, held for three and a half,
+   away as the next one arrives. The cycle and the stagger are one number -- 5s times --i. */
+.js-anim .hero-phrase {
+  animation: phraseCycle 25s cubic-bezier(.22, .61, .36, 1) infinite;
+  animation-delay: calc(var(--i) * 5s);
+}
+@keyframes phraseCycle {
+  0%  { opacity: 0; transform: translateY(14px); }
+  3%  { opacity: 1; transform: none; }
+  17% { opacity: 1; transform: none; }
+  20% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 0; transform: translateY(14px); }
+}
+/* Without JS the first phrase simply stands there; with it, the cycle owns every phrase. */
+.hero-phrase:first-child { opacity: 1; }
+.js-anim .hero-phrase:first-child { opacity: 0; }
+/* This has to sit after those two, not with the other reduced-motion rules a hundred lines up:
+   same specificity, and the later rule wins. */
+@media (prefers-reduced-motion: reduce) {
+  .js-anim .hero-phrase { animation: none; opacity: 0; transform: none; }
+  .js-anim .hero-phrase:first-child { opacity: 1; }
 }
 
 .eyebrow {
@@ -582,7 +612,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .hero-card { height: 520px; }
   .hero-body { padding: 0 36px 40px; }
   .hero-body h1 { font-size: 48px; }
-  .hero-tagline { font-size: 48px; margin: 6px auto 20px; }
+  .hero-rotator { font-size: 34px; margin: 8px auto 20px; }
   .hero-card--page .hero-body h1 { font-size: 40px; }
 
   .split, .split--media { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -640,7 +670,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
   /* Type ramp — tracking eases as size drops */
   .hero-body h1 { font-size: 34px; letter-spacing: -0.04em; max-width: none; }
-  .hero-tagline { font-size: 34px; margin: 2px auto 14px; }
+  .hero-rotator { font-size: 25px; margin: 4px auto 14px; min-height: 3.8em; }
   .hero-card--page .hero-body h1 { font-size: 31px; letter-spacing: -0.04em; }
   .page-hero-light h1 { font-size: 32px; letter-spacing: -0.04em; }
   .h2, .donate-band h2 { font-size: 29px; letter-spacing: -0.04em; max-width: none; }
