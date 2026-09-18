@@ -312,7 +312,15 @@ h1, h2, h3, h4 {
    free space and carries it to the top, leaving the headline and the rest where they were. */
 .hero-tagline {
   display: block; align-self: flex-start;
-  margin: 40px 0 auto; font-size: 62px; width: min(100%, 14.92em); height: auto;
+  margin: 40px 0 auto; font-size: 62px; height: auto;
+  /* A plate behind it: the line sits on whatever the photograph happens to be doing up there,
+     and orange over sunlit foliage is the case it loses. Padding is in em so it tracks the
+     font-size the width is already expressed in, and the width carries the padding with it
+     (border-box) so the artwork itself still lands at 14.92em. */
+  padding: 0.1em 0.17em 0.13em; width: min(100%, 15.26em);
+  border-radius: 0.14em;
+  background: rgba(10, 14, 18, 0.34);
+  backdrop-filter: blur(7px);
 }
 
 .eyebrow {
