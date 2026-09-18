@@ -295,9 +295,10 @@ h1, h2, h3, h4 {
 .hero-body {
   position: relative; height: 100%;
   display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 0 56px 52px; max-width: 1060px;
+  padding: 0 56px 52px;
 }
 .hero-card--page .hero-body { padding-bottom: 44px; max-width: 900px; }
+.hero-card:not(.hero-card--page) .hero-body { max-width: none; }
 .hero-body h1 { font-size: 62px; color: #fff; max-width: 24ch; margin-bottom: 18px; }
 .hero-card--page .hero-body h1 { font-size: 52px; max-width: 22ch; margin-bottom: 14px; }
 .hero-body p { margin: 0 0 30px; font-size: 16px; line-height: 1.5; color: rgba(255, 255, 255, 0.82); max-width: 62ch; }
@@ -310,17 +311,17 @@ h1, h2, h3, h4 {
    follows it at every breakpoint by changing this one number. margin-bottom: auto does the
    lifting -- the hero body is bottom-aligned, so an auto margin on the first child swallows the
    free space and carries it to the top, leaving the headline and the rest where they were. */
-.hero-tagline {
-  display: block; align-self: flex-start;
-  margin: 40px 0 auto; font-size: 62px; height: auto;
-  /* A plate behind it: the line sits on whatever the photograph happens to be doing up there,
-     and orange over sunlit foliage is the case it loses. Padding is in em so it tracks the
-     font-size the width is already expressed in, and the width carries the padding with it
-     (border-box) so the artwork itself still lands at 14.92em. */
-  padding: 0.1em 0.17em 0.13em; width: min(100%, 15.26em);
-  border-radius: 0.14em;
-  background: rgba(10, 14, 18, 0.34);
-  backdrop-filter: blur(7px);
+/* The home hero's tagline, set at the headline's size and centred across the card. It is the
+   first child of a bottom-aligned column, so margin-bottom: auto carries it to the top and
+   leaves the headline, the lede and the buttons where they were. */
+/* Scoped inside .hero-body so it outranks `.hero-body p`, which would otherwise make this a
+   16px lede in 82% white and cap it at 62ch. */
+.hero-body .hero-tagline {
+  align-self: stretch; text-align: center; max-width: none;
+  margin: 40px 0 auto;
+  font-family: "Space Grotesk", Manrope, sans-serif;
+  font-size: 62px; font-weight: 600; letter-spacing: -0.05em; line-height: 1.05;
+  color: #fff;
 }
 
 .eyebrow {
@@ -584,7 +585,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .hero-card { height: 520px; }
   .hero-body { padding: 0 36px 40px; }
   .hero-body h1 { font-size: 48px; }
-  .hero-tagline { font-size: 48px; margin-top: 34px; }
+  .hero-body .hero-tagline { font-size: 48px; margin-top: 34px; }
   .hero-card--page .hero-body h1 { font-size: 40px; }
 
   .split, .split--media { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -642,7 +643,10 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
   /* Type ramp — tracking eases as size drops */
   .hero-body h1 { font-size: 34px; letter-spacing: -0.04em; max-width: none; }
-  .hero-tagline { font-size: 34px; margin-top: 26px; }
+  /* On a phone the card has no slack left, so margin-bottom: auto collapses to nothing and
+     the tagline lands on the headline. A real gap instead -- the card grows to its content
+     at this width, so the line is at the top regardless. */
+  .hero-body .hero-tagline { font-size: 34px; margin: 26px 0 16px; }
   .hero-card--page .hero-body h1 { font-size: 31px; letter-spacing: -0.04em; }
   .page-hero-light h1 { font-size: 32px; letter-spacing: -0.04em; }
   .h2, .donate-band h2 { font-size: 29px; letter-spacing: -0.04em; max-width: none; }

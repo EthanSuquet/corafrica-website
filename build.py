@@ -206,13 +206,12 @@ FOOTER = (FOOTER_TEMPLATE.replace("USADDR", "<br>".join(US_ADDRESS))
           .replace("CONTACTLINES", contact_lines()).replace("EINNUM", EIN))
 
 
-def hero(kicker, h1, lede, img, alt, page_hero=True, actions="", kicker_mark=None):
-    """kicker_mark swaps the pill for a drawn mark -- the home page sets its tagline in the
-    logo's own hand rather than in type. See brand/tools/rebuild_tagline.py."""
+def hero(kicker, h1, lede, img, alt, page_hero=True, actions="", kicker_big=False):
+    """kicker_big swaps the pill for a line set at the headline's size, centred across the card --
+    the home page carries its tagline that way rather than as a label."""
     cls = "hero-card hero-card--page" if page_hero else "hero-card"
-    if kicker_mark:
-        top = ('      <img class="hero-tagline" src="img/%s" alt="%s" width="3857" height="304">\n'
-               % (kicker_mark, kicker))
+    if kicker_big:
+        top = '      <p class="hero-tagline">%s</p>\n' % kicker
     else:
         top = '      <span class="eyebrow">%s</span>\n' % kicker
     return (
@@ -744,7 +743,7 @@ body = hero("Education for Africa&rsquo;s Future",
             "them coming back. Founded in 2006, and now building our next centre in New Karu, Nasarawa State, "
             "near Abuja.",
             "hero.jpg", "Pupils working the rows on a CORAfrica school farm", page_hero=False,
-            kicker_mark="corafrica-tagline.svg",
+            kicker_big=True,
             actions='      <div class="button-row">\n'
                     '        <a class="button button--accent" href="donate.html">Donate</a>\n'
                     '        <a class="button button--onDark" href="contact.html">Partner with us</a>\n'
