@@ -1,13 +1,24 @@
-"""Rebuild the CORAfrica lockup with the two lines Fr. Peter asked for on 2026-09-17:
-"Also use this complete image at the menu instead of just CORAfrica and logo."
+"""Rebuild the CORAfrica lockup to Fr. Peter's instruction of 2026-09-17, 6:33 and 6:42 PM:
 
-His reference (WhatsApp 1:52 PM) is the seal, the CORAfrica wordmark, and beneath it
-"CHILDREN OF RURAL AFRICA-NIGERIA" and "Helping Children and Communities Thrive".
+    "Pls remove 'Helping children and communities thrive' from the insignia. Also remove
+     NIGERIA. Just say CHILDREN OF RURAL AFRICA in between two lines, just as it looks
+     above or on the shirt."
+    "It's too crowded. It should just be CORAfrica / CHILDREN OF RURAL AFRICA (with logo).
+     The logo should be the one that says EDUCATION FOR AFRICA'S FUTURE."
 
-The seal and the wordmark are reused verbatim from the existing lockup -- they were traced on
-2026-09-10 and nothing about them changed. Only the two lines are new: set in Arial Narrow Bold
-and Georgia Bold Italic, rendered to a 6x raster and traced to paths with brand/tools/trace.py,
-so the finished file carries no font dependency, exactly like every other mark on the site.
+The seal and the wordmark are reused verbatim from brand/corafrica-lockup.svg. That seal is
+already the EDUCATION FOR AFRICA'S FUTURE one -- it was traced on 2026-09-10 from the JPEG he
+sent on 09-04, which is byte-identical to the one he sent again on 09-17.
+
+Everything else is drawn here from the charity's own artwork, brand/source/CORAfrica-Logo-
+Footer.png, which shares the lockup's coordinate frame 1:1 (the wordmark sits at x 320..999,
+y 73..181 in both). The caps line is Times New Roman Bold: the artwork's letters have serifs at
+5x, and its measured width comes to 28.1 cap-heights against Times New Roman Bold's 29.6 -- the
+earlier build set this line in Arial Narrow Bold, which was the wrong face.
+
+The line is rendered to a 6x raster and traced to paths with brand/tools/trace.py, so the
+finished file carries no font dependency, exactly like every other mark on the site. The two
+rules are exact rectangles; there is nothing to trace about a straight edge.
 """
 import re, io, sys
 import numpy as np
@@ -15,71 +26,72 @@ from PIL import Image, ImageDraw, ImageFont
 sys.path.insert(0, "brand/tools"); import trace as T
 
 SRC = "brand/corafrica-lockup.svg"
-L2, L3 = "CHILDREN OF RURAL AFRICA-NIGERIA", "Helping Children and Communities Thrive"
-F2 = "/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf"
-F3 = "/System/Library/Fonts/Supplemental/Georgia Bold Italic.ttf"
+LINE = "CHILDREN OF RURAL AFRICA"
+FONT = "/System/Library/Fonts/Supplemental/Times New Roman Bold.ttf"
+
+# Measured off CORAfrica-Logo-Footer.png. The rules start at the wordmark's left edge and run
+# a little past its right; the line is set to a slightly narrower measure between them.
+RULE_W, RULE_T = 698.0, 5.0
+GAP_WORD, GAP_ABOVE, GAP_BELOW = 4.0, 12.0, 13.0
+TEXT_W = 675.0
+
+# One scalar for the whole assembly. At 1.0 the lines are the artwork's own size; the header
+# shows the lockup only 58px tall, and a wider measure is the only lever on how big the line
+# lands there -- the lockup's height is pinned by the seal, not by the text.
+SPREAD = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
+OUT = sys.argv[2] if len(sys.argv) > 2 else "brand"
 
 src = io.open(SRC, encoding="utf-8").read()
 paths = re.findall(r'<path fill="([^"]+)" d="([^"]+)"', src)
 assert len(paths) == 2, "expected the seal and the wordmark"
 (seal_fill, seal_d), (word_fill, word_d) = paths
 
-# The wordmark's own box tells us where the lines belong: same left edge, same width, stacked
-# into the empty space beneath it.
 pts = [tuple(map(float, p.split(","))) for p in re.findall(r"[ML]([-\d.]+,[-\d.]+)", word_d)]
-X0, X1 = min(p[0] for p in pts), max(p[0] for p in pts)
-WY1 = max(p[1] for p in pts)
-W = X1 - X0
+X0, WY1 = min(p[0] for p in pts), max(p[1] for p in pts)
+
+rule_w, rule_t = RULE_W * SPREAD, RULE_T * SPREAD
+text_w = TEXT_W * SPREAD
+y_r1 = WY1 + GAP_WORD * SPREAD
+y_txt = y_r1 + rule_t + GAP_ABOVE * SPREAD
 
 UP = 6                                    # render at 6x, trace, divide back down
-def line(text, font_path, target_w, px):
-    """Render one line as a mask and return (mask, scale) with width == target_w*UP."""
-    f = ImageFont.truetype(font_path, px)
-    l, t, r, b = f.getbbox(text)
-    im = Image.new("L", (r - l + 8, b - t + 8), 0)
-    ImageDraw.Draw(im).text((4 - l, 4 - t), text, font=f, fill=255)
-    w, h = im.size
-    s = (target_w * UP) / w
-    im = im.resize((int(round(w * s)), int(round(h * s))), Image.LANCZOS)
-    return np.array(im) > 110, im.size
+f = ImageFont.truetype(FONT, 200)
+l, t, r, b = f.getbbox(LINE)
+im = Image.new("L", (r - l + 8, b - t + 8), 0)
+ImageDraw.Draw(im).text((4 - l, 4 - t), LINE, font=f, fill=255)
+s = (text_w * UP) / im.size[0]
+im = im.resize((int(round(im.size[0] * s)), int(round(im.size[1] * s))), Image.LANCZOS)
+mask = np.array(im) > 110
+text_h = im.size[1] / float(UP)
+d_txt = T.trace(mask, scale=UP, eps=0.55, ox=X0 + (rule_w - text_w) / 2.0, oy=y_txt, prec=2)
 
-def traced(mask, ox, oy):
-    return T.trace(mask, scale=UP, eps=0.55, ox=ox, oy=oy, prec=2)
+y_r2 = y_txt + text_h + GAP_BELOW * SPREAD
+bottom = y_r2 + rule_t
+rules = " ".join("M%.2f,%.2f L%.2f,%.2f L%.2f,%.2f L%.2f,%.2f Z"
+                 % (X0, y, X0 + rule_w, y, X0 + rule_w, y + rule_t, X0, y + rule_t)
+                 for y in (y_r1, y_r2))
 
-TW = 1140.0                               # the two lines run wider than the wordmark:
-                                          # at a fixed lockup height that is what makes them
-                                          # readable (~12px in a 58px header, vs ~5px at the
-                                          # wordmark's own width)
-m2, (w2, h2) = line(L2, F2, TW, 160)
-m3, (w3, h3) = line(L3, F3, TW, 160)
-
-GAP1, GAP2 = 16.0, 10.0                   # wordmark -> line 2 -> line 3, in lockup units
-y2 = WY1 + GAP1
-y3 = y2 + h2 / UP + GAP2
-d2 = traced(m2, X0, y2)
-d3 = traced(m3, X0, y3)
-bottom = y3 + h3 / UP
-
-# viewBox: keep the original left/top, grow only to fit whatever is now lowest.
-vb = re.search(r'viewBox="([\d.\- ]+)"', src).group(1).split()
-vx, vy, vw, vh = (float(v) for v in vb)
-vh = max(vh, bottom - vy + 4)
-vw = max(vw, X0 + TW - vx + 4)            # grow the box to hold the wider lines
+# viewBox: keep the original left/top, grow only to fit whatever is now lowest or furthest right.
+vx, vy, vw, vh = (float(v) for v in re.search(r'viewBox="([\d.\- ]+)"', src).group(1).split())
+vh = max(vh, bottom - vy + 2)
+vw = max(vw, X0 + rule_w - vx + 2)
 
 def emit(ink, out):
-    svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="%g %g %g %.2f" width="%g" '
-           'height="%.0f" role="img" aria-label="CORAfrica &#8212; Children of Rural Africa '
-           'Nigeria" fill-rule="evenodd"><title>CORAfrica &#8212; Children of Rural Africa '
-           'Nigeria</title>' % (vx, vy, vw, vh, vw, round(vh))
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="%g %g %.2f %.2f" width="%.2f" '
+           'height="%.0f" role="img" aria-label="CORAfrica &#8212; Children of Rural Africa" '
+           'fill-rule="evenodd"><title>CORAfrica &#8212; Children of Rural Africa</title>'
+           % (vx, vy, vw, vh, vw, round(vh))
            + '<path fill="%s" d="%s"/>' % (ink, seal_d)
            + '<path fill="%s" d="%s"/>' % (word_fill, word_d)
-           + '<path fill="%s" d="%s"/>' % (ink, d2)
-           + '<path fill="%s" d="%s"/>' % (ink, d3)
+           + '<path fill="%s" d="%s"/>' % (ink, rules)
+           + '<path fill="%s" d="%s"/>' % (ink, d_txt)
            + "</svg>\n")
     io.open(out, "w", encoding="utf-8").write(svg)
     print("  %-46s %7d bytes" % (out, len(svg)))
 
-print("wordmark x %.1f..%.1f  baseline %.1f -> lines at %.1f and %.1f (viewBox h %.1f)"
-      % (X0, X1, WY1, y2, y3, vh))
-emit("#111111", "brand/corafrica-lockup-full.svg")
-emit("#FFFFFF", "brand/corafrica-lockup-full-white.svg")
+print("spread %.2f | rules %.1f wide x %.1f at y %.1f and %.1f | line cap %.1f, %.1f wide"
+      % (SPREAD, rule_w, rule_t, y_r1, y_r2, text_h, text_w))
+print("viewBox %g %g %.2f %.2f -> at a 58px header the line is %.1fpx"
+      % (vx, vy, vw, vh, text_h * 58.0 / vh))
+emit("#111111", OUT + "/corafrica-lockup-full.svg")
+emit("#FFFFFF", OUT + "/corafrica-lockup-full-white.svg")

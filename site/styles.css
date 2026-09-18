@@ -214,10 +214,6 @@ h1, h2, h3, h4 {
 }
 .brand { display: inline-flex; flex: 0 0 auto; }
 .brand img { height: 58px; width: auto; }
-/* The full lockup carries the two lines Fr. Peter asked for (2026-09-17). It needs the
-   width to stay legible, so below the nav breakpoint the compact mark takes over --
-   otherwise the header overflows a phone and pushes the menu button off-screen. */
-.brand-compact { display: none; }
 
 .site-nav { display: flex; align-items: center; gap: 26px; }
 .site-nav a {
@@ -599,8 +595,6 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
   /* Nav collapses. Donate never hides behind the menu — it is the primary action. */
   .site-header { padding: 12px var(--gutter); }
-  .brand-full { display: none; }
-  .brand-compact { display: block; }
   .brand img { height: 40px; }
   .nav-toggle { display: flex; }
   .site-nav {
