@@ -673,7 +673,7 @@ HEADSHOTS = {
     "Edwin Okungbowa": "team/edwin-okungbowa.jpg",
     "Blessing Ana": "team/blessing-ana.jpg",
     "Ethan Suquet": "team/ethan-suquet.jpg",  # supplied by Ethan, 2026-09-10
-    "Olurotimi Akinkunmi Padonu": "team/olurotimi-padonu.jpg",  # rotimi.docx, supplied 2026-09-06
+    "OluRotimi Akinkunmi Padonu": "team/olurotimi-padonu.jpg",  # rotimi.docx, supplied 2026-09-06
 }
 
 
@@ -1775,7 +1775,7 @@ BOARD_US = [("Chux Okochi", "Chairman"), ("Jeannine Goelz", "Member"),
             ("Ethan Suquet", "Member"), ("Fr. Peter Abue", "Founder"), ("Silvia Okoro", "Member / Secretary")]
 ADMIN = [("Adewale Ajayi", "National Programmes Coordinator"), ("Jeannine Goelz", "Country Representative, USA"),
          ("Elijah Ugani", "Project Manager I, Nigeria"), ("Silvia Okoro", "Office Coordinator, USA"),
-         ("Olurotimi Akinkunmi Padonu", "Grants Coordinator"), ("Edwin Okungbowa", "Project Manager II, Nigeria"),
+         ("OluRotimi Akinkunmi Padonu", "Grants Coordinator"), ("Edwin Okungbowa", "Project Manager II, Nigeria"),
          ("Ethan Suquet", "IT Coordinator"), ("Blessing Ana", "Logistics, Nigeria")]
 # Titles stay as the written answers give them. Ethan, 2026-09-10: use the txt, even where
 # Fr. Peter's later WhatsApp list or a bio words a title differently.
@@ -1883,8 +1883,8 @@ BIOS = {
     # His own updated bio, sent 2026-09-14, which settles the Duquesne degree (Corporate
     # Communication, 1994) and the award month (June 2017). John Bosco Academy is left out,
     # since it is not to be promoted; the PhD year follows his prose and his return date, 2006.
-    "Olurotimi Akinkunmi Padonu": [
-        "Olurotimi Akinkunmi Padonu is a seasoned executive and development finance specialist, supporting "
+    "OluRotimi Akinkunmi Padonu": [
+        "OluRotimi Akinkunmi Padonu is a seasoned executive and development finance specialist, supporting "
         "CORAfrica&rsquo;s mission to transform rural communities. With more than 30 years of leadership experience "
         "across the United Kingdom, Africa and the United States, he brings deep expertise in project finance, clean "
         "energy and community-centred development.",
