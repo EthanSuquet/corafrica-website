@@ -206,14 +206,15 @@ FOOTER = (FOOTER_TEMPLATE.replace("USADDR", "<br>".join(US_ADDRESS))
           .replace("CONTACTLINES", contact_lines()).replace("EINNUM", EIN))
 
 
-# Fr. Peter's five, 2026-09-18, cycled above the home hero. Order matters: the two that name
-# children open and close the loop, so it starts and ends on who the work is for.
+# Fr. Peter's five, cycled above the home hero. His own wording, shortened by him on
+# 2026-09-18 -- "It flows better this way" -- and in his order, which opens on the children
+# and closes on them. Title case is the site's, not his: he sent the list, not the styling.
 HERO_PHRASES = [
-    "Helping Children Thrive",
-    "Improving Children&rsquo;s Healthcare Through School Clinics",
+    "Helping Children and Communities Thrive",
+    "Improving Children&rsquo;s Healthcare",
     "Helping Small Business Owners Scale Up",
-    "Providing Micro Credit Opportunities for Parents",
-    "Demonstration Farms Motivate Children Through Agriculture",
+    "Providing Parents with Micro-Credit Opportunities",
+    "Motivating Children Through Agriculture",
 ]
 
 
@@ -229,11 +230,12 @@ def hero_rotator():
 
 
 def hero(kicker, h1, lede, img, alt, page_hero=True, actions="", kicker_big=False):
-    """kicker_big drops the kicker and puts the cycling phrases above the card instead, in the
-    white between the header and the photograph. The kicker itself is then unused on that page."""
+    """kicker_big moves the kicker out of the card and into the white between the header and the
+    photograph, where it stands over the cycling phrases: the motto fixed, the work changing
+    underneath it."""
     cls = "hero-card hero-card--page" if page_hero else "hero-card"
     top = "" if kicker_big else '      <span class="eyebrow">%s</span>\n' % kicker
-    lead = hero_rotator() if kicker_big else ""
+    lead = ('  <p class="hero-strap">%s</p>\n' % kicker + hero_rotator()) if kicker_big else ""
     return (
         '<section class="hero">\n' + lead + '  <div class="%s">\n' % cls
         + '    <img src="img/%s" alt="%s" width="1400" height="560" fetchpriority="high">\n' % (img, alt)
@@ -667,8 +669,8 @@ TRACK_CARDS = [("Founded 2017", "John Stilley Schools", "js-welcome.jpg",
                ("Founded 2007", "Sr. Augustina Abuo Memorial Medical Clinic", "clinic.jpg",
                 "The Sr. Augustina Abuo Memorial Medical Clinic",
                 "Idum-Mbube &mdash; a doctor, ten beds, and a community of 20,000"),
-               ("2020&ndash;22", "Refugees and displaced families", "field-team.jpg",
-                "CORAfrica field staff outside a shelter at a settlement",
+               ("2020&ndash;22", "Refugees and displaced families", "refugee-children.jpg",
+                "Refugee children at a CORAfrica distribution, beside the school bus",
                 "Cross River and Benue &mdash; 1,000 trained in agribusiness, six classrooms built in a camp")]
 
 # Headshots for the Contact page, keyed by name exactly as it appears in the lists
@@ -807,7 +809,7 @@ body += sec_wide(head_block("Our track record", "Built, proven, and built to be 
 # Fr. Peter asked to be less visible (S10) — his goal is to hand the work on — so the
 # home page carries the hand-over, not a portrait and a quote.
 body += sec('    <div class="split split--media split--center">\n'
-            '      <div class="media"><img src="img/classroom.jpg" alt="Pupils at their desks in a classroom" loading="lazy" width="900" height="675"></div>\n'
+            '      <div class="media"><img src="img/john-bosco-classroom.jpg" alt="Pupils at their desks at John Bosco Academy, Adagom, with CORAfrica staff at the front" loading="lazy" width="900" height="675"></div>\n'
             "      <div>\n"
             + head_block("How we work", "Built to be handed on.",
                          "CORAfrica was founded in 2006 by Fr. Peter Obele Abue, and it was never meant to run its "

@@ -304,21 +304,31 @@ h1, h2, h3, h4 {
 .hero-body p { margin: 0 0 30px; font-size: 16px; line-height: 1.5; color: rgba(255, 255, 255, 0.82); max-width: 62ch; }
 .hero-card--page .hero-body p { margin-bottom: 0; }
 
-/* The home hero's kicker is the tagline drawn in the logo's own hand -- Bradley Hand, the
-   wordmark's face, in the wordmark's orange (Fr. Peter, 2026-09-18). font-size is not type here,
-   it is the unit the width is expressed in: the mark is 21.3 cap-heights wide, and at Space
-   Grotesk's 0.7em cap that is 14.92em, so the line lands at exactly the headline's size and
-   follows it at every breakpoint by changing this one number. margin-bottom: auto does the
-   lifting -- the hero body is bottom-aligned, so an auto margin on the first child swallows the
-   free space and carries it to the top, leaving the headline and the rest where they were. */
+/* The motto, standing over the phrases (Fr. Peter, 2026-09-18). It is set the way it is set on
+   the seal it comes from -- caps, widely tracked, small against what follows -- so it reads as
+   the organisation's standing line and not as a competing headline. The text-indent gives back
+   the trailing letter-space that tracking adds after the last letter, which otherwise pushes a
+   centred line half a space to the left. */
+.hero-strap {
+  max-width: var(--shell-wide); margin: 0 auto;
+  text-align: center; text-indent: 0.24em;
+  font-family: "Space Grotesk", Manrope, sans-serif;
+  font-size: 0.95rem; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
 /* The home page's phrases, in the white between the header and the card rather than on the
    photograph. They are stacked on one another and cross-faded one at a time, so the band keeps
-   a constant height however long the phrase is -- 2.3em holds the longest of them at two lines,
-   and each is centred in that box rather than sitting on its top edge. The rise is the hero's
-   own heroRise easing, a beat slower: this reads as the section breathing, not as a ticker. */
+   a constant height however long the phrase is, and each is centred in that box rather than
+   sitting on its top edge. The rise is the hero's own heroRise easing, a beat slower: this reads
+   as the section breathing, not as a ticker.
+   min-height is measured, not chosen: it has to hold the longest phrase at the NARROWEST width
+   the rule covers. Fr. Peter's shortened wording (2026-09-18) sets every phrase on one line from
+   1024px up, on two between 720 and about 800, and on two on every phone down to 320px -- so the
+   reserve came down with it. Re-measure it if the phrases change. */
 .hero-rotator {
   position: relative; max-width: var(--shell-wide); margin: 12px auto 26px;
-  min-height: 2.4em; font-size: 42px;
+  min-height: 1.8em; font-size: 42px;
 }
 .hero-phrase {
   position: absolute; inset: 0; margin: 0;
@@ -612,7 +622,8 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .hero-card { height: 520px; }
   .hero-body { padding: 0 36px 40px; }
   .hero-body h1 { font-size: 48px; }
-  .hero-rotator { font-size: 34px; margin: 8px auto 20px; }
+  .hero-strap { font-size: 0.88rem; letter-spacing: 0.2em; text-indent: 0.2em; }
+  .hero-rotator { font-size: 34px; margin: 8px auto 20px; min-height: 2.8em; }
   .hero-card--page .hero-body h1 { font-size: 40px; }
 
   .split, .split--media { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -670,7 +681,8 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
   /* Type ramp — tracking eases as size drops */
   .hero-body h1 { font-size: 34px; letter-spacing: -0.04em; max-width: none; }
-  .hero-rotator { font-size: 25px; margin: 4px auto 14px; min-height: 3.8em; }
+  .hero-strap { font-size: 0.74rem; letter-spacing: 0.14em; text-indent: 0.14em; }
+  .hero-rotator { font-size: 25px; margin: 4px auto 14px; min-height: 2.9em; }
   .hero-card--page .hero-body h1 { font-size: 31px; letter-spacing: -0.04em; }
   .page-hero-light h1 { font-size: 32px; letter-spacing: -0.04em; }
   .h2, .donate-band h2 { font-size: 29px; letter-spacing: -0.04em; max-width: none; }
