@@ -207,15 +207,14 @@ FOOTER = (FOOTER_TEMPLATE.replace("USADDR", "<br>".join(US_ADDRESS))
 
 
 def hero(kicker, h1, lede, img, alt, page_hero=True, actions="", kicker_big=False):
-    """kicker_big swaps the pill for a line set at the headline's size, centred across the card --
-    the home page carries its tagline that way rather than as a label."""
+    """kicker_big lifts the kicker out of the card altogether: the home page carries its tagline
+    above the photograph, in the white between the header and the card, rather than as a label
+    inside it."""
     cls = "hero-card hero-card--page" if page_hero else "hero-card"
-    if kicker_big:
-        top = '      <p class="hero-tagline">%s</p>\n' % kicker
-    else:
-        top = '      <span class="eyebrow">%s</span>\n' % kicker
+    top = "" if kicker_big else '      <span class="eyebrow">%s</span>\n' % kicker
+    lead = '  <p class="hero-tagline">%s</p>\n' % kicker if kicker_big else ""
     return (
-        '<section class="hero">\n  <div class="%s">\n' % cls
+        '<section class="hero">\n' + lead + '  <div class="%s">\n' % cls
         + '    <img src="img/%s" alt="%s" width="1400" height="560" fetchpriority="high">\n' % (img, alt)
         + '    <div class="hero-scrim"></div>\n    <div class="hero-sheen"></div>\n'
         + '    <div class="hero-body">\n'

@@ -311,14 +311,11 @@ h1, h2, h3, h4 {
    follows it at every breakpoint by changing this one number. margin-bottom: auto does the
    lifting -- the hero body is bottom-aligned, so an auto margin on the first child swallows the
    free space and carries it to the top, leaving the headline and the rest where they were. */
-/* The home hero's tagline, set at the headline's size and centred across the card. It is the
-   first child of a bottom-aligned column, so margin-bottom: auto carries it to the top and
-   leaves the headline, the lede and the buttons where they were. */
-/* Scoped inside .hero-body so it outranks `.hero-body p`, which would otherwise make this a
-   16px lede in 82% white and cap it at 62ch. */
-.hero-body .hero-tagline {
-  align-self: stretch; text-align: center; max-width: none;
-  margin: 40px 0 auto;
+/* The home page's tagline, in the white between the header and the card rather than on the
+   photograph. It carries the card's own measure and centring, so it reads as the card's title
+   rather than as a stray line of page copy. */
+.hero-tagline {
+  max-width: var(--shell-wide); margin: 10px auto 26px; text-align: center;
   font-family: "Space Grotesk", Manrope, sans-serif;
   font-size: 62px; font-weight: 500; letter-spacing: -0.05em; line-height: 1.05;
   color: var(--accent);
@@ -585,7 +582,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .hero-card { height: 520px; }
   .hero-body { padding: 0 36px 40px; }
   .hero-body h1 { font-size: 48px; }
-  .hero-body .hero-tagline { font-size: 48px; margin-top: 34px; }
+  .hero-tagline { font-size: 48px; margin: 6px auto 20px; }
   .hero-card--page .hero-body h1 { font-size: 40px; }
 
   .split, .split--media { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -643,10 +640,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
   /* Type ramp — tracking eases as size drops */
   .hero-body h1 { font-size: 34px; letter-spacing: -0.04em; max-width: none; }
-  /* On a phone the card has no slack left, so margin-bottom: auto collapses to nothing and
-     the tagline lands on the headline. A real gap instead -- the card grows to its content
-     at this width, so the line is at the top regardless. */
-  .hero-body .hero-tagline { font-size: 34px; margin: 26px 0 16px; }
+  .hero-tagline { font-size: 34px; margin: 2px auto 14px; }
   .hero-card--page .hero-body h1 { font-size: 31px; letter-spacing: -0.04em; }
   .page-hero-light h1 { font-size: 32px; letter-spacing: -0.04em; }
   .h2, .donate-band h2 { font-size: 29px; letter-spacing: -0.04em; max-width: none; }
