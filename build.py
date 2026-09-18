@@ -206,14 +206,21 @@ FOOTER = (FOOTER_TEMPLATE.replace("USADDR", "<br>".join(US_ADDRESS))
           .replace("CONTACTLINES", contact_lines()).replace("EINNUM", EIN))
 
 
-def hero(kicker, h1, lede, img, alt, page_hero=True, actions=""):
+def hero(kicker, h1, lede, img, alt, page_hero=True, actions="", kicker_mark=None):
+    """kicker_mark swaps the pill for a drawn mark -- the home page sets its tagline in the
+    logo's own hand rather than in type. See brand/tools/rebuild_tagline.py."""
     cls = "hero-card hero-card--page" if page_hero else "hero-card"
+    if kicker_mark:
+        top = ('      <img class="hero-tagline" src="img/%s" alt="%s" width="3857" height="304">\n'
+               % (kicker_mark, kicker))
+    else:
+        top = '      <span class="eyebrow">%s</span>\n' % kicker
     return (
         '<section class="hero">\n  <div class="%s">\n' % cls
         + '    <img src="img/%s" alt="%s" width="1400" height="560" fetchpriority="high">\n' % (img, alt)
         + '    <div class="hero-scrim"></div>\n    <div class="hero-sheen"></div>\n'
         + '    <div class="hero-body">\n'
-        + '      <span class="eyebrow">%s</span>\n' % kicker
+        + top
         + "      <h1>%s</h1>\n" % h1
         + "      <p>%s</p>\n" % lede
         + actions
@@ -713,6 +720,7 @@ body = hero("Education for Africa&rsquo;s Future",
             "them coming back. Founded in 2006, and now building our next centre in New Karu, Nasarawa State, "
             "near Abuja.",
             "hero.jpg", "Pupils at their desks at a CORAfrica school", page_hero=False,
+            kicker_mark="corafrica-tagline.svg",
             actions='      <div class="button-row">\n'
                     '        <a class="button button--accent" href="donate.html">Donate</a>\n'
                     '        <a class="button button--onDark" href="contact.html">Partner with us</a>\n'
