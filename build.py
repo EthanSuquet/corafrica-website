@@ -465,6 +465,24 @@ def cec_diagram():
             '    </figure>\n')
 
 
+def single_shot(img, alt, cap, w=900, h=675):
+    """One photograph, 4:3, centred and narrower than the column."""
+    return ('    <figure class="shot shot--single">\n'
+            '      <div class="media"><img src="img/%s" alt="%s" loading="lazy" width="%d" '
+            'height="%d"></div>\n      <figcaption>%s</figcaption>\n    </figure>\n'
+            % (img, alt, w, h, cap))
+
+
+def clip(mp4, poster, cap):
+    """A short film. The site had no video until 2026-09-18; this is the whole of the machinery.
+    preload=metadata so a phone on a rural connection does not fetch it until it is asked to."""
+    return ('    <figure class="shot shot--clip">\n'
+            '      <div class="media media--clip"><video controls playsinline preload="metadata" '
+            'poster="img/%s" width="360" height="640"><source src="video/%s" type="video/mp4">'
+            '</video></div>\n      <figcaption>%s</figcaption>\n    </figure>\n'
+            % (poster, mp4, cap))
+
+
 def wide_shot(img, alt, cap):
     """One wide photograph with a caption &mdash; for the architect&rsquo;s renderings, which are
     banner-shaped and would be cropped to nothing in the square media boxes."""
@@ -567,10 +585,12 @@ PARENT_OF = dict([(href, "Under education") for _, href, _, _ in EDUCATION_PROGR
                  + [(href, "Under healthcare") for _, href, _, _ in HEALTHCARE_PROGRAMMES])
 
 
-def programme_groups(cols=2):
-    """The five programme pages, always shown under their parent programme."""
+def programme_groups(cols=2, education_shot=None):
+    """The five programme pages, always shown under their parent programme. education_shot puts a
+    photograph under the education group -- What We Do carries one, Our Model has its own."""
     return ('    <h3 class="group-label">Education</h3>\n'
             + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in EDUCATION_PROGRAMMES], cols)
+            + (single_shot(*education_shot) if education_shot else "")
             + '    <h3 class="group-label">Healthcare</h3>\n'
             + grid([link_card(t, b, href, tag=tag) for t, href, tag, b in HEALTHCARE_PROGRAMMES]
                    + [card(t, b, tag) for t, b, tag in HEALTHCARE_ALSO], cols))
@@ -944,8 +964,8 @@ body += sec(head_block("Where the model stands", "Proven twice. Now going to Kar
                     card("New Karu, Nasarawa State", "Our next Community Education Centre, recently initiated, near Abuja. Approximately US $2 million will complete it.", "Building now")], 3)
             + shot_grid([("clinic.jpg", "The Sr. Augustina Abuo Memorial Medical Clinic",
                           "The Sr. Augustina Abuo Memorial Medical Clinic &mdash; Idum-Mbube, Ogoja"),
-                         ("classroom.jpg", "Pupils at their desks in a classroom",
-                          "A classroom at one of the schools CORAfrica founded"),
+                         ("john-bosco-lesson.jpg", "Pupils standing at their desks as a lesson begins",
+                          "A lesson at John Bosco Academy, Adagom"),
                          ("js-welcome.jpg", "Children outside John Stilley Secondary School",
                           "The John Stilley Schools &mdash; Victoria, Ikom"),
                          ("school-farm.jpg", "Students in school uniform working on a school farm",
@@ -1048,7 +1068,10 @@ body += sec(head_block("What we run today", "Two programmes, under our own direc
                        "from 2027 &mdash; see our <a href=\"track-record.html\">track record</a>. These are the "
                        "programmes CORAfrica runs day to day, alongside our Community Education Centres, each one "
                        "answering a different reason a child stops coming to class.")
-            + programme_groups(3)
+            + programme_groups(3, education_shot=(
+                "john-bosco-classroom.jpg",
+                "Pupils at their desks in a classroom at John Bosco Academy, with CORAfrica staff at the front",
+                "A class at John Bosco Academy, Adagom. Photographed for us in September 2026."))
             + '    <h3 class="group-label">Alongside them</h3>\n'
             + grid([card(t, b, tag) for t, b, tag in ALSO_TODAY], 2)
             + media_pair(("livelihoods.jpg", "Women at a Special Project Funds distribution implemented by CORAfrica with support from Cuso International"),
@@ -1168,17 +1191,23 @@ programme_page(
                   card("The CORAfrica programme", "Micro-credit for poor parents and guardians, especially in communities where a Community Education Centre operates.", "National")], 3),
           cls="grad-white-strong")
     + sec(head_block("Two beneficiaries", "What a loan turned into.")
-          + grid([card("Thomas Nsing", "Received &#8358;3,000,000 to furnish and improve his gym. He has since recorded his own account of what the programme meant.", "The gym"),
+          + grid([card("Thomas Nsing", "Received &#8358;3,000,000 to furnish and improve his gym.", "The gym"),
                   card("A trader at Ikom", "Started a Point of Sale business and expanded it into phone accessories. He recently gave 20 POS machines to 20 other business owners &mdash; one loan, rippling outward.", "The ripple")], 2)
-          # Sent 2026-09-17 with "Please share these pics and video under the EEP system". The
-          # shop is stocked with phone accessories, which is the trader at Ikom above; he is not
-          # named here because Fr. Peter named only the man in the video, Thomas Nsing.
-          + '    <figure class="shot shot--single">\n'
-            '      <div class="media"><img src="img/empowerment-shop.jpg" alt="A shopkeeper standing '
-            'in his shop, its shelves stocked with phone cases, power banks and earphones" '
-            'loading="lazy" width="900" height="675"></div>\n'
-            '      <figcaption>A shop stocked from an interest-free loan &mdash; photographed for us '
-            'under the empowerment programme.</figcaption>\n    </figure>\n'
+          # Sent 2026-09-17 with "Please share these pics and video under the EEP system", and
+          # named on 2026-09-18: the man in the photograph, and so the shop in the film, is Thomas
+          # Nsing. Which of the two beneficiaries above is his business is a question for him --
+          # the caption says only what we were told.
+          + single_shot("empowerment-shop.jpg",
+                        "Thomas Nsing standing in his shop, its shelves stocked with phone cases, "
+                        "power banks and earphones",
+                        "Thomas Nsing in his shop, stocked from an interest-free loan.")
+          + clip("thomas-nsing-shop.mp4", "thomas-nsing-shop-poster.jpg",
+                 "Fifteen seconds along his shelves, filmed for us.")
+          # 2.5:1 as it was taken, so it goes in the wide frame; the 4:3 one would cut the
+          # children out of their own photograph.
+          + wide_shot("fr-peter-with-children.jpg",
+                      "Fr. Peter Abue with three laughing children outside a CORAfrica building",
+                      "What the lending is for: a parent earning, and a child who stays in class.")
           + '    <p class="pull">Meaningful empowerment is not simply financial assistance. <span>It is the '
             "opportunity, the confidence and the resources to build a livelihood.</span></p>\n",
           cls="grad-paper-warm"))
@@ -1465,7 +1494,15 @@ body += sec(head_block("Institutions we founded", "Schools and clinics, now in o
                        "handed on has not really been built. Every institution below was founded by CORAfrica, and "
                        "the hand-over to the partners who will run them completes in 2027.")
             + '    <div class="register-head"><span>Institution</span><span>Location</span><span>Founded</span><span>Scale</span></div>\n'
-            + rows, cls="grad-paper-warm")
+            + rows
+            # Sent 2026-09-18 as one stacked image, split back into the two photographs it was
+            # made from. St. Joseph's is in the register above, so the pair sits under it.
+            + shot_grid([("st-josephs-idum-mbube.jpg",
+                          "The front of St. Joseph&rsquo;s Schools, a two-storey block in blue and red",
+                          "St. Joseph&rsquo;s Schools and Orphanage &mdash; Idum Mbube, Ogoja"),
+                         ("st-josephs-assembly.jpg",
+                          "Pupils in red and yellow house colours crossing the courtyard at St. Joseph&rsquo;s",
+                          "Its courtyard, between classes")]), cls="grad-paper-warm")
 body += sec(head_block("Programmes delivered", "Loans, training, classrooms and farms.",
                        "Beyond the institutions, CORAfrica has run programmes for families, refugees and displaced "
                        "people across Cross River and Benue States.")
@@ -1586,7 +1623,13 @@ body = hero("Strategic plan 2026&ndash;2030", "What we are building next.",
 backgrounds = ["grad-paper-warm", "bg-white", "grad-warm-white", "grad-white-strong"]
 for i, (area, h2, tiers) in enumerate(PLAN):
     body += sec(head_block("The plan &middot; " + area, h2)
-                + grid([goals_card(t, items) for t, items in tiers], 3), cls=backgrounds[i])
+                + grid([goals_card(t, items) for t, items in tiers], 3)
+                # The first goal area is the children's, so the photograph of the block going up
+                # belongs under it rather than on its own.
+                + (single_shot("john-stilley-new-block.jpg",
+                               "A new block under construction beside a paved walkway",
+                               "A new block going up at the John Stilley model, Victoria Village, Ikom.")
+                   if i == 0 else ""), cls=backgrounds[i])
 body += sec(head_block("Alignment", "Where our work meets the global agenda.",
                        "CORAfrica&rsquo;s programmes are aligned to five United Nations Sustainable Development Goals.")
             + grid([card(t, b, tag) for t, b, tag in SDGS], 3),

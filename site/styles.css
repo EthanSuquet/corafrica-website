@@ -834,6 +834,13 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 .shot--wide .media--wide img { height: auto; aspect-ratio: 960 / 408; }
 .shot--wide figcaption { text-align: center; font-size: 13px; }
 .cost-row--total { border-top: 1px solid var(--line-strong); padding-top: 15px; }
+/* The first film on the site (2026-09-18). It was shot on a phone, so it is portrait, and it
+   is held to a phone's width rather than stretched across the column. */
+.shot--clip { margin: 2.1rem auto 0; max-width: 340px; }
+.shot--clip .media--clip { background: #17161a; }
+.shot--clip video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; }
+.shot--clip figcaption { text-align: center; }
+
 .shot--single { margin: 2.1rem auto 0; max-width: 720px; }
 .shot--single .media img { height: auto; aspect-ratio: 4 / 3; }
 .shot--single figcaption { text-align: center; }
