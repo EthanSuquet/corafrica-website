@@ -1887,8 +1887,13 @@ BIOS = {
         "Olurotimi Akinkunmi Padonu is a seasoned executive and development finance specialist, supporting "
         "CORAfrica&rsquo;s mission to transform rural communities. With more than 30 years of leadership experience "
         "across the United Kingdom, Africa and the United States, he brings deep expertise in project finance, clean "
-        "energy and community-centred development. His strategic guidance strengthens CORAfrica&rsquo;s ability to "
-        "scale its impact and expand opportunities for children and families.",
+        "energy and community-centred development.",
+        # His own words, 2026-09-18, in place of a closing line that said only that his guidance
+        # strengthened CORAfrica's ability to scale. This says what he actually does.
+        "He strengthens CORAfrica&rsquo;s governance and administrative systems to build the structures required "
+        "to deliver the organisation&rsquo;s 2026&ndash;2030 Strategic Plan. His work ensures CORAfrica is equipped "
+        "with the policies, documentation and institutional frameworks needed to unlock partnerships, grants and "
+        "multi-year funding for its expanding education, healthcare, agriculture and community programmes.",
     ],
     # His own bio opens "Elijah Ugani is programme Manager", which is Edwin Okungbowa's title in
     # the list Fr. Peter confirmed on 2026-09-04. Brought into line with the list, as the other
