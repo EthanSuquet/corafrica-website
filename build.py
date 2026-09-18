@@ -1508,7 +1508,14 @@ body += sec(head_block("Programmes delivered", "Loans, training, classrooms and 
                        "people across Cross River and Benue States.")
             + grid([card(t, b, tag) for t, b, tag in DELIVERED], 3)
             + media_pair(("field-team.jpg", "CORAfrica field staff outside a shelter at a settlement"),
-                         ("bus.jpg", "Pupils in school uniform beside a CORAfrica school bus")),
+                         ("bus.jpg", "Pupils in school uniform beside a CORAfrica school bus"))
+            # 2026-09-18, Fr. Peter, of the children in it: they are refugees. This is the section
+            # that says CORAfrica works among refugee and displaced families, so it belongs here.
+            + single_shot("refugee-children.jpg",
+                          "A crowd of refugee children holding biscuits and drinks beside a "
+                          "CORAfrica bus, with Fr. Peter Abue behind them",
+                          "Refugee children, among the families CORAfrica works with across Cross "
+                          "River and Benue."),
             cls="grad-white-strong")
 body += sec(head_block("Recognition", "Noticed along the way.")
             + grid([card(t, b, tag) for t, b, tag in RECOGNITION], 3), cls="bg-white")
