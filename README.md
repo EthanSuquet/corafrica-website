@@ -104,23 +104,29 @@ Written in `[SQUARE BRACKETS]` so they cannot ship unnoticed. Grep for them:
 grep -rn "TO BE SUPPLIED\|\[.*NEEDED" site/*.html
 ```
 
-- **Email** — the old address is dead and the new one has not arrived. Every footer, plus News, Donate,
-  Contact and the questions page. Set `CONTACT_EMAIL` at the top of `build.py` and it appears everywhere. The
-  phone numbers arrived on 2026-09-14 and are live (`PHONES`).
+None as of 2026-09-22. The last was the **email**: `CONTACT_EMAIL` at the top of `build.py` is now
+`info@corafrica.org.ng` (Ethan, 2026-09-22) and appears in every footer, plus News, Donate, Contact and the
+questions page. Set it back to `None` and the placeholder returns. The phone numbers arrived on 2026-09-14
+(`PHONES`).
 
 The full list of what is still open with Fr. Peter is `docs/ASK-FR-PETER.md` (local only).
 
 ## 🔴 Before this goes live
 
-1. **The new email address** (above). The phone numbers are in.
-2. **Jeannine confirms the cheque payee and US address** on the Donate page. The EIN, 68-0619454, is
+1. ~~**The new email address.**~~ Settled 2026-09-22: `info@corafrica.org.ng`. The mailbox is on the
+   cPanel host and forwards to Jeannine and Ethan.
+2. ~~**Jeannine confirms the cheque payee and US address.**~~ Settled 2026-09-22: the US board opened
+   **P.O. Box 1039, North Baldwin, NY 11510**, in the name Children of Rural Africa. The EIN, 68-0619454, is
    confirmed (Ethan, 2026-09-10).
-3. **Two bios still to come**: Jeannine Goelz and Ethan Suquet. The administrative team need a photo only,
-   not a bio (Fr. Peter, 2026-09-14), and every one of them has one.
+3. ~~**Two bios still to come.**~~ Jeannine Goelz's and Ethan Suquet's were written on 2026-09-17. The
+   administrative team need a photo only, not a bio (Fr. Peter, 2026-09-14), and every one of them has one.
 4. **WordPress comes down**; its GiveWP donation records and media library pass to the new site
    (Fr. Peter, 2026-09-04). Export both before anything is switched off.
 5. **DNS.** Ethan is the sole controller of the domain (Fr. Peter, 2026-09-04). Point
-   corafrica.org.ng at the host, then restore a `CNAME`.
+   corafrica.org.ng at the host, then restore a `CNAME`. ⚠️ **Mail first.** The zone lives in the WhoGoHost
+   cPanel, and its MX record points at `corafrica.org.ng` itself, with `mail.` a CNAME to it. Repoint only the
+   A record and mail to `info@` goes to GitHub and bounces. Make `mail.corafrica.org.ng` an A record to
+   176.74.16.235 and point the MX at it *before* switching the website.
 
 ## Deploying
 

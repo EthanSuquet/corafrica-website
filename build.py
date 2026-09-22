@@ -49,16 +49,20 @@ STRIPE_25_MONTHLY = STRIPE_MONTHLY[1][1]
 STRIPE_ONE_TIME = "https://buy.stripe.com/cNi4gBfEY4Ua22D860cwg07"
 
 # Fr. Peter, 2026-09-04: info@corafrica.org.ng and +234 915 314 2288 no longer work.
-# He sent the replacement numbers on 2026-09-14; the email is still to come, and until
-# it is set here the site says so rather than linking to a dead address.
-CONTACT_EMAIL = None  # [NEW EMAIL TO BE SUPPLIED]
+# He sent the replacement numbers on 2026-09-14. Ethan settled the email on 2026-09-22 as
+# info@ after all: checked that day, the mailbox exists on the host and forwards to Jeannine
+# and Ethan. Set to None, the site shows a placeholder rather than linking to a dead address.
+CONTACT_EMAIL = "info@corafrica.org.ng"
 # He gave the Nigerian number in local form (07030249901) and the US one as 724 272 1851.
 # Both are written in international form so they dial from either country.
 PHONES = [("Nigeria", "+234 703 024 9901"), ("United States", "+1 724 272 1851")]
 # No 48 Mbube Road, Ogoja is no longer operational (Fr. Peter, 2026-09-14); Abuja is the
 # national office and the only Nigerian address on the site.
 NG_ADDRESS = ("C20, 3rd Floor", "CDA Zenith, Kebbi House", "Abuja FCT, Nigeria")
-US_ADDRESS = ("811 Center Drive", "North Baldwin, NY 11510")
+# The PO box Silvia Okoro and Fr. Chux Okochi opened, effective 2026-09-22. It replaces 811 Center
+# Drive (Fr. Peter, 2026-09-04). The box also has a street address for parcels; it is left off the
+# site on purpose, since nothing here asks anyone to send a package.
+US_ADDRESS = ("P.O. Box 1039", "North Baldwin, NY 11510")
 EIN = "68-0619454"  # checked against the public IRS record, 2026-09-10
 SOCIAL = [("Facebook", "https://www.facebook.com/Corafrica"), ("X", "https://x.com/CorAfrica")]
 
