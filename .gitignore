@@ -19,5 +19,7 @@ docs/source/
 
 # Internal notes. They quote Fr. Peter's private answers and details from the audited accounts
 # that he asked never to be published, and this repository is public. Kept locally only.
-docs/CONTENT-FACTS.md
-docs/ASK-FR-PETER.md
+# The wildcards matter: the ask list is exported as a .txt to send to Fr. Peter, and his
+# annotated replies come back under the same name. Neither may ever be committed.
+docs/CONTENT-FACTS*
+docs/ASK-FR-PETER*

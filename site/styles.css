@@ -926,26 +926,26 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 }
 .cw-seal path { fill: var(--ink); }
 
-/* ---- 2026-09-22 The London draft plan: five pillars, targets for 2030 ------
+/* ---- 2026-09-22 The London draft plan: pillars, targets for 2030 ------
    .statement is the vision, mission and twenty-year goal, which were inline-styled h3s on
    Who We Are; they now also head the plan page, three abreast, so they share one rule and
-   come down from 28px to fit. .stats--10 is the plan's ten targets: two rows of five, then
-   two columns once "50,000" stops fitting a fifth of the shell. */
+   come down from 28px to fit. .stats--9 is the plan's nine targets, three rows of three, one
+   row per area (education, healthcare, livelihoods); two columns on a phone, with the last
+   target across both. It was ten, in two rows of five, until Fr. Peter merged two of them. */
 .card .statement { margin: 0; font-family: "Space Grotesk", sans-serif; font-size: 23px; font-weight: 600; line-height: 1.22; letter-spacing: -0.035em; color: var(--ink); }
-.stats--10 { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 34px 26px; }
-.stats--10 .stat-n { font-size: 46px; }
+.stats--9 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px 26px; }
+.stats--9 .stat-n { font-size: 46px; }
 .panel-foot { margin: 32px 0 0; padding-top: 22px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
 .panel-note a { color: var(--accent); font-weight: 700; white-space: nowrap; }
 .village { margin: 0 0 1.6rem; }
 .village li { border-color: var(--accent-tint); color: var(--ink); }
 #partner { scroll-margin-top: calc(var(--header-h) + 12px); }
 @media (max-width: 1023px) {
-  .stats--10 .stat-n { font-size: 38px; }
-}
-@media (max-width: 859px) {
-  .stats--10 { grid-template-columns: 1fr 1fr; gap: 26px 18px; }
+  .stats--9 .stat-n { font-size: 38px; }
 }
 @media (max-width: 639px) {
   .card .statement { font-size: 20px; }
-  .stats--10 .stat-n { font-size: 36px; }
+  .stats--9 { grid-template-columns: 1fr 1fr; gap: 26px 18px; }
+  .stats--9 > div:last-child { grid-column: 1 / -1; }
+  .stats--9 .stat-n { font-size: 36px; }
 }
