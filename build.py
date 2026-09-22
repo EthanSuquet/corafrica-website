@@ -249,8 +249,10 @@ def hero(kicker, h1, lede, img, alt, page_hero=True, actions="", kicker_big=Fals
     )
 
 
-def sec(inner, cls="grad-paper-warm", extra="section"):
-    return '<section class="%s %s">\n  <div class="shell">\n%s  </div>\n</section>\n' % (extra, cls, inner)
+def sec(inner, cls="grad-paper-warm", extra="section", sid=None):
+    """sid gives the section an id, for a button elsewhere on the page to jump to."""
+    idattr = ' id="%s"' % sid if sid else ""
+    return '<section%s class="%s %s">\n  <div class="shell">\n%s  </div>\n</section>\n' % (idattr, extra, cls, inner)
 
 
 def sec_wide(inner, cls="grad-paper-warm", extra="section"):
@@ -283,6 +285,11 @@ def link_card(title, body, href, tag=None, ic=None, cta="Read more"):
         o += '        <span class="card-tag">%s</span>\n' % tag
     return o + ('        <h3>%s</h3>\n        <p>%s</p>\n'
                 '        <span class="card-go">%s &rarr;</span>\n      </a>\n' % (title, body, cta))
+
+
+def statement_card(kicker, text):
+    """Vision, mission and the twenty-year goal: a sentence set as display type under its label."""
+    return '      <article class="card"><p class="kicker">%s</p><p class="statement">%s</p></article>\n' % (kicker, text)
 
 
 def goals_card(title, items, tag=None):
@@ -557,6 +564,20 @@ def write(page, html):
 
 
 # ============================================================== shared data
+# Fr. Peter's vision and mission, sent on WhatsApp at 3:45 AM on 2026-09-22. They are the newest
+# wording and they are his, so they win over the London draft plan's own, which adds "especially
+# every girl" to the vision and ends the mission on "no child is left behind". Only his "thier"
+# is corrected. They appear on Who We Are and at the head of the Strategic Plan.
+VISION = ("A future where every child in Africa grows up healthy, educated and empowered to build a better "
+          "life within their own community.")
+MISSION = ("To transform education and healthcare for indigent children by building Community Education "
+           "Centres that combine schools, clinics, farms and skills centres to ensure that children stay within "
+           "their communities.")
+# From the London draft plan (see strategic-plan below): its "20-Year Goal (2026-2046)".
+TWENTY_YEAR_GOAL = ("To scale Community Education Centres across Nigeria and Africa, creating a continent-wide "
+                    "child development ecosystem that delivers quality education, good health, practical skills, "
+                    "digital fluency and economic empowerment for rural families.")
+
 # Fr. Peter's figures, revised by him in FINAL WEB MENU (S16, 2026-09-16), which adds the
 # cumulative "children educated" and "small businesses" counts to the five he gave in S10.
 # They count the schools and clinics CORAfrica founded, which it still runs: the hand-over to
@@ -706,8 +727,11 @@ def stats_panel():
               '          <div class="stat-note">%s</div>\n        </div>\n' % (n, l, note))
     return ('    <div class="panel">\n'
             '      <div class="panel-head">\n'
-            '        <p class="kicker">Twenty years on the ground</p>\n'
-            '        <p class="panel-note">As at September 2026, across every school, clinic and programme CORAfrica founded</p>\n'
+            # "20 Years of Impact (2006-2026)", with the figures linked to the track record: the
+            # Board member's review forwarded by Fr. Peter, 2026-09-22.
+            '        <p class="kicker">Twenty years of impact, 2006&ndash;2026</p>\n'
+            '        <p class="panel-note">As at September 2026, across every school, clinic and programme CORAfrica '
+            'founded. <a href="track-record.html">See the track record&nbsp;&rarr;</a></p>\n'
             "      </div>\n"
             '      <div class="stats stats--7">\n%s      </div>\n    </div>\n' % s)
 
@@ -870,14 +894,8 @@ body = hero("Who we are", "Twenty years of building schools where there were non
             "and as an NGO in Nigeria. We believe a child&rsquo;s education cannot be separated from their health, their "
             "food and their family&rsquo;s income &mdash; so we build them together, and then hand the work on.",
             "gathering.jpg", "Children and families gathered together, arms raised")
-body += sec('    <div class="grid grid--2">\n'
-            '      <article class="card"><p class="kicker">Our vision</p>'
-            '<h3 style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;line-height:1.16;letter-spacing:-.04em">'
-            "To impact the lives of children throughout Africa, beginning with Nigeria.</h3></article>\n"
-            '      <article class="card"><p class="kicker">Our mission</p>'
-            '<h3 style="font-family:\'Space Grotesk\',sans-serif;font-size:28px;line-height:1.16;letter-spacing:-.04em">'
-            "To change the face of education and healthcare for indigent children in Africa, one community at a time.</h3></article>\n"
-            "    </div>\n", cls="grad-paper-warm", extra="section--tight")
+body += sec(grid([statement_card("Our vision", VISION), statement_card("Our mission", MISSION)], 2),
+            cls="grad-paper-warm", extra="section--tight")
 # The official seal arrived only as a 400px JPEG (WhatsApp, 2026-09-04). It was rebuilt as a
 # vector on 2026-09-10 (brand/corafrica-seal.svg), and every seal and lockup now carries it.
 body += sec('    <div class="split split--center">\n'
@@ -1562,119 +1580,228 @@ write("track-record.html", head("track-record.html", "Our Track Record — CORAf
 
 
 # ============================================================== strategic-plan
-# STRATEGIC PLAN 2026-2030.docx (S14), every goal kept and rewritten. John Bosco University
-# and the Adagom building are past projects now (S10) and are deliberately not here.
+# CORAFRICA DRAFT STRATEGIC PLAN YEAR 2026-2030.docx, from "our Strategic plan guy in London",
+# which Fr. Peter forwarded on 2026-09-22: "Pls kindly realign this with our strategic plan menu
+# on the website". He is not named; OluRotimi Padonu, whose UK-based review of this page arrived
+# with it, is the likely author. It supersedes STRATEGIC PLAN 2026 - 2030.docx (S14): the same plan, now
+# regrouped into five pillars, with years on each tier and targets for 2030. Every goal is kept
+# and rewritten, with four deliberate departures, each held for Fr. Peter to rule on:
+#   - The vision and mission are the ones Fr. Peter sent that same morning (VISION, MISSION),
+#     not the draft's. His vision leaves out the draft's "especially every girl".
+#   - Five SDGs, not the draft's six. Fr. Peter chose these five himself (S10), dropping gender
+#     equality from Vanguard's list, and the draft puts SDG 5 back in.
+#   - Pillar 3 is shown as part of education. He has ruled twice (S16, S17) that agriculture and
+#     economic empowerment are not programmes of their own; the draft gives them a pillar.
+#   - The draft's list of prospective funders (section 7) and its £500k-£1m grant pipeline are
+#     left off. Naming an agency on this page reads as a relationship that does not exist yet,
+#     and the pipeline is an internal target, set in pounds on a site that uses dollars. For the
+#     same reason UNICEF and THET are not named. The draft has CORAfrica "strengthen partnerships"
+#     with both, but neither appears in any record of past partners.
+# The line quoted under each pillar in the draft was lifted from this site's own copy, so it is
+# not repeated here.
+TIERS = [("Essential goals", "2026&ndash;2027"), ("Midline goals", "2028&ndash;2029"),
+         ("Long-term goals", "2030 and beyond")]
 PLAN = [
-    ("Education", "More schools, better schools, and the farms beside them.", [
-        ("Essential goals", [
-            "Re-establish existing schools for refugees, migrants and internally displaced people.",
-            "Upgrade existing schools, and build more in poor localities as Community Education Centres.",
-            "Build better schools, and provide better facilities for those that already exist.",
-            "Seek government support for dilapidated schools.",
-            "Train staff and teachers in crop cultivation and animal husbandry.",
-            "Acquire farm equipment and farmland for training facilities.",
-            "Begin enlarging school farms."]),
-        ("Midline goals", [
-            "Establish more Community Education Centres in other key areas of our operation in Nigeria.",
-            "Engage rural communities across Nigeria on education.",
-            "Expand our education programmes, by theme, within target areas.",
-            "Extend the founding of schools to other parts of Nigeria.",
-            "Seek government support for agricultural programmes.",
-            "Expand our agricultural programmes within target areas.",
-            "Increase food supply and household income for beneficiaries.",
-            "Encourage group farming cooperatives, especially for cassava and other crops."]),
-        ("Long-term goals", [
-            "Collaborate with state and federal government, and with local and international agencies.",
-            "Establish a tertiary institution to serve CORAfrica beneficiaries across Nigeria&rsquo;s six geopolitical zones.",
-            "Establish an extended, multi-purpose Community Education Centre farm, including value chains.",
-            "Establish CORAfrica agricultural schools, especially for young people.",
-            "Extend our agricultural programmes to other parts of Africa.",
-            "Advocate for government engagement with, and adoption of, the Community Education Centre model."])]),
-    ("Healthcare", "From clean water to a children&rsquo;s hospital.", [
-        ("Essential goals", [
-            "Build sanitation and hygiene facilities in Community Education Centres and in schools where our programmes run.",
-            "Invest in children&rsquo;s health through medical outreach to rural villages in our programme areas.",
-            "Support immunisation for children in the rural areas where need is greatest.",
-            "Begin establishing children&rsquo;s health centres in Community Education Centres and key programme areas."]),
-        ("Midline goals", [
-            "Supply child-friendly medicines to rural clinics.",
-            "Engage rural communities on health education, water, sanitation and hygiene.",
-            "Work with other agencies, especially the Ministry of Health, to improve services in our locations.",
-            "Seek government support for children&rsquo;s healthcare needs."]),
-        ("Long-term goals", [
-            "Build a standard children&rsquo;s hospital within a Community Education Centre, for child welfare and healthcare.",
-            "Work with more external agencies on funding.",
-            "Extend our locations to other parts of Africa."])]),
-    ("Funding and logistics", "Paying for the work, and proving where it goes.", [
-        ("Essential goals", [
-            "Form a team of enumerators to carry out surveys and data collection in sampled locations.",
-            "Recruit professional grant writers as volunteers to open further funding opportunities.",
-            "Seek support from prospective funders and donors to begin specific projects.",
-            "Adopt accounting software and telecommunication tools.",
-            "Begin local Parish Economic Empowerment Programmes, using the St. Thomas Aquinas programme as the demonstration project.",
-            "Encourage CORAfrica economic empowerment programmes for poor parents and guardians, especially where a Community Education Centre exists.",
-            "Form groups and cooperatives for farming, especially cassava and other local cash crops.",
-            "Encourage small business owners to open businesses, especially in faith-based institutions."]),
-        ("Midline goals", [
-            "Strengthen financial management for transparency and accountability at every level.",
-            "Put staff and systems in place for data collection, monitoring and evaluation.",
-            "Work with other agencies in Nigeria to learn from best practice.",
-            "Build relationships with individual philanthropists in Nigeria who can champion our programmes.",
-            "Provide micro-credit to rural farmers, entrepreneurs and small business owners.",
-            "Introduce CORAfrica economic empowerment and micro-credit programmes in other parts of Nigeria."]),
-        ("Long-term goals", [
-            "Use external staff to strengthen our appeals in the United States and beyond.",
-            "Build a global fundraising network grounded in accountability and best practice.",
-            "Seek grants from state and federal government and other donors.",
-            "Open Vocational and Skills Acquisition Centres as part of the Community Education Centre model in other parts of Nigeria.",
-            "Establish a microfinance bank as the end product of economic empowerment for beneficiaries."])]),
-    ("Administration", "The team to deliver it.", [
-        ("Essential goals", [
-            "Strengthen key staff: the National Programmes Coordinator, a Financial Manager, and monitoring and evaluation officers.",
-            "Strengthen coordinators and consultants in education and healthcare.",
-            "Confirm the statutory role of the National Programmes Coordinator with our existing partners.",
-            "Recruit and train professional staff, especially in financial management and monitoring and evaluation.",
-            "Collaborate with key government agencies and partners in Abuja to deliver our programmes."]),
-        ("Midline goals", [
-            "Build capacity and the administrative budget of our Abuja office.",
-            "Build or open CORAfrica offices in major cities such as Lagos and Abuja, so more people benefit from our programmes.",
-            "Build fundraising capacity together with the partners who will take on our schools.",
-            "Build capacity in electronic financial systems and participatory monitoring and evaluation."]),
-        ("Long-term goals", [
-            "Run exchange programmes with our US office in marketing, bookkeeping and programme delivery.",
-            "Grow those exchanges by recruiting expatriate staff and volunteers to work in Nigeria.",
-            "Open offices in other parts of Nigeria and beyond, especially in the six geopolitical zones where our programmes may run."])]),
+    ("Education and e-learning", "More schools, better schools, and learning that reaches further.", None, [
+        ["Re-establish schools for refugee, migrant and internally displaced children.",
+         "Upgrade existing schools into full Community Education Centres.",
+         "Launch the CORAfrica E-Learning Hub, with offline-first digital lessons for rural children.",
+         "Train teachers in crop cultivation, animal husbandry and digital literacy.",
+         "Expand the school demonstration farms, and build agriculture into the curriculum."],
+        ["Establish new Community Education Centres in Nasarawa, Benue and Cross River States, and in two more states.",
+         "Expand HELP-A-KID scholarships, and girls&rsquo; education.",
+         "Open STEM and digital skills labs in every Community Education Centre.",
+         # The draft says "strengthen" VASAC at Ogoja and Ikom. We cannot yet say either is
+         # teaching (ASK-FR-PETER item 11), and Ogoja's is still a proposal.
+         "Build up the vocational and skills acquisition centres at Ogoja and Ikom.",
+         "Work with rural communities across Nigeria on access to education, and on keeping girls in school."],
+        ["Establish a CORAfrica tertiary institution serving all six of Nigeria&rsquo;s geopolitical zones.",
+         "Build CORAfrica agricultural schools for young people.",
+         "Take the Community Education Centre to other African countries affected by poverty and displacement.",
+         "Advocate for government adoption of the Community Education Centre model."]]),
+    ("Healthcare and child well-being", "From clean water to a children&rsquo;s hospital.", None, [
+        ["Build sanitation and hygiene facilities in every Community Education Centre.",
+         "Expand medical outreach to rural villages, refugee settlements and camps for displaced people.",
+         "Support immunisation for children in the rural areas where need is greatest.",
+         "Begin establishing children&rsquo;s health centres in the Community Education Centres."],
+        ["Supply child-friendly medicines to rural clinics.",
+         "Expand community health worker programmes.",
+         "Deepen our work with the Ministry of Health and UNHCR, and with international health agencies.",
+         "Launch a maternal and newborn health initiative across the Community Education Centres."],
+        ["Build a CORAfrica children&rsquo;s hospital within a Community Education Centre.",
+         "Take our healthcare programmes to other African countries.",
+         "Secure multi-year funding from global health agencies."]]),
+    ("Agriculture, livelihoods and economic empowerment", "The income that keeps a child in class.",
+     "These are part of the education programme, not a programme beside it. In a Community Education Centre, "
+     "the farm, the school fees and the loan to a parent are what keep a child in school.", [
+        ["Expand the CORA Farms demonstration sites at Ogoja, Ikom and Nasarawa.",
+         "Train farmers in climate-smart and mechanised agriculture.",
+         "Grow HELP-A-KID, and micro-credit for parents.",
+         "Form farming cooperatives for cassava, rice and other crops."],
+        ["Provide micro-credit to rural farmers, entrepreneurs and small businesses.",
+         "Launch a Women&rsquo;s Rural Livelihoods Programme in ten communities.",
+         "Take our agricultural programmes to new states.",
+         "Build value-chain processing units for cassava, yam and poultry."],
+        ["Establish a CORAfrica microfinance bank for rural families.",
+         "Build multi-purpose Community Education Centre farms with full value chains.",
+         "Take our agricultural programmes to other African countries."]]),
+    ("Community infrastructure: Build-A-Village", "Everything a community needs, built in one place.",
+     "Build-A-Village is new in this plan. It widens the Community Education Centre into a framework for the "
+     "whole community, and builds these eight parts together:", [
+        ["Complete the New Karu Community Education Centre, in Nasarawa State.",
+         "Pilot Build-A-Village in Nasarawa and Cross River States.",
+         "Build e-learning hubs and digital classrooms into the centres."],
+        ["Take Build-A-Village to five more communities.",
+         "Add solar power, water systems and community markets.",
+         "Build innovation hubs for young people."],
+        ["Scale Build-A-Village across Nigeria, and into neighbouring African countries.",
+         "Partner with development finance institutions to finance the infrastructure."]]),
+    ("Governance, funding and global partnerships", "The team, the systems and the partners to deliver it.", None, [
+        ["Strengthen key staff: a National Programmes Coordinator, a Financial Manager, and monitoring and evaluation officers.",
+         "Develop donor-grade policies on safeguarding, anti-fraud, gender and financial controls.",
+         "Adopt accounting software and telecommunication tools.",
+         "Recruit professional grant writers and enumerators."],
+        ["Build administrative offices in Abuja and Lagos.",
+         "Establish partnership networks in the United Kingdom, the United States and the European Union.",
+         "Strengthen our fundraising capacity with global partners.",
+         "Build monitoring and evaluation dashboards and digital reporting systems."],
+        ["Build a global fundraising network.",
+         "Secure multi-year grants from UK, EU, US and UN donors and development finance institutions.",
+         "Open CORAfrica offices in all six geopolitical zones, and in selected African countries."]]),
 ]
+BUILD_A_VILLAGE = ["A Community Education Centre", "A clinic", "A demonstration farm", "A vocational skills centre",
+                   "Water and sanitation", "Micro-credit and livelihoods", "Digital learning hubs",
+                   "Safe spaces for women and young people"]
+# The draft's "Strategic outcomes by 2030", every number kept. The four with no number follow in
+# one line under the panel; the grant pipeline is the one outcome left off (see above).
+TARGETS = [("5", "New Community Education Centres", "Education"),
+           ("3,000", "More children in school", "Education"),
+           ("1,000", "Girls supported by HELP-A-KID", "Education"),
+           ("2", "New children&rsquo;s health centres", "Healthcare"),
+           ("50,000", "Medical consultations", "Healthcare"),
+           ("10", "Communities with better water and sanitation", "Healthcare"),
+           ("5,000", "Farmers trained", "Livelihoods"),
+           ("2,000", "Women supported with micro-credit", "Livelihoods"),
+           ("3", "Value-chain processing hubs", "Livelihoods"),
+           ("10", "Build-A-Village communities", "Infrastructure")]
+# The only two projects in the plan that already carry a published price. Both figures are on
+# the site already (Our Model; the skills-centre page), so nothing new is claimed here.
+COSTED = [("The New Karu Community Education Centre",
+           "Our next centre, recently begun in Nasarawa State, near Abuja. About <strong>US $2 million</strong> "
+           "will complete it.", "our-model.html", "Building now"),
+          ("A skills acquisition centre for Ogoja",
+           "The first purpose-built Vocational and Skills Acquisition Centre. <strong>US $320,000</strong> would "
+           "build it and run its first year.", "programme-vasac.html", "Proposed")]
+# OluRotimi Padonu's review of the site (CORAfrica WEBSITE DRAFT MY PERSPECTIVE.pdf, 2026-09-22):
+# donors will ask "Why CORAfrica? Why now?", and the plan page did not answer. Every line here is
+# a fact already published elsewhere on the site.
+WHY = [("Twenty years on the ground",
+        "Founded in 2006. Since then 7,330 children have graduated from the schools we founded, 2,550 are "
+        "enrolled in them today, and our programmes have reached 64 communities.", "Since 2006"),
+       ("A model proven, then handed on",
+        "The Community Education Centre has been built twice, at Idum-Mbube and at Victoria-Ikom. Both work, and "
+        "both pass in 2027 to the institutions that will run them, so what a partner builds with us outlasts us.",
+        "The model"),
+       ("Spending that reaches the work",
+        "92.6% of everything CORAfrica spent in 2025 went to programmes, and our accounts are audited every year "
+        "by Akomaye Adie &amp; Co., Chartered Accountants, of Calabar.", "2025 accounts"),
+       ("Registered in both countries",
+        "A <span class='nolig'>501(c)(3)</span> in the United States since 2006 and an NGO in Nigeria since "
+        "2010, governed by a Board of Trustees in each, and reported on independently by Vanguard and ThisDay.",
+        "Accountability")]
+# Kinds of partner, never named prospects: the draft's section 7 and Rotimi's list, grouped.
+PARTNER_WAYS = [("Governments and development agencies",
+                 "Co-fund Community Education Centres, and help carry the model into public policy.", "Public sector"),
+                ("International and UN agencies",
+                 "Health, refugee and displacement work, where we have worked alongside UNHCR and Nigeria&rsquo;s "
+                 "National Commission for Refugees, Migrants and IDPs.", "Multilateral"),
+                ("Foundations and charities",
+                 "Multi-year support for a pillar, a centre or a single programme.", "Grant makers"),
+                ("Faith and diaspora networks",
+                 "Dioceses, parishes and African diaspora associations. The Catholic Diocese of Ogoja and parishes in "
+                 "Western Pennsylvania have long worked with us.", "Communities"),
+                ("Companies",
+                 "Sponsor a clinic, a digital classroom, a demonstration farm or a skills centre, as part of your "
+                 "social responsibility.", "Corporate"),
+                ("Universities and health institutions",
+                 "Research, training and teaching, and the tertiary institution the plan looks toward.", "Academic")]
 SDGS = [("No poverty", "Reducing poverty through education, and through micro-credit that lets a family build an income.", "SDG 1"),
         ("Good health and well-being", "Clinics inside the school system, medical outreach to rural villages, and a focus on a child&rsquo;s first 1,000 days.", "SDG 3"),
         ("Quality education", "Primary and secondary schools where none exist, with vocational and skills training built in.", "SDG 4"),
         ("Decent work and economic growth", "Vocational training and support for small businesses that lead to dignified, sustainable livelihoods.", "SDG 8"),
         ("Reduced inequalities", "Reaching refugee, displaced and host communities together, without distinction.", "SDG 10")]
 
-body = hero("Strategic plan 2026&ndash;2030", "What we are building next.",
-            "Our plan for 2026 to 2030 covers the development of children in rural Nigeria and the capacity to "
-            "deliver it &mdash; education, healthcare, funding and administration &mdash; all within the Community "
-            "Education Centre model.",
-            "plan-hero.jpg", "A newly built CORAfrica school block")
-# "The priority" and "How a centre works" used to sit here. S16 (2026-09-16) puts both on
-# Our Model, so this page is now the four goal areas and the SDG alignment, nothing else.
-backgrounds = ["grad-paper-warm", "bg-white", "grad-warm-white", "grad-white-strong"]
-for i, (area, h2, tiers) in enumerate(PLAN):
-    body += sec(head_block("The plan &middot; " + area, h2)
-                + grid([goals_card(t, items) for t, items in tiers], 3)
-                # The first goal area is the children's, so the photograph of the block going up
+
+def targets_panel():
+    s = ""
+    for n, l, note in TARGETS:
+        s += ('        <div>\n          <div class="stat-n">%s</div>\n'
+              '          <div class="stat-l">%s</div>\n'
+              '          <div class="stat-note">%s</div>\n        </div>\n' % (n, l, note))
+    return ('    <div class="panel">\n'
+            '      <div class="panel-head">\n'
+            '        <p class="kicker">Our targets for 2030</p>\n'
+            '        <p class="panel-note">Over and above where we stand in 2026</p>\n'
+            "      </div>\n"
+            '      <div class="stats stats--10">\n%s      </div>\n' % s
+            + '      <p class="panel-foot">And by 2030: digital learning built into every centre; solar power, water, '
+              "sanitation and digital hubs installed; donor-grade compliance in full; and a global partnership "
+              "network in place.</p>\n    </div>\n")
+
+
+body = hero("Strategic plan 2026&ndash;2030", "Twenty years in, a plan for the next twenty.",
+            "CORAfrica turns twenty in 2026. This plan sets out the first five years of the next twenty: five "
+            "pillars, goals for 2027, 2029 and beyond, and targets for 2030 &mdash; with a place in each for the "
+            "partners who will help us build it.",
+            "plan-hero.jpg", "A newly built CORAfrica school block",
+            actions='      <div class="button-row">\n'
+                    '        <a class="button button--accent" href="#partner">Partner with us</a>\n'
+                    '        <a class="button button--onDark" href="donate.html">Donate</a>\n'
+                    "      </div>\n")
+body += sec(grid([statement_card("Our vision", VISION), statement_card("Our mission", MISSION),
+                  statement_card("Our twenty-year goal, 2026&ndash;2046", TWENTY_YEAR_GOAL)], 3),
+            cls="grad-paper-warm", extra="section--tight")
+backgrounds = ["bg-white", "grad-warm-white", "grad-white-strong", "grad-paper-warm", "bg-white"]
+for i, (area, h2, lede, tiers) in enumerate(PLAN):
+    body += sec(head_block("Pillar %d &middot; %s" % (i + 1, area), h2, lede)
+                # Build-A-Village is the one pillar that is a structure as well as a list of goals,
+                # so its eight parts are shown before the goals that build them.
+                + ('    <ul class="partners village">\n'
+                   + "".join("      <li>%s</li>\n" % p for p in BUILD_A_VILLAGE) + "    </ul>\n"
+                   if area.endswith("Build-A-Village") else "")
+                + grid([goals_card(t, items, tag) for (t, tag), items in zip(TIERS, tiers)], 3)
+                # The first pillar is the children's, so the photograph of the block going up
                 # belongs under it rather than on its own.
                 + (single_shot("john-stilley-new-block.jpg",
                                "A new block under construction beside a paved walkway",
                                "A new block going up at the John Stilley model, Victoria Village, Ikom.")
                    if i == 0 else ""), cls=backgrounds[i])
-body += sec(head_block("Alignment", "Where our work meets the global agenda.",
-                       "CORAfrica&rsquo;s programmes are aligned to five United Nations Sustainable Development Goals.")
-            + grid([card(t, b, tag) for t, b, tag in SDGS], 3),
+body += sec_wide(targets_panel(), cls="grad-paper-warm", extra="section--tight")
+body += sec(head_block("Where to start", "Two projects in the plan, with a price on each.",
+                       "Both come in the plan&rsquo;s first years. Institutions that would like to fund one "
+                       "directly should talk to us.")
+            + grid([link_card(t, b, href, tag=tag, cta="The detail") for t, b, href, tag in COSTED], 2),
             cls="bg-white")
+body += sec(head_block("Alignment", "Where our work meets the global agenda.",
+                       "The plan, like our programmes, is aligned to five United Nations Sustainable Development Goals.")
+            + grid([card(t, b, tag) for t, b, tag in SDGS], 3),
+            cls="grad-warm-white")
+body += sec(head_block("Why CORAfrica", "Why us, and why now.",
+                       "A plan this size asks a funder to trust the organisation behind it. This is the record it "
+                       "rests on.")
+            + grid([card(t, b, tag) for t, b, tag in WHY], 2), cls="bg-white")
+body += sec(head_block("Partner with us", "Build the plan with us.",
+                       "The plan depends on partners as much as on donors. If your institution would like to fund "
+                       "or deliver part of it, talk to us, and we will shape the partnership around the pillar you "
+                       "care about.")
+            + grid([card(t, b, tag) for t, b, tag in PARTNER_WAYS], 3)
+            + '    <div class="button-row" style="margin-top:1.9rem">\n'
+              '      <a class="button button--accent" href="contact.html">Talk to us about partnering</a>\n'
+              '      <a class="button button--dark" href="donate.html">Donate</a>\n    </div>\n',
+            cls="grad-paper-warm", sid="partner")
 write("strategic-plan.html", head("strategic-plan.html", "Our Strategic Plan — CORAfrica",
-      "CORAfrica's Strategic Plan 2026–2030: a new Community Education Centre at New Karu, Nasarawa State, and "
-      "our goals for education, healthcare, funding and administration.", "img/plan-hero.jpg")
+      "CORAfrica's Strategic Plan 2026–2030: five pillars — education, healthcare, livelihoods, Build-A-Village "
+      "and governance — with goals to 2030, targets, and how to partner with us.", "img/plan-hero.jpg")
       + BANNER + header("strategic-plan.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 

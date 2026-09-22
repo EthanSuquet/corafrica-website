@@ -199,6 +199,12 @@ against its source: Fr. Peter's docx and his written answers of 2026-09-04, the 
 2026–2030, the audited 2025 accounts, the 2023 Organizational Profile, and press from
 CrossRiverWatch (2014) to Vanguard and ThisDay (2026). Nothing on the site is invented.
 
+**The Strategic Plan page follows the London draft of 2026-09-22** (*CORAFRICA DRAFT STRATEGIC PLAN YEAR
+2026-2030*, forwarded by Fr. Peter), which replaced the earlier plan: five pillars, goals dated 2026–27,
+2028–29 and 2030 on, and ten targets for 2030. The draft was written with an AI tool (its first line says
+so), and it lifted this site's own copy back into itself. So it is used for the plan's goals and targets, and
+nothing else. Four departures from it are recorded at the top of the strategic-plan block in `build.py`.
+
 ⚠️ **The rules that file exists to enforce.**
 
 1. **Rank sources by the date they were written, not the date they were sent.** Fr. Peter's
