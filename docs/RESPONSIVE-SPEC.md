@@ -27,7 +27,7 @@ This is the single most common way a scaled-down design looks wrong.
 ## Layout transforms at `< 640px`
 | Desktop | Mobile |
 |---|---|
-| 7-item nav + CTA | Logo + **Donate** + hamburger. Donate never hides behind the menu — it is the primary action. |
+| 8-item nav + CTA | Logo + **Donate** + hamburger — from **< 1240px**, not 640px (2026-09-23): below that the eight links wrap and, at 800px, overflow. Donate never hides behind the menu — it is the primary action. |
 | Credibility strip, 4 across | Vertical list, checkmark + label |
 | Numbers panel, 4 columns | **2 × 2** — not 1 column. Four stacked numbers push the schools below the fold for no gain. |
 | Model `30rem 1fr` + 2-col cards | Single column throughout |

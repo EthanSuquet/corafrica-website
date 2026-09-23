@@ -1,6 +1,6 @@
 /* CORAfrica — minimal progressive enhancement.
    The site is fully readable and navigable with JS disabled; this only
-   drives the mobile menu. */
+   drives the collapsed menu, below 1240px. */
 (function () {
   "use strict";
 
@@ -8,7 +8,7 @@
   var nav = document.querySelector("[data-nav]");
   if (!toggle || !nav) return;
 
-  var mq = window.matchMedia("(max-width: 639px)");
+  var mq = window.matchMedia("(max-width: 1239px)");
 
   function setOpen(open) {
     toggle.setAttribute("aria-expanded", open ? "true" : "false");

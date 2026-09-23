@@ -24,11 +24,12 @@ photos/source/   ← raw photo downloads (gitignored)
 python3 build.py
 ```
 
-Regenerates every page into `site/`. Nine are in the main menu — Home, Who We Are, Our Model, What We Do,
-Track Record, Strategic Plan, News, Donate, Contact — and twenty-three are not: five `programme-*.html` pages,
-fifteen `team-*.html` bio pages, `faq.html`, `transparency.html` and one news story, `news-twenty-years.html`.
-Those are reached by clicking a card or a button, or from the footer in the case of the questions and
-transparency pages. **The generated HTML carries a do-not-edit banner** — the
+Regenerates every page into `site/`. Ten are in the main menu — Home, Who We Are, Our Model, What We Do,
+Track Record, Strategic Plan, Transparency, News, Donate, Contact — and twenty-two are not: five
+`programme-*.html` pages, fifteen `team-*.html` bio pages, `faq.html` and one news story,
+`news-twenty-years.html`. Those are reached by clicking a card or a button, or from the footer in the case of
+the questions page. **The menu collapses to a button below 1240px**, not only on phones: eight links do not fit
+on one line any narrower. **The generated HTML carries a do-not-edit banner** — the
 header, footer and `<head>` are defined once in `build.py`, so a nav change is one edit rather
 than nine. Content lives in `build.py` too, near the page it belongs to.
 
@@ -207,7 +208,10 @@ handed on with its school, and there is no Ogoja centre to fund: everything in O
 
 `transparency.html` is the page CORAfrica's financial consultant wrote, *Transparency & Accountability*,
 published at Fr. Peter's request on 2026-09-23: 2025 spending line by line, what it built, the 2025 deficit, and a
-four-year record. It is linked from Donate, from Who We Are and from every footer. ⛔ **The audited statements
+four-year record. **It is in the main menu** (Ethan, 2026-09-23: "make sure every part of the site has an intuitive
+way to reach it"), and linked wherever money is mentioned: the giving panel at the foot of most pages, Donate's
+hero and its 2025 split, the 92.6% on Home, Who We Are's accountability section, the plan's "Why CORAfrica", the
+questions page's costs, and every footer. ⛔ **The audited statements
 themselves are not on it**, though the document offered them as downloads: the consultant's own voice note advises
 against publishing them, and the 2025 statements name the principal donor, whom Fr. Peter asked never to be named.
 The page says they are available to funders on request. Naira figures carry US dollars at the 2025 statements' rate,

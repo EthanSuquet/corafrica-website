@@ -72,6 +72,9 @@ NAV = [
     ("what-we-do.html", "What We Do"),
     ("track-record.html", "Track Record"),
     ("strategic-plan.html", "Strategic Plan"),
+    # Added 2026-09-23 at Ethan's request, beyond the page list Fr. Peter sent: "make sure every
+    # part of the site has an intuitive way to reach it". The menu collapses below 1240px to fit it.
+    ("transparency.html", "Transparency"),
     ("news.html", "News"),
     ("contact.html", "Contact"),
 ]
@@ -770,11 +773,16 @@ def stats_panel():
 def creds_strip():
     c = ""
     for x in CREDS:
+        # The 92.6% is the one claim here a donor will want to check, so it links to the accounts.
+        if x.startswith("92.6%"):
+            x = '<a href="transparency.html">%s</a>' % x
         c += '      <div class="cred">%s<span>%s</span></div>\n' % (CHECK, x)
     return '    <div class="credentials">\n%s    </div>\n' % c
 
 
-def donate_band():
+def donate_band(accounts=True):
+    """The dark giving panel. accounts=False drops its link to the Transparency page, for use on
+    that page itself."""
     return ('    <div class="panel panel--dark">\n      <div class="donate-band">\n'
             "        <div>\n"
             '          <p class="kicker kicker--light">Support the work</p>\n'
@@ -785,8 +793,9 @@ def donate_band():
             '        <div class="donate-actions">\n'
             '          <a class="button button--accent" href="%s" rel="noopener">Give $25 a month</a>\n' % STRIPE_25_MONTHLY
             + '          <a class="button button--onDark" href="donate.html">Other ways to give</a>\n'
-            + '          <p class="donate-fine">Processed securely by Stripe</p>\n'
-            "        </div>\n      </div>\n    </div>\n")
+            + '          <p class="donate-fine">Processed securely by Stripe%s</p>\n'
+              % (' &middot; <a href="transparency.html">Where every naira goes</a>' if accounts else "")
+            + "        </div>\n      </div>\n    </div>\n")
 
 
 def initials(name):
@@ -1545,7 +1554,8 @@ body += sec(head_block("What it costs", "What a year of school actually costs.",
               "which we direct to wherever the need is greatest, and no donation is assigned to a named child. A "
               "page for giving to particular projects is on the way.</p>\n"
             + '    <div class="button-row" style="margin-top:1.9rem">\n'
-              '      <a class="button button--accent" href="donate.html">Ways to give</a>\n    </div>\n',
+              '      <a class="button button--accent" href="donate.html">Ways to give</a>\n'
+              '      <a class="button button--plain" href="transparency.html">Where every naira went</a>\n    </div>\n',
             cls="bg-white")
 write("faq.html", head("faq.html", "Questions — CORAfrica",
       "What CORAfrica has achieved, who benefits from a donation, what the Catholic faith has to do with it, and "
@@ -1803,7 +1813,8 @@ WHY = [("Twenty years on the ground",
         "The model"),
        ("Spending that reaches the work",
         "92.6% of everything CORAfrica spent in 2025 went to programmes, and our accounts are audited every year "
-        "by Akomaye Adie &amp; Co., Chartered Accountants, of Calabar.", "2025 accounts"),
+        "by Akomaye Adie &amp; Co., Chartered Accountants, of Calabar. <a href='transparency.html'>See where every "
+        "naira went</a>.", "2025 accounts"),
        ("Registered in both countries",
         "A <span class='nolig'>501(c)(3)</span> in the United States since 2006 and an NGO in Nigeria since "
         "2010, governed by a Board of Trustees in each, and reported on independently by Vanguard and ThisDay.",
@@ -2092,7 +2103,10 @@ body = hero("Donate", "A few hundred dollars started a business. $40,000 started
             "Ada Okoli took a soft loan worth a few hundred dollars in 2022 and turned a small trade into a wholesale "
             "and retail business. The St. Thomas Aquinas empowerment programme launched with $40,000 and has since "
             "supported more than 500 women. Small sums, placed carefully, compound.",
-            "hero.jpg", "Pupils at a CORAfrica school")
+            "hero.jpg", "Pupils at a CORAfrica school",
+            actions='      <div class="button-row">\n'
+                    '        <a class="button button--onDark" href="transparency.html">Where every naira goes</a>\n'
+                    "      </div>\n")
 
 # No per-dollar impact claims: Fr. Peter, S10 item 28 — gifts go to one general fund.
 body += sec(head_block("Give monthly", "Monthly gifts are what let us plan.",
@@ -2300,11 +2314,11 @@ body += sec(head_block("Audited accounts", "Don&rsquo;t take our word for it.",
             + article("The full audited statements for 2022, 2023, 2024 and 2025 are available to funders on request.")
             + contact_block(),
             cls="bg-white")
-body += sec_wide(donate_band(), cls="bg-paper", extra="section--flush-top section--tight")
+body += sec_wide(donate_band(accounts=False), cls="bg-paper", extra="section--flush-top section--tight")
 write("transparency.html", head("transparency.html", "Transparency and Accountability — CORAfrica",
       "Where every naira went: CORAfrica's 2025 spending, what it built, a four-year record, and who audits our "
       "accounts.")
-      + BANNER + header("donate.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
+      + BANNER + header("transparency.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
 # ============================================================== contact

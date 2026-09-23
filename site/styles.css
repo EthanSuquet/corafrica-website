@@ -275,7 +275,10 @@ h1, h2, h3, h4 {
   box-shadow: 0 34px 76px rgba(14, 18, 24, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   max-width: var(--shell-wide); margin-inline: auto;
 }
-.hero-card--page { height: 392px; }
+/* Page heroes take their height from what is in them, from a floor: a fixed height clipped the
+   top line off once a hero carried a button as well as a long lede (Donate, 2026-09-23). */
+.hero-card--page { height: auto; min-height: 392px; }
+.hero-card--page .hero-body { min-height: inherit; padding-top: 40px; }
 .hero-card > img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: center 38%;
@@ -378,6 +381,8 @@ h1, h2, h3, h4 {
 .cred { display: flex; align-items: flex-start; gap: 11px; }
 .cred svg { flex: 0 0 auto; margin-top: 3px; stroke: var(--accent); }
 .cred span { font-size: 13.5px; font-weight: 600; color: var(--ink-soft); }
+.cred a { color: inherit; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+.cred a:hover { color: var(--accent); }
 
 /* ---------------------------------------------------------------- panel */
 
@@ -507,6 +512,8 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 .donate-band p { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(255, 255, 255, 0.74); max-width: 52ch; }
 .donate-actions { display: flex; flex-direction: column; gap: 12px; }
 .donate-fine { font-size: 12.5px; color: rgba(255, 255, 255, 0.52); text-align: center; margin-top: 4px; }
+.donate-fine a { color: rgba(255, 255, 255, 0.82); text-decoration: underline; text-underline-offset: 2px; }
+.donate-fine a:hover { color: #fff; }
 
 .tier { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-card); padding: 28px 28px 30px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow-card); }
 .tier-amt { display: flex; align-items: baseline; gap: 7px; }
@@ -638,11 +645,42 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
    TABLET  < 1024px
    ========================================================================== */
 
+/* ==========================================================================
+   NAV COLLAPSE  < 1240px
+   Eight links and Donate need about 1,225px on one line each. Below that they
+   wrapped onto two and three lines, and at 800px pushed the page sideways, so
+   the menu collapses here rather than at the phone breakpoint. Donate never
+   hides behind the menu — it is the primary action.
+   ========================================================================== */
+
+@media (max-width: 1239px) {
+  :root { --header-h: 100px; }
+  .nav-toggle { display: flex; }
+  .site-nav {
+    position: fixed; inset: var(--header-h) 0 auto 0;
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding: 8px var(--gutter) 20px;
+    background: rgba(32, 30, 30, 0.985);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+    transform: translateY(-8px); opacity: 0; visibility: hidden;
+    transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
+  }
+  .site-nav.is-open {
+    transform: none; opacity: 1; visibility: visible;
+    transition: opacity 180ms ease, transform 180ms ease, visibility 0s;
+  }
+  .site-nav a {
+    display: flex; align-items: center; min-height: 52px;
+    font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .site-nav a[aria-current="page"]::after { display: none; }
+}
+
 @media (max-width: 1023px) {
   :root { --gutter: 28px; --radius-panel: 2.2rem; --radius-hero: 2rem; }
-
-  .site-nav { gap: 18px; }
-  .site-nav a { font-size: 13.5px; }
 
   .hero-card { height: 520px; }
   .hero-body { padding: 0 36px 40px; }
@@ -669,6 +707,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
 @media (max-width: 639px) {
   :root {
+    --header-h: 70px;
     --gutter: 20px;
     --radius-panel: 1.6rem;
     --radius-hero: 1.5rem;
@@ -678,31 +717,9 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
     --shadow-media: 0 20px 48px rgba(12, 18, 28, 0.12);
   }
 
-  /* Nav collapses. Donate never hides behind the menu — it is the primary action. */
+  /* The menu is already collapsed (below 1240px); on a phone the header just gets smaller. */
   .site-header { padding: 12px var(--gutter); }
   .brand img { height: 46px; }
-  .nav-toggle { display: flex; }
-  .site-nav {
-    position: fixed; inset: var(--header-h) 0 auto 0;
-    flex-direction: column; align-items: stretch; gap: 0;
-    padding: 8px var(--gutter) 20px;
-    background: rgba(32, 30, 30, 0.985);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    max-height: calc(100dvh - var(--header-h));
-    overflow-y: auto;
-    transform: translateY(-8px); opacity: 0; visibility: hidden;
-    transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
-  }
-  .site-nav.is-open {
-    transform: none; opacity: 1; visibility: visible;
-    transition: opacity 180ms ease, transform 180ms ease, visibility 0s;
-  }
-  .site-nav a {
-    display: flex; align-items: center; min-height: 52px;
-    font-size: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-  .site-nav a[aria-current="page"]::after { display: none; }
 
   /* Type ramp — tracking eases as size drops */
   .hero-body h1 { font-size: 34px; letter-spacing: -0.04em; max-width: none; }
@@ -723,7 +740,8 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   /* Phone: the card takes its height from what is in it. At a fixed 500px the first line was
      clipped off the top -- the pill was too, before the tagline replaced it. */
   .hero-card { height: auto; min-height: 500px; }
-  .hero-card--page { height: 420px; }
+  .hero-card--page { min-height: 420px; }
+  .hero-card--page .hero-body { padding-top: 28px; }
   .hero-body { padding: 0 22px 26px; }
   .hero-body p { font-size: 14.5px; margin-bottom: 22px; }
   .eyebrow { font-size: 11px; margin-bottom: 14px; }
