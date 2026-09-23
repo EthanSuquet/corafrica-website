@@ -6,7 +6,7 @@ no build toolchain beyond one Python script.
 
 ```
 site/            ← the deployable. Upload this directory, nothing else.
-  *.html            31 pages (generated — see below)
+  *.html            32 pages (generated — see below)
   styles.css        the whole design system
   script.js         mobile nav and scroll reveals; the site works without JS
   img/              logo SVGs, photography, team/ headshots
@@ -25,9 +25,10 @@ python3 build.py
 ```
 
 Regenerates every page into `site/`. Nine are in the main menu — Home, Who We Are, Our Model, What We Do,
-Track Record, Strategic Plan, News, Donate, Contact — and twenty-two are not: five `programme-*.html` pages,
-fifteen `team-*.html` bio pages, `faq.html` and one news story, `news-twenty-years.html`. Those are reached by
-clicking a card, or from the footer in the case of the questions page. **The generated HTML carries a do-not-edit banner** — the
+Track Record, Strategic Plan, News, Donate, Contact — and twenty-three are not: five `programme-*.html` pages,
+fifteen `team-*.html` bio pages, `faq.html`, `transparency.html` and one news story, `news-twenty-years.html`.
+Those are reached by clicking a card or a button, or from the footer in the case of the questions and
+transparency pages. **The generated HTML carries a do-not-edit banner** — the
 header, footer and `<head>` are defined once in `build.py`, so a nav change is one edit rather
 than nine. Content lives in `build.py` too, near the page it belongs to.
 
@@ -201,6 +202,16 @@ the main menu, which follows the page list he sent.
 **The skills-centre page describes a centre still to be built.** Every skills section CORAfrica built has been
 handed on with its school, and there is no Ogoja centre to fund: everything in Ogoja has passed to the diocese
 (Fr. Peter, 2026-09-22). The US $320,000 is the cost of one centre, not an appeal for a particular one.
+
+## Transparency
+
+`transparency.html` is the page CORAfrica's financial consultant wrote, *Transparency & Accountability*,
+published at Fr. Peter's request on 2026-09-23: 2025 spending line by line, what it built, the 2025 deficit, and a
+four-year record. It is linked from Donate, from Who We Are and from every footer. ⛔ **The audited statements
+themselves are not on it**, though the document offered them as downloads: the consultant's own voice note advises
+against publishing them, and the 2025 statements name the principal donor, whom Fr. Peter asked never to be named.
+The page says they are available to funders on request. Naira figures carry US dollars at the 2025 statements' rate,
+₦1,576.40 to $1 (`RATE_2025`).
 
 ## News
 

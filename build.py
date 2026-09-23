@@ -105,7 +105,8 @@ def contact_lines():
     email = ('<a href="mailto:%s">%s</a>' % (CONTACT_EMAIL, CONTACT_EMAIL)) if CONTACT_EMAIL else "[NEW EMAIL &mdash; TO BE SUPPLIED]"
     phones = ['%s <a href="tel:%s">%s</a>' % (where, tel(num), num) for where, num in PHONES]
     social = " &middot; ".join('<a href="%s" rel="noopener">%s</a>' % (u, n) for n, u in SOCIAL)
-    return "<br>\n             ".join([email] + phones + ['<a href="faq.html">Questions donors ask</a>', social])
+    return "<br>\n             ".join([email] + phones + ['<a href="faq.html">Questions donors ask</a>',
+                                              '<a href="transparency.html">Transparency and accountability</a>', social])
 
 
 def contact_block(margin_top=False):
@@ -998,7 +999,9 @@ body += sec(head_block("Accountability", "Registered, audited, and on the record
                     card("Independently audited", "Our financial statements are audited by Akomaye Adie &amp; Co., Chartered Accountants and Tax Practitioners, of Calabar.", "Annually"),
                     card("92.6% to programmes", "Of everything CORAfrica spent in the year ended 31 December 2025, 92.6% went to education, healthcare, economic empowerment and agriculture. Overheads were 7.4%.", "2025 accounts"),
                     card("Assets we hold", "Land, school buildings, and a farm and agricultural station, carried in our 2025 accounts at about US $114,500.", "2025 accounts"),
-                    card("Governed by two boards", "A Board of Trustees in Nigeria and another in the United States oversee the organisation, with operations directed from our headquarters in Abuja.", "Governance")], 3),
+                    card("Governed by two boards", "A Board of Trustees in Nigeria and another in the United States oversee the organisation, with operations directed from our headquarters in Abuja.", "Governance")], 3)
+            + '    <div class="button-row" style="margin-top:1.9rem">\n'
+              '      <a class="button button--dark" href="transparency.html">Transparency and accountability</a>\n    </div>\n',
             cls="grad-warm-white")
 write("who-we-are.html", head("who-we-are.html", "Who We Are — CORAfrica",
       "Our vision, mission, history and philosophy. CORAfrica has built schools in rural Nigeria since 2006, "
@@ -2131,7 +2134,9 @@ body += sec(head_block("Where it went", "Our 2025 accounts, audited.",
                        "For the year ended 31 December 2025, independently audited by Akomaye Adie &amp; Co., "
                        "Chartered Accountants, of Calabar. Of everything we spent, <strong>92.6% went to "
                        "programmes</strong>. Full statements are available to funders on request.")
-            + '    <div class="costs">\n' + split + "    </div>\n",
+            + '    <div class="costs">\n' + split + "    </div>\n"
+            + '    <div class="button-row" style="margin-top:1.9rem">\n'
+              '      <a class="button button--dark" href="transparency.html">Where every naira went</a>\n    </div>\n',
             cls="grad-paper-warm")
 
 body += sec_wide('    <div class="panel">\n      <div class="grid grid--3">\n'
@@ -2152,6 +2157,153 @@ body += sec_wide('    <div class="panel">\n      <div class="grid grid--3">\n'
 write("donate.html", head("donate.html", "Donate — CORAfrica",
       "Support education, healthcare and livelihoods for children in rural Nigeria. CORAfrica is a registered "
       "501(c)(3), so gifts from US donors are tax-deductible.")
+      + BANNER + header("donate.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
+
+
+# ============================================================== transparency
+# CORAfrica_Transparency_and_Accountability.docx, written by CORAfrica's financial consultant and
+# forwarded by Fr. Peter on 2026-09-23: "From our Financial consultant. Pls publish what he sent".
+# His words and figures, with these changes:
+#   - No PDF downloads. The docx offers the audited statements for 2022-2025. In the voice note
+#     sent with it the consultant himself advises against publishing the statements in full, and
+#     asks that anything naming a donor be removed; and Fr. Peter asked on 2026-09-04 that the
+#     principal donor never be named, which the 2025 statements do. So the page says the full
+#     statements are available to funders on request, as Donate always has.
+#   - US dollars beside the naira, at the 2025 statements' own rate (S6), because every figure on
+#     the site is in US dollars (S10). The four-year table stays in naira: converting each year
+#     needs that year's rate, which we do not hold.
+#   - "More than tripled" is true in naira. The naira lost most of its value against the dollar
+#     over the same years, so the sentence says so rather than let a US reader take it for growth
+#     in dollars.
+#   - "John Bosco Academy (St Peter)" is John Bosco Academy: St. Peter's was its old name (S10).
+#   - His opening promised "the promises we make to you", a section the document does not have.
+RATE_2025 = 1576.40  # naira to the US dollar, the 2025 average used in the audited statements (S6)
+
+
+def usd(naira):
+    return "$%s" % format(int(round(naira / RATE_2025 / 100.0)) * 100, ",")
+
+
+LEDGER_2025 = [("Education", 310355350,
+                "Two schools: a new administrative block, fencing, grounds, a school bus and day-to-day running costs"),
+               ("Economic empowerment", 43200000,
+                "Interest-free loans for small businesses; grants to widows and vulnerable families"),
+               ("Healthcare", 26970000, "Medical outreach, medicines and supplies, running our medical centre"),
+               ("Agriculture", 20472300, "Livestock, crop farming and farm operations"),
+               ("Running the organisation", 32151045,
+                "Transport, communication, stationery, repairs, overheads, bank charges and wear on buildings")]
+SPENT_2025, RECEIVED_2025 = 433148695, 383066000
+# Naira, millions. The totals are his, from the unrounded accounts, so the spent column's total
+# is 940.8 where its rounded rows add to 940.9.
+FOUR_YEARS = [("2022", "112.5", "112.5", "67.3"), ("2023", "195.0", "176.1", "103.5"),
+              ("2024", "221.0", "219.2", "164.8"), ("2025", "383.1", "433.1", "401.0")]
+FOUR_YEAR_TOTAL = ("Four-year total", "911.6", "940.8", "736.6")
+BUILT = [("A school that is safe, and a bus that gets children there",
+          "At John Bosco Academy, 2025 was a building year. We invested &#8358;241.1 million in a new "
+          "administrative block, fenced the school so children can learn and play in safety, landscaped the grounds, "
+          "and bought a &#8358;12.1 million school bus so secondary students can get to class safely every morning. "
+          "At John Stilley Schools, we built accommodation for the National Youth Service Corps members posted to "
+          "the school, began fencing the compound and improved the grounds. In total, education received "
+          "&#8358;310.4 million.", "Education"),
+         ("A loan that keeps a child in school",
+          "A child stays in school when the family at home can pay for it. That is why we lent &#8358;29.7 million, "
+          "interest-free, to small businesses in the communities we serve, and gave &#8358;13.5 million in direct "
+          "support to widows and the most vulnerable households. No interest. No exploitation. Just a fair start.",
+          "Economic empowerment"),
+         ("Medicine within reach",
+          "A sick child cannot learn. In 2025 we took a medical outreach to Victoria, stocked our medical centre with "
+          "&#8358;11.9 million worth of drugs and supplies, and kept its doors open to the community. Total health "
+          "investment: &#8358;27.0 million.", "Healthcare"),
+         ("Farms that feed and teach",
+          "Our farms produce food and teach practical skills. In 2025 we invested &#8358;20.5 million in raising "
+          "livestock, growing crops and running the farms.", "Agriculture")]
+
+
+def naira(n):
+    return "&#8358;" + format(n, ",")
+
+
+rows = ""
+for area, amount, what in LEDGER_2025:
+    rows += ('        <tr><th scope="row">%s<span>%s</span></th><td>%s</td><td>%s</td></tr>\n'
+             % (area, what, naira(amount), usd(amount)))
+ledger = ('    <table class="ledger">\n'
+          '      <thead><tr><th scope="col">Area</th><th scope="col">Naira</th>'
+          '<th scope="col">US dollars</th></tr></thead>\n'
+          "      <tbody>\n" + rows + "      </tbody>\n"
+          '      <tfoot><tr><th scope="row">Total spent in 2025</th><td>%s</td><td>%s</td></tr></tfoot>\n'
+          % (naira(SPENT_2025), usd(SPENT_2025))
+          + "    </table>\n"
+          '    <p class="ledger-note">Source: 2025 audited financial statements, Statement of Income and Expenditure '
+          "and Notes 8.1&ndash;8.5. Our accounts are kept in naira; dollars are converted at the rate the statements "
+          "use for 2025, &#8358;%s to US $1, and rounded to the nearest hundred.</p>\n" % format(RATE_2025, ",.2f"))
+years = ""
+for row in FOUR_YEARS:
+    years += '        <tr><th scope="row">%s</th><td>%s</td><td>%s</td><td>%s</td></tr>\n' % row
+four = ('    <table class="ledger ledger--years">\n'
+        '      <thead><tr><th scope="col">Year</th><th scope="col">Received</th><th scope="col">Spent</th>'
+        '<th scope="col">Reached programmes</th></tr></thead>\n'
+        "      <tbody>\n" + years + "      </tbody>\n"
+        '      <tfoot><tr><th scope="row">%s</th><td>%s</td><td>%s</td><td>%s</td></tr></tfoot>\n' % FOUR_YEAR_TOTAL
+        + "    </table>\n"
+        '    <p class="ledger-note">Millions of naira, from the audited statements for each year.</p>\n')
+
+body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
+        '    <p class="kicker">Transparency &amp; accountability</p>\n'
+        "    <h1>Your gift has an address.</h1>\n"
+        '    <p class="lede">When you give to CORAfrica, your money does not disappear into a system. It becomes '
+        "something you could drive to and touch: a school bus on a rural road, a fence around a playground, medicine "
+        "on a clinic shelf, a loan that lets a mother restock her shop.</p>\n"
+        '    <p class="lede">For twenty years, rural families have trusted us with their children&rsquo;s futures. You '
+        "deserve the same honesty from us that they do. So on this page we open our books: what came in, where every "
+        "naira went, and who checks our work.</p>\n  </div>\n</section>\n")
+body += sec(head_block("Where your gift goes", "Almost all of it reaches a child.",
+                       "Picture a basket of tomatoes carried into a village to be shared. By the time the basket is "
+                       "emptied, almost everything in it has reached the families waiting there. Only a couple of "
+                       "tomatoes were kept back &mdash; to pay the driver who made the journey possible.")
+            + article("That is how your gift works with us. In 2025, nearly all the money we spent went straight into "
+                      "classrooms, clinics, farms and family businesses: <strong>92.6%</strong>. A small share kept us "
+                      "running &mdash; fuel for the vehicles that reach remote communities, phone and internet, "
+                      "stationery, repairs, and the bookkeeping and audit that let us show you this page."),
+            cls="grad-paper-warm", extra="section--flush-top section")
+body += sec(head_block("2025 at a glance", "What we received, and what we spent.",
+                       "In 2025 we received &#8358;383.1 million in donations (about US %s) and spent &#8358;433.1 "
+                       "million (about US %s). Here is every naira of that spending."
+                       % (usd(RECEIVED_2025), usd(SPENT_2025)))
+            + ledger, cls="bg-white")
+body += sec(head_block("What your money built", "Not just figures. Places, people and change.")
+            + grid([card(t, b, tag) for t, b, tag in BUILT], 2)
+            + single_shot("john-bosco-classroom.jpg",
+                          "Pupils at their desks in a classroom at John Bosco Academy, with CORAfrica staff at the front",
+                          "A class at John Bosco Academy, Adagom."),
+            cls="grad-warm-white")
+body += sec(head_block("The honest part", "In 2025, we spent more than we received. Here is why.")
+            + article("We received &#8358;383.1 million and spent &#8358;433.1 million. The &#8358;50.1 million "
+                      "difference (about US %s) came from savings we carried into the year. Rather than leave that "
+                      "money sitting in the bank, we used it to finish work that children needed now &mdash; above "
+                      "all, the new administrative block and safer school compounds." % usd(50082695),
+                      "It means we begin 2026 with lean savings. We are telling you because you have a right to know, "
+                      "and because it is exactly why your support matters now."),
+            cls="bg-white")
+body += sec(head_block("Four-year record", "Growing year after year, audited every year.")
+            + four
+            + article("Since 2022, the money we receive has more than tripled in naira, and the money reaching "
+                      "children and families has grown almost six-fold. Over four years, &#8358;736.6 million has "
+                      "gone directly into the communities we serve. The naira lost much of its value against the "
+                      "dollar over the same years, so measured in dollars the growth is smaller.")
+              .replace('<div class="article-text">', '<div class="article-text" style="margin-top:1.9rem">'),
+            cls="grad-paper-warm")
+body += sec(head_block("Audited accounts", "Don&rsquo;t take our word for it.",
+                       "Every year, our accounts are independently audited by Akomaye Adie &amp; Co., Chartered "
+                       "Accountants &amp; Tax Practitioners, Calabar. In each of the last four years the auditors have "
+                       "confirmed that our financial statements give a true and fair view of CORAfrica&rsquo;s affairs.")
+            + article("The full audited statements for 2022, 2023, 2024 and 2025 are available to funders on request.")
+            + contact_block(),
+            cls="bg-white")
+body += sec_wide(donate_band(), cls="bg-paper", extra="section--flush-top section--tight")
+write("transparency.html", head("transparency.html", "Transparency and Accountability — CORAfrica",
+      "Where every naira went: CORAfrica's 2025 spending, what it built, a four-year record, and who audits our "
+      "accounts.")
       + BANNER + header("donate.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 

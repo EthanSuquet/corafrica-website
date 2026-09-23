@@ -567,6 +567,31 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .cost-w { font-size: 14.5px; }
 }
 
+/* The Transparency page's accounts: real tables, because they are tables. The description of
+   each line sits under its name, so the money columns stay narrow enough for a phone. */
+.ledger { width: 100%; max-width: 860px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.ledger th, .ledger td {
+  padding: 15px 0 15px 22px; border-top: 1px solid var(--line); text-align: right;
+  vertical-align: baseline; font-size: 15px; line-height: 1.4; color: var(--ink);
+}
+.ledger th:first-child, .ledger td:first-child { padding-left: 0; text-align: left; }
+.ledger td { white-space: nowrap; }
+.ledger thead th {
+  border-top: 0; padding-top: 0; font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+.ledger tbody th { font-weight: 700; }
+.ledger tbody th span { display: block; margin-top: 4px; max-width: 48ch; font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink-soft); }
+.ledger tfoot th, .ledger tfoot td { border-top: 1px solid var(--line-strong); font-weight: 800; }
+.ledger tbody tr:last-child th, .ledger tbody tr:last-child td { padding-bottom: 18px; }
+.ledger--years { max-width: 640px; }
+.ledger-note { margin: 1rem 0 0; max-width: 70ch; font-size: 13px; line-height: 1.55; color: var(--ink-faint); }
+@media (max-width: 639px) {
+  .ledger th, .ledger td { padding-left: 12px; font-size: 13.5px; }
+  .ledger tbody th span { font-size: 13px; }
+  .ledger thead th { font-size: 11px; }
+}
+
 /* ---------------------------------------------------------------- beliefs */
 
 .belief { display: grid; grid-template-columns: 22px 1fr; gap: 14px; padding: 15px 0; border-top: 1px solid rgba(255, 255, 255, 0.14); }
