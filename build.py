@@ -323,7 +323,9 @@ def media_pair(a, b):
 # sitting under one of them. His own list, verbatim:
 #   EDUCATION  — School farms (Agric), Help-A-Kid, EEP, VASAC
 #   HEALTHCARE — School Clinics, Medical Outreach, Hygiene and Sanitation
-CEC_TREE = [("Education", ["School farms (agriculture)", "HELP-A-KID", "Economic empowerment",
+# Checked by him label by label on 2026-09-22 (ASK-FR-PETER6, C3): "These are correct", with
+# "School Farms" in place of our "School farms (agriculture)".
+CEC_TREE = [("Education", ["School farms", "HELP-A-KID", "Economic empowerment",
                            "Skills centres (VASAC)"]),
             ("Healthcare", ["School clinics", "Medical outreach", "Hygiene and sanitation"])]
 
@@ -519,13 +521,15 @@ def clip(mp4, poster, cap, w, h):
             % (poster, w, h, mp4, cap))
 
 
-def wide_shot(img, alt, cap):
+def wide_shot(img, alt, cap, w=960, h=408):
     """One wide photograph with a caption &mdash; for the architect&rsquo;s renderings, which are
-    banner-shaped and would be cropped to nothing in the square media boxes."""
+    banner-shaped and would be cropped to nothing in the square media boxes. A photograph wider
+    than 960:408 passes its own w and h, and keeps its shape rather than losing its edges."""
+    shape = "" if (w, h) == (960, 408) else ' style="aspect-ratio:%d / %d"' % (w, h)
     return ('    <figure class="shot shot--wide">\n'
             '      <div class="media media--wide"><img src="img/%s" alt="%s" loading="lazy" '
-            'width="960" height="408"></div>\n'
-            '      <figcaption>%s</figcaption>\n    </figure>\n' % (img, alt, cap))
+            'width="%d" height="%d"%s></div>\n'
+            '      <figcaption>%s</figcaption>\n    </figure>\n' % (img, alt, w, h, shape, cap))
 
 
 def shot_grid(items):
@@ -572,9 +576,10 @@ def write(page, html):
 # wording and they are his, so they win over the London draft plan's own, which ends the mission on
 # "no child is left behind". Only his "thier" is corrected. Asked the same day whether the vision
 # should carry the draft's "especially every girl", he answered that it should include "especially
-# the girl child", so that goes where the draft had its phrase. They appear on Who We Are and at the
-# head of the Strategic Plan.
-VISION = ("A future where every child in Africa, especially the girl child, grows up healthy, educated and "
+# the girl child", and in ASK-FR-PETER6 (2026-09-22, A1) he wrote the whole sentence out. This is
+# his word order, with only the closing comma added. They appear on Who We Are and at the head of
+# the Strategic Plan.
+VISION = ("A future where every child, especially the girl child in Africa, grows up healthy, educated and "
           "empowered to build a better life within their own community.")
 MISSION = ("To transform education and healthcare for indigent children by building Community Education "
            "Centres that combine schools, clinics, farms and skills centres to ensure that children stay within "
@@ -591,9 +596,14 @@ TWENTY_YEAR_GOAL = ("To scale Community Education Centres across Nigeria and Afr
 # then. 61 is the payroll today; the 613 in the FAQ is everyone carried over twenty years —
 # two different counts, not a contradiction. S16 writes "2026 hand-over" here and 2027 six
 # times elsewhere in the same document, so 2027 stands.
+# Schools and clinics: S10's "5 schools and 2 clinics" is withdrawn — "pls disregard the
+# information about 5 schools" (ASK-FR-PETER6, 2026-09-22, B7). He listed them instead, as
+# twenty-year totals: four secondary schools, four primary schools and two school clinics. That
+# is ten. His anniversary story of the same day says "9 Schools and clinics" over the same list;
+# the list is what he gave as "the correct statistics", and Ethan settled on ten (2026-09-23).
 STATS = [("7,330", "Children educated", "Graduated from our schools since we were founded"),
          ("2,550", "Children in school", "Enrolled today in the schools we founded"),
-         ("7", "Schools and clinics", "Five schools and two clinics, all founded by CORAfrica"),
+         ("10", "Schools and clinics", "Four primary and four secondary schools, and two clinics"),
          ("64", "Communities", "Reached through our programmes"),
          ("61", "Staff and teachers", "On our payroll, until the 2027 hand-over"),
          ("805", "Small businesses supported", "Through our empowerment programmes, to date"),
@@ -617,8 +627,10 @@ EDUCATION_PROGRAMMES = [
      "A child&rsquo;s poverty should not decide whether that child is educated. HELP-A-KID pays the fees, and the costs around them, for acutely underprivileged children, so that they can finish the education they have already started."),
     ("Economic empowerment", "programme-empowerment.html", "Families",
      "When a family cannot afford to keep a child in class, the barrier is income. The Economic Empowerment Programme lends to the parents &mdash; interest-free &mdash; so that a business can grow into school fees."),
+    # Not Ogoja: "CORAfrica does not have any Center in Ogoja to fund" (ASK-FR-PETER6, B1). The
+    # next is the one his FAQs (S15) put inside the new Community Education Centre.
     ("Vocational and skills acquisition", "programme-vasac.html", "Skills",
-     "We go a step beyond the conventional classroom, and equip our schools so that a student leaves with a trade as well as a certificate. The centres are designed as working pilots rather than lessons, and the first purpose-built one is planned for Ogoja."),
+     "We go a step beyond the conventional classroom, and equip our schools so that a student leaves with a trade as well as a certificate. The centres are designed as working pilots rather than lessons. Those we built in the past have been handed on with the schools we founded, and the next is planned for our new Community Education Centre."),
 ]
 HEALTHCARE_PROGRAMMES = [
     ("School clinics", "programme-school-clinics.html", "Health",
@@ -689,6 +701,18 @@ PRESS = [("Vanguard", "July 2026",
           "Coverage of the American board&rsquo;s visit to the projects in Cross River State.",
           "http://crossriverwatch.com/2014/11/us-country-rep-of-children-of-rural-africa-rounds-off-visit-to-cross-river/")]
 HOME_PRESS = [PRESS[0], PRESS[1], PRESS[3]]
+
+# CORAfrica's own story of its twentieth anniversary, forwarded by Fr. Peter at 6:53 PM on
+# 2026-09-22 with "Please Ethan let's fix this story strategically somewhere", and nine
+# photographs of the two celebrations after it. It is not in the press (searched 2026-09-23),
+# so it is our news rather than a PRESS row: a page of its own, led on News and on Home.
+ANNIVERSARY = dict(
+    page="news-twenty-years.html",
+    date="5 August 2026",
+    title="CORAfrica marks twenty years of impact in Nigeria and the USA",
+    summary=("Twenty years on, CORAfrica gathered its trustees, partners, donors, volunteers and beneficiaries "
+             "in Abuja on 5 August 2026, and celebrated in New York and Pennsylvania too."),
+)
 
 TRACK_CARDS = [("Founded 2017", "John Stilley Schools", "js-welcome.jpg",
                 "Children outside John Stilley Secondary School",
@@ -802,6 +826,16 @@ body = hero("Education for Africa&rsquo;s Future",
                     "      </div>\n")
 body += sec(creds_strip(), cls="bg-paper", extra="section--flush-top")
 body += sec_wide(stats_panel(), cls="grad-paper-warm", extra="section--tight")
+# Straight after the twenty-year figures, which it is the story of: "let's fix this story
+# strategically somewhere" (Fr. Peter, 2026-09-22).
+body += sec('    <div class="split split--media split--center">\n'
+            '      <div class="media"><img src="img/anniversary-abuja-group.jpg" alt="Guests in white CORAfrica '
+            'T-shirts and caps lined up before the twentieth-anniversary banner at the Abuja celebration" '
+            'loading="lazy" width="900" height="675"></div>\n'
+            "      <div>\n"
+            + head_block("Twenty years, celebrated", ANNIVERSARY["title"] + ".", ANNIVERSARY["summary"])
+            + '        <a class="button button--dark" href="%s">Read the story</a>\n' % ANNIVERSARY["page"]
+            + "      </div>\n    </div>\n", cls="bg-white")
 body += sec('    <div class="split split--center">\n      <div>\n'
             + head_block("The Community Education Centre",
                          "A school on its own does not keep a child in class.",
@@ -881,8 +915,10 @@ HISTORY = [
      "Nursery, primary and secondary schools open at Victoria, Ikom, where the community had none at all. The same year, Fr. Peter is honoured at Cross River@50, the state&rsquo;s golden jubilee."),
     ("2020&ndash;22", "Refugees and displaced families",
      "A school for refugee children from Cameroon opens at Adagom; 1,000 refugees, migrants and displaced people are trained in agribusiness with UNHCR and the International Institute of Tropical Agriculture; and six classrooms are built in an IDP camp in Benue State."),
+    # No skills centres in this list: every one built has been handed on with its school, and
+    # "CORAfrica does not operate any" (ASK-FR-PETER6, 2026-09-22, B2).
     ("Today", "Handed on, and beginning again",
-     "The first two Community Education Centres, at Idum-Mbube and Victoria-Ikom, are being handed to the institutions that will run them from 2027. From our headquarters in Abuja, CORAfrica runs HELP-A-KID, its empowerment programmes, the school clinics, the demonstration farms, its skills acquisition centres and CORA Farms &mdash; and is building its next centre."),
+     "The first two Community Education Centres, at Idum-Mbube and Victoria-Ikom, are being handed to the institutions that will run them from 2027. From our headquarters in Abuja, CORAfrica runs HELP-A-KID, its empowerment programmes, the school clinics, the demonstration farms and CORA Farms &mdash; and is building its next centre."),
 ]
 VALUES = [
     ("Dignity of the human person", "Each person &mdash; each child &mdash; has an inalienable dignity, and should be treated as an end and never only as a means. Every child deserves the chance to achieve their dreams, no matter where they were born."),
@@ -915,6 +951,15 @@ body += sec('    <div class="split split--center">\n'
                          "motto: <em>Education for Africa&rsquo;s Future</em>.")
             + "      </div>\n    </div>\n", cls="grad-warm-white")
 body += sec(head_block("Our history", "From a doctorate to a model that travels.") + tl
+            # Sent by Fr. Peter at 2:13 AM on 2026-09-23: "How about this pic? Can we fix it
+            # somewhere?" Kept at its own 2.56:1, which is too wide to crop without losing the
+            # pointing hand or the face at the right edge. Left to right: Fr. Peter, Jeannine Goelz
+            # and Ethan Suquet, on Fr. Peter's visit to America (Ethan, 2026-09-23).
+            + wide_shot("looking-ahead.jpg",
+                        "Fr. Peter Abue, in a CORAfrica cap and T-shirt, points into the distance among trees, "
+                        "with Jeannine Goelz and Ethan Suquet beside him",
+                        "Fr. Peter with Jeannine Goelz and Ethan Suquet, during his visit to the United States.",
+                        1280, 500)
             + '    <div class="button-row" style="margin-top:1.9rem">\n'
               '      <a class="button button--dark" href="track-record.html">The full track record</a>\n    </div>\n',
             cls="bg-white", extra="section--flush-top section")
@@ -1064,7 +1109,7 @@ VASAC = [
     ("Building trades", "Masonry, blocklaying and concreting, carpentry and joinery, furniture and upholstery, plumbing, tiling, painting and interior finishing, aluminium work, and solar PV installation and maintenance."),
     ("Agriculture", "Mechanised agriculture and operations, and livestock farming &mdash; beekeeping, poultry and animal husbandry."),
 ]
-OGOJA_DEPTS = [
+CENTRE_DEPTS = [
     ("Vocational", "Handicrafts, photography, music and hairdressing."),
     ("Computer", "Website design, desktop publishing, graphics, computer networking and network installation, "
                  "digital marketing, computer hardware and <span class=\'nolig\'>GSM</span> repair, social media "
@@ -1080,25 +1125,28 @@ OGOJA_DEPTS = [
     ("Agriculture", "Mechanised agriculture &mdash; mechanics and operations &mdash; and livestock farming: "
                     "beekeeping, poultry and animal husbandry."),
 ]
-# Who it is for. The brochure names four groups; the last two are the reason the centre is
-# sited at Ogoja rather than anywhere else — the refugee and displacement work already on
-# our track record happens in the same place.
-OGOJA_FOR = [
+# Who it is for. The four groups named in the 2025 brochure, which was written for a centre at
+# Ogoja. There is no longer any Ogoja centre to fund: "We have handed everything in Ogoja to the
+# diocese" (Fr. Peter, ASK-FR-PETER6, 2026-09-22, B1). So the groups are described as the kinds
+# of young people a centre serves, without the Ogoja institutions the brochure named.
+CENTRE_FOR = [
     ("Leavers with a profession and no trade",
-     "Graduands of the Thomas McGettrick Institute of Technology and of St. Joseph&rsquo;s Orphanage and Schools, "
-     "who want a specific skill on top of their training to make them employable."),
+     "Graduates of technical colleges and secondary schools who want a specific skill on top of their training, "
+     "to make them employable."),
     ("Young people out of work",
-     "The great majority of Ogoja&rsquo;s young people, who are not in work and have nowhere to train. Students "
-     "would learn a skill of their choice and be attached to a local artisan for the practical."),
+     "Young people who are not in work and have nowhere to train. Students would learn a skill of their choice "
+     "and be attached to a local artisan for the practical."),
     ("Refugees from Cameroon",
-     "Young people displaced from their homes by the conflict in Cameroon, who crossed into Cross River State at "
-     "Adagom, in Ogoja, and have no way to earn."),
+     "Young people displaced from their homes by the conflict in Cameroon, who crossed into Cross River State and "
+     "have no way to earn."),
     ("Displaced from Benue",
-     "Internally displaced young people from neighbouring Benue State, made homeless by herdsmen on their land and "
-     "robbed of their schooling."),
+     "Internally displaced young people from Benue State, made homeless by herdsmen on their land and robbed of "
+     "their schooling."),
 ]
-# US dollars, as printed in the appeal. 120 + 155 + 35 + 10 = 320.
-OGOJA_COSTS = [("$120,000", "Structural building and finishing"),
+# US dollars, as printed in the 2025 appeal. 120 + 155 + 35 + 10 = 320. Asked whether this was
+# still the Ogoja figure, Fr. Peter answered that it is "what it costs to build one Vocational and
+# Skills Acquisition Center" (ASK-FR-PETER6, B1), so it is shown as that and nothing more.
+CENTRE_COSTS = [("$120,000", "Structural building and finishing"),
                ("$155,000", "Furnishing and equipment"),
                ("$35,000", "Power"),
                ("$10,000", "Running costs for the first year"),
@@ -1154,8 +1202,9 @@ body += sec(head_block("VASAC", "Vocational and Skills Acquisition Centres.",
                        "We go a step beyond the conventional classroom and equip our schools so that students "
                        "leave with a trade. A centre is designed as a set of working pilots rather than lessons "
                        "&mdash; computing, fashion design, beauty and aesthetics, home economics, music, technical "
-                       "drawing, visual arts, the building trades and agriculture &mdash; and the first "
-                       "purpose-built one is planned for Ogoja.")
+                       "drawing, visual arts, the building trades and agriculture. The centres we built in the past "
+                       "have been handed on with the schools we founded, and the next is planned for our new "
+                       "Community Education Centre.")
             + '    <div class="button-row">\n'
               '      <a class="button button--dark" href="programme-vasac.html">Inside a skills centre</a>\n'
               '      <a class="button button--plain" href="faq.html">Questions donors ask</a>\n    </div>\n',
@@ -1230,7 +1279,9 @@ programme_page(
                    "were struggling to provide school fees for their wards. It helps parents expand a business they "
                    "already have, and encourages willing and underserved members of our communities to start one.")
         + grid([card("500+ business owners", "Have received interest-free loans across the Ogoja&ndash;Ikom axis of Cross River State.", "Reach"),
-                card("&#8358;500,000 to &#8358;3,000,000", "The size of a loan, set by what the business is and needs, and by the funds available.", "Loan size"),
+                # Was "N500,000 to N3,000,000". Two beneficiaries on this site started with less: Ada
+                # Okoli's N150,000 (Donate) and Achu Owalu's N100,000 (below, 2026-09-23).
+                card("Up to &#8358;3,000,000", "The size of a loan, set by what the business is and needs, and by the funds available.", "Loan size"),
                 card("513 women supported", "Across our three empowerment programmes, to date.", "Since inception")], 3),
         cls="grad-paper-warm")
     + sec(head_block("How it works", "Chosen carefully, then accompanied.",
@@ -1247,18 +1298,23 @@ programme_page(
                   card("The CORAfrica programme", "Micro-credit for poor parents and guardians, especially in communities where a Community Education Centre operates.", "National")], 3),
           cls="grad-white-strong")
     + sec(head_block("Two beneficiaries", "What a loan turned into.")
+          # Two businesses, two men. "Thomas Nsing opened the gym" (ASK-FR-PETER6, 2026-09-22, B5);
+          # the shop is the trader's at Ikom, named in the same answer as Emmanuel Eyo and corrected
+          # by Fr. Peter at 1:54 AM on 2026-09-23: "The name of the other guy given money (N100,000)
+          # to open a phone shop or POS business is Achu Owalu pls (not Emmanuel Eyo). He expanded
+          # it later into a phone accessories."
           + grid([card("Thomas Nsing", "Received &#8358;3,000,000 to furnish and improve his gym.", "The gym"),
-                  card("A trader at Ikom", "Started a Point of Sale business and expanded it into phone accessories. He recently gave 20 POS machines to 20 other business owners &mdash; one loan, rippling outward.", "The ripple")], 2)
-          # Sent 2026-09-17 with "Please share these pics and video under the EEP system", and
-          # named on 2026-09-18: the man in the photograph, and so the shop in the film, is Thomas
-          # Nsing. Which of the two beneficiaries above is his business is a question for him --
-          # the caption says only what we were told.
+                  card("Achu Owalu", "Received &#8358;100,000 to open a Point of Sale business at Ikom, and expanded it into phone accessories. He recently gave 20 POS machines to 20 other business owners &mdash; one loan, rippling outward.", "The ripple")], 2)
+          # Sent 2026-09-17 with "Please share these pics and video under the EEP system". The man
+          # in the photograph is Thomas Nsing (named 2026-09-18, confirmed by Ethan 2026-09-23).
+          # The phone shop is Achu Owalu's business, not his (above), so the caption names the man
+          # and does not say whose shop it is.
           + single_shot("empowerment-shop.jpg",
-                        "Thomas Nsing standing in his shop, its shelves stocked with phone cases, "
-                        "power banks and earphones",
-                        "Thomas Nsing in his shop, stocked from an interest-free loan.")
-          + clip("thomas-nsing-shop.mp4", "thomas-nsing-shop-poster.jpg",
-                 "Fifteen seconds along his shelves, filmed for us.", 360, 640)
+                        "Thomas Nsing standing in a phone-accessories shop, its shelves stocked with phone "
+                        "cases, power banks and earphones",
+                        "Thomas Nsing, one of the programme&rsquo;s beneficiaries, photographed for us.")
+          + clip("phone-shop.mp4", "phone-shop-poster.jpg",
+                 "Fifteen seconds along the shelves, filmed for us.", 360, 640)
           # 2.5:1 as it was taken, so it goes in the wide frame; the 4:3 one would cut the
           # children out of their own photograph.
           + wide_shot("fr-peter-with-children.jpg",
@@ -1335,45 +1391,55 @@ programme_page(
     "programme-vasac.html", "Vocational and Skills Acquisition Centres",
     "Vocational and Skills Acquisition Centres",
     "We go a step beyond the conventional classroom and equip our schools so that a student leaves with a "
-    "trade as well as a certificate. The centres are designed as working pilots rather than lessons, and the "
-    "first purpose-built one is planned for Ogoja.",
+    "trade as well as a certificate. The centres are designed as working pilots rather than lessons. Those we "
+    "built in the past have been handed on with our schools, and the next is planned for our new Community "
+    "Education Centre.",
     "vasac-hero.jpg", "Students and staff with their certificates",
     "VASAC: Vocational and Skills Acquisition Centres inside CORAfrica schools — computing, fashion, beauty, home "
-    "economics, music, technical drawing, visual arts, the building trades and agriculture. The first purpose-built "
-    "centre is proposed for Ogoja, Cross River State.",
+    "economics, music, technical drawing, visual arts, the building trades and agriculture. US $320,000 builds "
+    "one and runs its first year.",
     sec(head_block("The design", "Nine sections, hands-on.",
                    "Our educational component runs from primary and secondary schooling through to tertiary support "
                    "and vocational skills acquisition. A skills centre is designed to include the sections below, "
-                   "each one run as a working pilot rather than a lesson.")
+                   "each one run as a working pilot rather than a lesson. The sections we built in the past were "
+                   "inside the schools we founded, and have been handed on with them, so CORAfrica runs none "
+                   "today: everything on this page describes a centre still to be built.")
         + grid([card(t, b) for t, b in VASAC], 3), cls="grad-paper-warm")
-    + sec(head_block("The first centre", "Purpose-built, for Ogoja.",
-                     "Ogoja is farming country &mdash; yams, cassava, corn, rice, palm oil and kernels &mdash; with "
-                     "a young population and very little work for it. By our own feasibility work, around one in ten "
-                     "young people there reaches higher education, and most of those who do must leave to find it. "
-                     "Those who finish school and can neither train nor trade go to the cities as house helps, "
-                     "nannies and street children. A centre of their own is what we have put to donors: somewhere to "
-                     "learn a trade without leaving home.")
+    # Was "The first centre: purpose-built, for Ogoja". There is none: everything in Ogoja has been
+    # handed to the diocese (ASK-FR-PETER6, 2026-09-22, B1). The need it described is still the
+    # need, so it stays, now as the Diocese of Ogoja, where the schools we founded are. The
+    # brochure's 913,901 is the Northern Senatorial District, "which also means the diocese. It may
+    # be safer to say the diocese" (B3). "More than 90%" unemployed has no source, so the page keeps
+    # "a young population and very little work for it" (B4).
+    + sec(head_block("Why they are needed", "A trade, without leaving home.",
+                     "Take the Catholic Diocese of Ogoja, where the schools we founded are: about 914,000 people, "
+                     "in farming country &mdash; yams, cassava, corn, rice, palm oil and kernels &mdash; with a young "
+                     "population and very little work for it. By our own feasibility work, around one in ten young "
+                     "people there reaches higher education, and most of those who do must leave to find it. Those "
+                     "who finish school and can neither train nor trade go to the cities as house helps, nannies and "
+                     "street children. A skills centre is somewhere to learn a trade without leaving home.")
           + wide_shot("vasac-proposed.jpg",
-                      "Architect&rsquo;s impression of the proposed Vocational and Skills Acquisition Centre",
-                      "The proposed centre at Ogoja, as drawn for us. <strong>It is not built.</strong> This is what "
-                      "the appeal below is for.")
-          + grid([card(t, b) for t, b in OGOJA_FOR], 2), cls="bg-white")
+                      "Architect&rsquo;s impression of a Vocational and Skills Acquisition Centre",
+                      "A Vocational and Skills Acquisition Centre, as an architect drew one for us. "
+                      "<strong>It is not built.</strong>")
+          + grid([card(t, b) for t, b in CENTRE_FOR], 2), cls="bg-white")
     + sec(head_block("Six departments", "What it would teach.",
-                     "The centre is planned in six departments. Between them they carry close to fifty trades "
+                     "A centre is planned in six departments. Between them they carry close to fifty trades "
                      "&mdash; and this is the list we costed, not a wish list written afterwards.")
-          + grid([card(t, b) for t, b in OGOJA_DEPTS], 3), cls="grad-paper-warm")
-    + sec(head_block("What it would cost", "US $320,000 to build it and open it.",
-                     "The estimate in our appeal, which covers the first year of running costs as well as the "
-                     "building itself. Nothing here has been spent: the centre is proposed, and this is the "
-                     "figure we are raising.")
+          + grid([card(t, b) for t, b in CENTRE_DEPTS], 3), cls="grad-paper-warm")
+    + sec(head_block("What one costs", "US $320,000 to build a centre and open it.",
+                     "The estimate in our 2025 appeal: what it costs to build one Vocational and Skills Acquisition "
+                     "Centre, with its first year of running costs as well as the building itself. Nothing here has "
+                     "been spent. Institutions that would like to fund a centre should talk to us.")
           + '    <div class="costs">\n'
           + "".join('      <div class="cost-row%s"><span class="cost-n">%s</span>'
                     '<span class="cost-w">%s</span></div>\n'
-                    % ((" cost-row--total" if i == len(OGOJA_COSTS) - 1 else "",) + r)
-                    for i, r in enumerate(OGOJA_COSTS))
+                    % ((" cost-row--total" if i == len(CENTRE_COSTS) - 1 else "",) + r)
+                    for i, r in enumerate(CENTRE_COSTS))
           + "    </div>\n"
           + '    <div class="button-row" style="margin-top:1.9rem">\n'
-            '      <a class="button button--accent" href="donate.html">Give towards it</a>\n    </div>\n',
+            '      <a class="button button--accent" href="contact.html">Talk to us about funding one</a>\n'
+            '      <a class="button button--dark" href="donate.html">Donate</a>\n    </div>\n',
           cls="grad-white-strong")
     + sec(head_block("What it takes to work", "Staff, equipment, and a route out.")
           + grid([card("Staffing", "Staff are to be recruited from known institutions, with experts drawn from local artisans known to us over many years &mdash; administrative staff, professional teachers and skilled labourers."),
@@ -1488,6 +1554,10 @@ write("faq.html", head("faq.html", "Questions — CORAfrica",
 # Past achievements only (S10: "do not misrepresent them as currently run by CORAfrica,
 # also elaborate greatly"). Dates and numbers are from the 2023-25 Organizational Profile
 # (S12) unless marked otherwise; its board, contacts and plans are superseded and not used.
+# The enrolment at John Stilley and John Bosco is 2026's, from Fr. Peter's anniversary story
+# (sent 2026-09-22, citing the impact report): 820 learners and 955 pupils and students. It is
+# newer than the 300+ (S3) and 479 (S7) it replaces. Cornel Computer Institute, Obudu, is left
+# off: "no longer a CORAfrica project... should not be mentioned" (ASK-FR-PETER6, B6).
 REGISTER = [
     ("St. Joseph&rsquo;s Schools and Orphanage", "Idum-Mbube, Ogoja", "1999", "2,000+ pupils",
      "Primary and secondary schools with an orphanage for children from five years old, opened with Abode for Children Inc. of Evans City, Pennsylvania. More than 4,000 pupils have been educated there, and the first Community Education Centre grew up around it. Being handed on in 2027."),
@@ -1497,12 +1567,12 @@ REGISTER = [
      "One of the earliest schools initiated across the diocese, since handed to the parish and still operating."),
     ("Thomas McGettrick Institute of Technology", "Ogoja Diocese", "&mdash;", "Technical",
      "Built by the Catholic Diocese of Ogoja, not by CORAfrica. Working in collaboration with the diocesan bishop, CORAfrica facilitated major works on the site &mdash; road networks, the gate house and laboratories &mdash; and the institute remains with the diocese."),
-    ("John Stilley Schools", "Victoria, Ikom", "2017", "300+ students",
+    ("John Stilley Schools", "Victoria, Ikom", "2017", "820 learners",
      "Nursery, primary and secondary schools founded where there had been none at all. A new classroom block and a lodge for youth corps teachers followed, and the second Community Education Centre grew up around them. More than 1,000 pupils have been educated there. Being handed on in 2027."),
     ("Victoria Medical Center", "Victoria, Ikom", "&mdash;", "Health",
      "The health centre of the Victoria-Ikom Community Education Centre, still under construction, with medical outreach into the surrounding villages. Being handed on in 2027."),
-    ("John Bosco Academy", "Adagom, Ogoja", "2020", "479 pupils",
-     "Founded at Adagom 3 for refugee children from Cameroon who had no other way to go to school. It grew from 105 to 193 pupils in its first session, and later to 479 across a primary and a secondary section, four in five of them refugee children. More than 1,000 pupils have been educated there in all. Being handed on in 2027."),
+    ("John Bosco Academy", "Adagom, Ogoja", "2020", "955 pupils",
+     "Founded at Adagom 3 for refugee children from Cameroon who had no other way to go to school. It grew from 105 to 193 pupils in its first session, later to 479 across a primary and a secondary section, four in five of them refugee children, and by 2026 to 955, taught free of charge. More than 1,000 pupils have been educated there in all. Being handed on in 2027."),
 ]
 DELIVERED = [
     ("CLASS: the CORAfrica Loans and Savings System",
@@ -1603,6 +1673,10 @@ write("track-record.html", head("track-record.html", "Our Track Record — CORAf
 #     four pillars.
 #   - The draft's list of prospective funders (section 7) and its £500k-£1m grant pipeline stay
 #     off: "Let them stay off". Naming an agency on this page reads as a relationship.
+# He confirmed all four again that evening (ASK-FR-PETER6, 2026-09-22, Part A), and asked for
+# Gender Equality to be added "as #6", so it now comes last in the list of six. He also took
+# UNICEF and THET back out: "CORAfrica has no partnership with any of these partners. Maybe
+# Rotimi can explain better how to negotiate this."
 # He also replaced the draft's Build-A-Village with the Community Education Centre, "10
 # Community Education Centers by 2030", and asked that no amount be given for the new centre
 # until its budget is verified.
@@ -1620,9 +1694,10 @@ PLAN = [
         ["Establish new Community Education Centres in Nasarawa, Benue and Cross River States, and in two more states.",
          "Expand HELP-A-KID scholarships, and girls&rsquo; education.",
          "Open STEM and digital skills labs in every Community Education Centre.",
-         # The draft says "strengthen" VASAC at Ogoja and Ikom. We cannot yet say either is
-         # teaching (ASK-FR-PETER item 11), and Ogoja's is still a proposal.
-         "Build up the vocational and skills acquisition centres at Ogoja and Ikom.",
+         # The draft says "strengthen" VASAC at Ogoja and Ikom. Neither is ours: every skills centre
+         # built has been handed on, "CORAfrica does not operate any" (ASK-FR-PETER6, B2), and there
+         # is no Ogoja centre to fund (B1). His FAQs (S15) put the next inside the new centre.
+         "Build Vocational and Skills Acquisition Centres into our new Community Education Centres.",
          "Work with rural communities across Nigeria on access to education, and on keeping girls in school."],
         ["Establish a CORAfrica tertiary institution serving all six of Nigeria&rsquo;s geopolitical zones.",
          "Build CORAfrica agricultural schools for young people.",
@@ -1651,9 +1726,10 @@ PLAN = [
          "Begin establishing children&rsquo;s health centres in the Community Education Centres."],
         ["Supply child-friendly medicines to rural clinics.",
          "Expand community health worker programmes.",
-         # The draft's wording. Held back until Fr. Peter confirmed the UNICEF and THET relationships
-         # are real: "Either relationship is real" (2026-09-22).
-         "Strengthen our partnerships with the Ministry of Health, UNHCR, UNICEF and THET.",
+         # The draft adds UNICEF and THET. Put back on "Either relationship is real" (ASK-FR-PETER5),
+         # and taken off again the same evening: "CORAfrica has no partnership with any of these
+         # partners" (ASK-FR-PETER6, A4). The later answer stands.
+         "Strengthen our partnerships with the Ministry of Health and UNHCR.",
          "Launch a maternal and newborn health initiative across the Community Education Centres."],
         ["Build a CORAfrica children&rsquo;s hospital within a Community Education Centre.",
          "Take our healthcare programmes to other African countries.",
@@ -1702,15 +1778,16 @@ TARGETS = [("10", "New Community Education Centres", "Education"),
            ("5,000", "Farmers trained", "Livelihoods"),
            ("2,000", "Women supported with micro-credit", "Livelihoods"),
            ("3", "Value-chain processing hubs", "Livelihoods")]
-# The two projects in the plan's first years that a funder can take on directly. The Ogoja figure
-# is already on the skills-centre page; the new centre carries none until its budget is verified
-# (Fr. Peter, 2026-09-22: "I don't think we should mention a specific amount anymore").
+# The two projects in the plan's first years that a funder can take on directly. The skills
+# centre's figure is on its page, as the cost of one centre and no longer of one at Ogoja
+# (ASK-FR-PETER6, B1); the new centre carries none until its budget is verified (Fr. Peter,
+# 2026-09-22: "I don't think we should mention a specific amount anymore").
 COSTED = [("Our new Community Education Centre",
            "Our next centre, recently begun in Nasarawa State, near Abuja. Its budget is being verified.",
            "our-model.html", "Building now"),
-          ("A skills acquisition centre for Ogoja",
-           "The first purpose-built Vocational and Skills Acquisition Centre. <strong>US $320,000</strong> would "
-           "build it and run its first year.", "programme-vasac.html", "Proposed")]
+          ("A Vocational and Skills Acquisition Centre",
+           "A purpose-built skills centre, planned for our new Community Education Centre. <strong>US "
+           "$320,000</strong> builds one and runs its first year.", "programme-vasac.html", "Costed")]
 # OluRotimi Padonu's review of the site (CORAfrica WEBSITE DRAFT MY PERSPECTIVE.pdf, 2026-09-22):
 # donors will ask "Why CORAfrica? Why now?", and the plan page did not answer. Every line here is
 # a fact already published elsewhere on the site.
@@ -1747,11 +1824,12 @@ PARTNER_WAYS = [("Governments and development agencies",
 SDGS = [("No poverty", "Reducing poverty through education, and through micro-credit that lets a family build an income.", "SDG 1"),
         ("Good health and well-being", "Clinics inside the school system, medical outreach to rural villages, and a focus on a child&rsquo;s first 1,000 days.", "SDG 3"),
         ("Quality education", "Primary and secondary schools where none exist, with vocational and skills training built in.", "SDG 4"),
-        # Added 2026-09-22 at Fr. Peter's instruction. Every claim here is already on the site:
-        # HELP-A-KID and girls' education, 513 women supported, the Women's Rural Livelihoods goal.
-        ("Gender equality", "Keeping girls in school through HELP-A-KID, and micro-credit that puts an income in women&rsquo;s hands.", "SDG 5"),
         ("Decent work and economic growth", "Vocational training and support for small businesses that lead to dignified, sustainable livelihoods.", "SDG 8"),
-        ("Reduced inequalities", "Reaching refugee, displaced and host communities together, without distinction.", "SDG 10")]
+        ("Reduced inequalities", "Reaching refugee, displaced and host communities together, without distinction.", "SDG 10"),
+        # Added 2026-09-22 at Fr. Peter's instruction, "as #6", so it comes last. Every claim here
+        # is already on the site: HELP-A-KID and girls' education, 513 women supported, the Women's
+        # Rural Livelihoods goal.
+        ("Gender equality", "Keeping girls in school through HELP-A-KID, and micro-credit that puts an income in women&rsquo;s hands.", "SDG 5")]
 
 
 def targets_panel():
@@ -1831,6 +1909,138 @@ write("strategic-plan.html", head("strategic-plan.html", "Our Strategic Plan —
       + BANNER + header("strategic-plan.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
+# ============================================================== news-twenty-years
+# Fr. Peter's anniversary story (see ANNIVERSARY), copy-edited to the site's own rules:
+#   - He is "the founder", not "founder and President" (S10: Founder, kept less visible).
+#   - Registered in Nigeria with no year: the story says 2011, the CAC certificate 6 September
+#     2010 (Who We Are). The certificate stands until he says otherwise.
+#   - Its figures are the site's own, except "9 Schools and clinics", which his itemised list
+#     of the same day makes ten (STATS). The schools are named as the Track Record names them,
+#     and Cornel Computer Institute is left out (ASK-FR-PETER6, B6).
+#   - Titles are the ones on Contact: Elijah Ugani is a Project Manager, Adewale Ajayi the
+#     National Programmes Coordinator.
+#   - The schools are ones CORAfrica "founded", never runs; no successor is named.
+#   - Education and healthcare are the programmes; agriculture and economic empowerment sit
+#     inside them, as everywhere else on the site.
+TWENTY_FIGURES = [("7,330", "Children educated", "In the schools we founded"),
+                  ("2,550", "Children in school", "Enrolled today"),
+                  ("64", "Communities", "Served over twenty years"),
+                  ("805", "Small businesses", "Supported to date"),
+                  ("513", "Women", "Supported to date"),
+                  ("613", "Staff", "Employed over twenty years"),
+                  ("61", "Staff today", "On the payroll now")]
+
+
+def article(*paras):
+    return '    <div class="article-text">\n' + "".join("      <p>%s</p>\n" % p for p in paras) + "    </div>\n"
+
+
+fig = ""
+for n, l, note in TWENTY_FIGURES:
+    fig += ('        <div>\n          <div class="stat-n">%s</div>\n'
+            '          <div class="stat-l">%s</div>\n'
+            '          <div class="stat-note">%s</div>\n        </div>\n' % (n, l, note))
+body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
+        '    <a class="back-link" href="news.html">&larr; News</a>\n'
+        '    <p class="kicker">From CORAfrica &middot; %s</p>\n' % ANNIVERSARY["date"]
+        + "    <h1>%s.</h1>\n" % ANNIVERSARY["title"]
+        + '    <p class="lede">Children of Rural Africa (CORAfrica), the development organisation founded by Rev. '
+          "Fr. Peter Obele Abue, has celebrated its twentieth anniversary with a renewed commitment to expanding its "
+          "work in education, healthcare and skills development across Nigeria and beyond.</p>\n"
+          "  </div>\n</section>\n")
+body += sec(wide_shot("anniversary-abuja-wide.jpg",
+                      "Guests in white CORAfrica T-shirts and caps lined up before the twentieth-anniversary banner",
+                      "The celebration in Abuja, 5 August 2026.", 1280, 544)
+            + '    <div class="article-text" style="margin-top:2.4rem">\n'
+            + "".join("      <p>%s</p>\n" % p for p in (
+                "The anniversary was celebrated in both Nigeria and the United States. On 5 August 2026, at the "
+                "Rollins Hotels and Towers, 5th Avenue, Gwarinpa, in Abuja, CORAfrica brought together development "
+                "partners, donors, volunteers, beneficiaries, members of the Board of Trustees and other guests.",
+                "Speaking at the event, the founder of CORAfrica, Fr. Peter Obele Abue, said the organisation was "
+                "conceived in 2006, while he was studying International Development at Cornell University in the "
+                "United States. It was later formally registered in Nigeria, and has grown into an organisation "
+                "dedicated to improving the lives of vulnerable children, families and rural communities.",
+                "Over two decades, he said, its work has centred on education and healthcare, with agriculture, "
+                "economic empowerment and community development built around them &mdash; above all in Cross "
+                "River State, and among displaced and vulnerable people in parts of Benue State."))
+            + "    </div>\n", cls="grad-paper-warm", extra="section--flush-top section")
+body += sec_wide('    <div class="panel">\n'
+                 '      <div class="panel-head">\n'
+                 '        <p class="kicker">Twenty years in figures</p>\n'
+                 '        <p class="panel-note">As reported at the anniversary. <a href="track-record.html">See the '
+                 "track record&nbsp;&rarr;</a></p>\n"
+                 "      </div>\n"
+                 '      <div class="stats stats--7">\n' + fig + "      </div>\n    </div>\n",
+                 cls="grad-paper-warm", extra="section--tight")
+body += sec(article(
+    "The schools and clinics CORAfrica founded include St. Joseph&rsquo;s Schools and Orphanage at Idum-Mbube, "
+    "John Bosco Academy and its primary school at Adagom, in Ogoja, the John Stilley Schools at Victoria-Ikom, "
+    "and Little Flower Nursery and Primary School at Ipong-Obudu: four primary and four secondary schools in all, "
+    "with two school clinics, at Idum-Mbube and Victoria-Ikom. According to CORAfrica&rsquo;s impact report, John "
+    "Bosco Academy now gives a free education to 955 pupils and students, and the John Stilley Schools have 820 "
+    "learners.",
+    "Its work has also included the Ogoja Diocesan Agriculture and Investment Programme, CORA Farms, scholarships, "
+    "medical outreach and economic empowerment. HELP-A-KID has supported hundreds of children, and 130 students "
+    "have so far received support towards higher education and technical skills. CORAfrica has also bought JAMB "
+    "forms, the registration for Nigeria&rsquo;s university entrance examination, for 40 young people bound for "
+    "tertiary study.",
+    "Grants, interest-free loans, micro-credit and business training have supported hundreds of people. The St. Thomas "
+    "Aquinas and Holy Family Parish economic empowerment programmes alone have supported more than 805 people, and "
+    "other livelihood schemes have reached women and men across the areas where CORAfrica works. On the land, the "
+    "work has spanned crop production, livestock, farmer training and climate-smart agriculture, and the Food "
+    "Availability and Expansion Programme has given refugee families agricultural inputs, for food security and a "
+    "livelihood.")
+    + shot_grid([("anniversary-abuja-1.jpg", "Eight guests in CORAfrica T-shirts and caps in front of the anniversary banner",
+                  "Abuja, 5 August 2026."),
+                 ("anniversary-abuja-2.jpg", "Two women in CORAfrica T-shirts and caps, smiling as they look down",
+                  "Among the guests."),
+                 ("anniversary-abuja-3.jpg", "Two men in CORAfrica T-shirts and caps seated at a table",
+                  "At the celebration."),
+                 ("anniversary-abuja-4.jpg", "A woman and a man on either side of the twentieth-anniversary banner",
+                  "The banner: twenty years, 2006&ndash;2026.")]),
+    cls="bg-white")
+body += sec(head_block("What comes next", "Skills, and the next twenty years.")
+            + article(
+    "Looking ahead, Fr. Peter said CORAfrica would keep its relationship with the Catholic Diocese of Ogoja while "
+    "taking its programmes to other parts of Nigeria and Africa. The next phase, he said, will give greater weight "
+    "to vocational and technical training, digital literacy, emerging technologies including artificial "
+    "intelligence, and climate consciousness: the goal is to equip young people in rural and suburban communities "
+    "with practical, market-ready skills that improve their employability and their capacity for enterprise.",
+    "Also speaking, CORAfrica&rsquo;s Project Manager, Mr. Elijah Ugani, said the organisation had adopted an "
+    "integrated model of development, the Community Education Centre, designed to meet the interconnected "
+    "challenges facing disadvantaged communities rather than to address them one at a time.",
+    "In their welcome addresses, Mr. Michael Ana, Chairman of the Board of Trustees, and Mr. Adewale Ajayi, "
+    "CORAfrica&rsquo;s National Programmes Coordinator, both described the celebration as a chance to reflect on "
+    "two decades of service while looking ahead to a new phase of expansion.")
+            + '    <div class="button-row">\n'
+              '      <a class="button button--dark" href="strategic-plan.html">Read the strategic plan</a>\n'
+              '      <a class="button button--plain" href="our-model.html">How the model works</a>\n    </div>\n',
+            cls="grad-warm-white")
+body += sec(head_block("In the United States", "Twenty years of hope, impact and transformation.")
+            + article(
+    "In the United States, the anniversary was marked in New York and Pennsylvania, under the theme &ldquo;20 "
+    "Years of Hope, Impact and Transformation: Celebrating Our Legacy, Inspiring the Future.&rdquo; The founder "
+    "thanked the donors, volunteers and members of the Board of Trustees who have supported CORAfrica&rsquo;s work "
+    "over twenty years.",
+    "The anniversary closed with a renewed call for stronger partnerships, and for greater investment in "
+    "sustainable opportunities for children, young people, women and underserved communities in Nigeria and "
+    "beyond.")
+            + shot_grid([("anniversary-us-1.jpg", "A young man in a CORAfrica cap beside the twentieth-anniversary banner",
+                          "The anniversary banner."),
+                         ("anniversary-us-2.jpg", "Supporters in CORAfrica caps around a table set outdoors",
+                          "Around the table."),
+                         ("anniversary-us-group.jpg", "Six supporters in CORAfrica caps on either side of the anniversary banner",
+                          "Supporters in the United States."),
+                         ("anniversary-us-3.jpg", "Guests walking past the anniversary banner in an open-air plaza",
+                          "Twenty years, 2006&ndash;2026.")]),
+            cls="bg-white")
+body += sec_wide(donate_band(), cls="bg-paper", extra="section--flush-top section--tight")
+write(ANNIVERSARY["page"], head(ANNIVERSARY["page"], "Twenty Years of CORAfrica — CORAfrica",
+      "CORAfrica turned twenty in 2026, and celebrated in Abuja and in the United States: its figures, the schools "
+      "and clinics it founded, and what comes next.", "img/anniversary-abuja-group.jpg")
+      + BANNER + header("news.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
+
+
 # ============================================================== news
 items = ""
 for outlet, date, title, blurb, url in PRESS:
@@ -1845,15 +2055,24 @@ body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell
         '    <p class="lede">Our work has been covered by the National Catholic Reporter, by Vanguard and ThisDay '
         "&mdash; two of Nigeria&rsquo;s largest national dailies &mdash; and by regional press since 2014. Where we "
         "make a claim on this site, these are the places you can check it.</p>\n  </div>\n</section>\n")
-body += sec(items, cls="grad-paper-warm", extra="section--flush-top section")
+# Our own news leads, above the press: the anniversary story (ANNIVERSARY).
+body += sec('    <div class="split split--media split--center">\n'
+            '      <div class="media"><img src="img/anniversary-us-group.jpg" alt="Six supporters in CORAfrica caps '
+            'on either side of the twentieth-anniversary banner" loading="lazy" width="900" height="675"></div>\n'
+            "      <div>\n"
+            + head_block("From CORAfrica &middot; %s" % ANNIVERSARY["date"], ANNIVERSARY["title"] + ".",
+                         ANNIVERSARY["summary"])
+            + '        <a class="button button--dark" href="%s">Read the story</a>\n' % ANNIVERSARY["page"]
+            + "      </div>\n    </div>\n", cls="grad-paper-warm", extra="section--flush-top section")
+body += sec('    <h2 class="group-label">In the press</h2>\n' + items, cls="bg-white")
 body += sec(head_block("Press enquiries", "For interviews, images or further information.",
                        "Contact us and we will put you in touch with the right person. You can also follow our work on "
                        + " and ".join('<a href="%s" rel="noopener">%s</a>' % (u, n) for n, u in SOCIAL) + ".")
             + contact_block(),
             cls="grad-white-strong")
 write("news.html", head("news.html", "In the News — CORAfrica",
-      "CORAfrica in Vanguard, ThisDay, the National Catholic Reporter, The Investigator, Orient Daily News and "
-      "CrossRiverWatch.")
+      "CORAfrica's twentieth anniversary, and CORAfrica in Vanguard, ThisDay, the National Catholic Reporter, The "
+      "Investigator, Orient Daily News and CrossRiverWatch.")
       + BANNER + header("news.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
@@ -2112,8 +2331,12 @@ BIOS = {
         "A devout Catholic, he is a member of Most Precious Blood of Jesus Parish and lives in Evans City, "
         "Pennsylvania. He was introduced to CORAfrica by Jeannine Goelz.",
     ],
+    # "Since 2005", a year before the founding, is right: "the Ogoja project came first and was
+    # existing under Gospa Mission where Jeannine was working until CORAfrica was formalized in
+    # 2006" (Fr. Peter, ASK-FR-PETER6, 2026-09-22, B8).
     "Jeannine Goelz": [
-        "Jeannine M. Goelz has been associated with CORAfrica&rsquo;s projects in Nigeria since 2005, and her "
+        "Jeannine M. Goelz has been associated with CORAfrica&rsquo;s projects in Nigeria since 2005, when the "
+        "work in Ogoja was carried on under Gospa Mission, a year before CORAfrica was formally founded. Her "
         "familiarity with the charity&rsquo;s history has shaped its direction and its decisions ever since.",
         "For thirteen years she served as Sponsor Relations Coordinator for St. Joseph&rsquo;s Orphanage and School "
         "in Ogoja. She was instrumental in finding new sponsors, and in sourcing the funding for a much-needed "

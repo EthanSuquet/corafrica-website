@@ -6,7 +6,7 @@ no build toolchain beyond one Python script.
 
 ```
 site/            ← the deployable. Upload this directory, nothing else.
-  *.html            24 pages (generated — see below)
+  *.html            31 pages (generated — see below)
   styles.css        the whole design system
   script.js         mobile nav and scroll reveals; the site works without JS
   img/              logo SVGs, photography, team/ headshots
@@ -25,9 +25,9 @@ python3 build.py
 ```
 
 Regenerates every page into `site/`. Nine are in the main menu — Home, Who We Are, Our Model, What We Do,
-Track Record, Strategic Plan, News, Donate, Contact — and fifteen are not: five `programme-*.html` pages, nine
-`team-*.html` bio pages, and `faq.html`. Those are reached by clicking a card, or from the footer in the case
-of the questions page. **The generated HTML carries a do-not-edit banner** — the
+Track Record, Strategic Plan, News, Donate, Contact — and twenty-two are not: five `programme-*.html` pages,
+fifteen `team-*.html` bio pages, `faq.html` and one news story, `news-twenty-years.html`. Those are reached by
+clicking a card, or from the footer in the case of the questions page. **The generated HTML carries a do-not-edit banner** — the
 header, footer and `<head>` are defined once in `build.py`, so a nav change is one edit rather
 than nine. Content lives in `build.py` too, near the page it belongs to.
 
@@ -197,6 +197,18 @@ actually navigate.
 The five questions that explain a programme are left out, because the programme pages answer them; so are the
 internal fundraising talking points. It is linked from the footer, from Donate and from What We Do, not from
 the main menu, which follows the page list he sent.
+
+**The skills-centre page describes a centre still to be built.** Every skills section CORAfrica built has been
+handed on with its school, and there is no Ogoja centre to fund: everything in Ogoja has passed to the diocese
+(Fr. Peter, 2026-09-22). The US $320,000 is the cost of one centre, not an appeal for a particular one.
+
+## News
+
+`news.html` leads with CORAfrica's own story of its twentieth anniversary (5 August 2026, Abuja, and New York
+and Pennsylvania), which Fr. Peter sent on 2026-09-22 asking for it to go "strategically somewhere". It has a
+page of its own, `news-twenty-years.html`, built from `ANNIVERSARY` in `build.py`, and Home carries it straight
+after the twenty-year figures. The press list follows. The story was copy-edited to the rules below; the
+departures are listed at the top of its block in `build.py`.
 
 ## Content sourcing
 
