@@ -10,6 +10,9 @@ site/            ← the deployable. Upload this directory, nothing else.
   styles.css        the whole design system
   script.js         mobile nav and scroll reveals; the site works without JS
   img/              logo SVGs, photography, team/ headshots
+  video/            the films, each with a poster frame in img/
+  accounts/         the audited statements, 2022-2025, redacted (see Transparency)
+  robots.txt        keeps accounts/ out of search results
 build.py         ← content + page generator. EDIT THIS, not site/*.html
 make_preview.py  ← bundles site/ into one self-contained file for client review
 brand/           ← logo masters, the seal rebuild script, the tracer, and the raster sources
@@ -169,21 +172,35 @@ widest file on disk was also one of the softest, and it was the old home hero.
 
 Headshots live in `site/img/team/` (168 × 168, plus a larger `-lg` version for the bio pages) and are
 wired by name in `HEADSHOTS` in `build.py`; anyone without one shows their initials. **Only add a
-headshot once you are certain who is in it.** All fifteen people on the Contact page have one. Thirteen
+headshot once you are certain who is in it.** All fifteen people on the boards and the team have one. Thirteen
 were matched on 2026-09-10 against Fr. Peter's messages of 2026-09-06: each board photo sits between
 that trustee's name and their details, and each admin-team photo is followed by its "Name (Role)"
 caption. Olurotimi Padonu's comes from `rotimi.docx`, and Ethan supplied his own. **Blessing Ana's was
 corrected on 2026-09-14**, when Fr. Peter identified the portrait we held as unnamed: the photo the caption
 match had put under her name is someone else, and is no longer on the site.
 
+**The same rule holds for a caption.** The man in the phone-shop photograph on the empowerment page was named as
+Thomas Nsing on 2026-09-18. He was unnamed again on 2026-09-23, when Thomas's own film arrived: its opening line
+names Thomas, he does not look like the man in the shop, and the shop is Achu Owalu's. The question is with Fr. Peter.
+
+## Video
+
+Four films, in `site/video/` with a poster frame each in `site/img/`, all placed by `clip()` in `build.py`. Each
+is re-encoded to H.264 with `+faststart`, at 10 MB or under, since the site is read on rural connections. A
+**clip Fr. Peter wants "without voice"** has its audio track stripped (`ffmpeg -an`) as well as the `muted`
+attribute: the school film on the Strategic Plan is one. **iPhone footage is HDR** (HLG, BT.2020), and
+Homebrew's ffmpeg has no `zscale` to tone-map it, so a straight encode comes out washed out. Convert it to SDR
+with macOS's own `avconvert -p Preset1920x1080` first, then encode. Thomas Nsing's film went that way.
+
 ## People
 
-The Contact page lists both Boards of Trustees and the administrative team exactly as Fr. Peter wrote
-them on 2026-09-04 (`BOARD_NG`, `BOARD_US` and `ADMIN` in `build.py`). **Titles follow that written
-answer, even where a later message or a bio words them differently** (Ethan, 2026-09-10).
+The **Boards of Trustees** are on Who We Are, and the **administrative team** is on Contact (Fr. Peter,
+2026-09-23; until then both were on Contact). Both lists are exactly as he wrote them on 2026-09-04 (`BOARD_NG`,
+`BOARD_US` and `ADMIN` in `build.py`, defined ahead of every page since two pages use them). **Titles follow that
+written answer, even where a later message or a bio words them differently** (Ethan, 2026-09-10).
 
-Anyone with an entry in `BIOS` gets a page of their own, `team-<name>.html`, and their card on Contact
-becomes a link to it. Those pages are in no menu: clicking the card is the only way in. **The administrative
+Anyone with an entry in `BIOS` gets a page of their own, `team-<name>.html`, and their card becomes a link to
+it. The page leads back to the boards if its person sits on one, and to the team if not. Those pages are in no menu: clicking the card is the only way in. **The administrative
 team need a photo only, not a bio** (Fr. Peter, 2026-09-14); the two trustees still owed are listed in
 `docs/ASK-FR-PETER.md`. Add a bio to `BIOS` and the page and link appear on the next build.
 
@@ -210,12 +227,21 @@ handed on with its school, and there is no Ogoja centre to fund: everything in O
 published at Fr. Peter's request on 2026-09-23: 2025 spending line by line, what it built, the 2025 deficit, and a
 four-year record. **It is in the main menu** (Ethan, 2026-09-23: "make sure every part of the site has an intuitive
 way to reach it"), and linked wherever money is mentioned: the giving panel at the foot of most pages, Donate's
-hero and its 2025 split, the 92.6% on Home, Who We Are's accountability section, the plan's "Why CORAfrica", the
-questions page's costs, and every footer. ⛔ **The audited statements
-themselves are not on it**, though the document offered them as downloads: the consultant's own voice note advises
-against publishing them, and the 2025 statements name the principal donor, whom Fr. Peter asked never to be named.
-The page says they are available to funders on request. Naira figures carry US dollars at the 2025 statements' rate,
-₦1,576.40 to $1 (`RATE_2025`).
+hero and its 2025 split, the 92.6% on Home, the plan's "Why CORAfrica", the questions page's costs, and every
+footer. **It opens with the Accountability section** that used to end Who We Are (Fr. Peter, 2026-09-23):
+registration in both countries, the auditor, and the two boards. Naira figures carry US dollars at the 2025
+statements' rate, ₦1,576.40 to $1 (`RATE_2025`).
+
+**The audited statements for 2022 to 2025 are linked at the foot of the page**, in `site/accounts/`, since Fr. Peter
+sent them on 2026-09-24: *"Pls link them to the website but don't put them out openly."* ⛔ **Only redacted copies
+ever go in `site/`.** Every year's note 7 names the principal donor, whom he asked never to be named (2026-09-04), so
+that name is blacked out, and each page is flattened to an image so that no text layer can still carry it: check with
+`pdftotext`, which must return nothing. "Not openly" means they are linked from that one table and nowhere else,
+never shown on a page, `rel="nofollow"`, and `/accounts/` is disallowed in `robots.txt`. Anyone with the link can
+still open them, and they are in this public repository. The unredacted sources stay in Ethan's Downloads. A 2021
+statement sent with them is not published: it is outside the years he named, by another auditor, and prints the
+charity's bank account numbers. **When the 2026 statements arrive**, redact the same way, add the file, and put the
+year at the front of `ACCOUNTS` in `build.py`.
 
 ## News
 

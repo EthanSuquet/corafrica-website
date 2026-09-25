@@ -511,18 +511,21 @@ def single_shot(img, alt, cap, w=900, h=675):
             % (img, alt, w, h, cap))
 
 
-def clip(mp4, poster, cap, w, h):
+def clip(mp4, poster, cap, w, h, muted=False):
     """A short film. The site had no video until 2026-09-18; this is the whole of the machinery.
     preload=metadata so a phone on a rural connection does not fetch it until it is asked to.
 
     w and h are the DISPLAYED size, which is not always the coded size -- a phone clip can be
     stored 360x640 and tagged to play 640x360. Read them off the poster frame, never off the
-    container, and let the attributes give the box its shape rather than fixing one in the CSS."""
+    container, and let the attributes give the box its shape rather than fixing one in the CSS.
+
+    muted is for a clip Fr. Peter wants shown "without voice". Strip the audio track from the
+    file as well (ffmpeg -an): the attribute alone still leaves the sound one tap away."""
     return ('    <figure class="shot shot--clip%s">\n' % ("" if h > w else " shot--clip-wide")
-            + '      <div class="media media--clip"><video controls playsinline preload="metadata" '
+            + '      <div class="media media--clip"><video controls playsinline%s preload="metadata" '
             'poster="img/%s" width="%d" height="%d"><source src="video/%s" type="video/mp4">'
             '</video></div>\n      <figcaption>%s</figcaption>\n    </figure>\n'
-            % (poster, w, h, mp4, cap))
+            % (" muted" if muted else "", poster, w, h, mp4, cap))
 
 
 def wide_shot(img, alt, cap, w=960, h=408):
@@ -534,6 +537,20 @@ def wide_shot(img, alt, cap, w=960, h=408):
             '      <div class="media media--wide"><img src="img/%s" alt="%s" loading="lazy" '
             'width="%d" height="%d"%s></div>\n'
             '      <figcaption>%s</figcaption>\n    </figure>\n' % (img, alt, w, h, shape, cap))
+
+
+def alt_row(i, img, alt, num, tag, title, text, extra="", media=None):
+    """One row of the alternating photograph-and-text layout: the photograph leads on even rows and
+    follows on odd ones. media replaces the photograph with any figure, such as a clip(); with
+    neither, the row is text only, in the left half."""
+    if media is None:
+        media = ('        <div class="media"><img src="img/%s" alt="%s" loading="lazy" width="900" height="675"></div>\n'
+                 % (img, alt)) if img else ""
+    copy = ('        <div>\n          <p class="alt-num"><span>%s</span><span class="alt-rule"></span></p>\n'
+            '          <span class="card-tag">%s</span>\n'
+            "          <h3>%s</h3>\n          <p>%s</p>\n" % (num, tag, title, text)
+            + extra + "        </div>\n")
+    return '      <div class="alt-row">\n%s      </div>\n' % ((copy + media) if i % 2 else (media + copy))
 
 
 def shot_grid(items):
@@ -664,9 +681,14 @@ def programme_groups(cols=2, education_shot=None):
                    + [card(t, b, tag) for t, b, tag in HEALTHCARE_ALSO], cols))
 
 
+# "Don't say 'Building Now' but ABOUT TO BUILD" (Fr. Peter, WhatsApp, 2026-09-23, of Our Model).
+# The centre is initiated but not yet under construction, so every place that said it was being
+# built says so now: this tag, the Our Model and Strategic Plan cards, the home hero and the
+# history's "Today".
+BUILD_STATUS = "About to build"
 ALSO_TODAY = [
     ("CORA Farms Nigeria Ltd", "Our registered farming company, founded in 2015: crops, poultry and livestock, and a training ground for rural farmers. A company, not one of our programmes.", "Our company"),
-    ("A new Community Education Centre", "Our next Community Education Centre, recently begun, in Nasarawa State, near Abuja.", "Building now"),
+    ("A new Community Education Centre", "Our next Community Education Centre, recently initiated, in Nasarawa State, near Abuja.", BUILD_STATUS),
 ]
 
 CREDS = ["Registered <span class='nolig'>501(c)(3)</span> since 2006", "Registered in Nigeria since 2010",
@@ -820,13 +842,229 @@ def person(name, role):
     return '      <div class="person">%s</div>\n' % inner
 
 
+# ============================================================== people
+# Shared since 2026-09-23: the boards are on Who We Are, the administrative team on Contact, and
+# both lists feed the bio pages. So they are defined here, ahead of every page that uses them.
+# Governance and staff from Fr. Peter's written answers of 2026-09-04 (S10), which superseded
+# the single board taken from the docx. He is shown as Founder.
+# Michael Abuo sat on both boards until 2026-09-16: FINAL WEB MENU (S16) lists him on Nigeria
+# only, and Ethan — who sits on the US board himself — confirmed the same day that he is off
+# it. He keeps his Nigeria seat, his headshot and his bio page.
+BOARD_NG = [("Michael Ana", "Chairman"), ("Mark Okpatuma", "Member"), ("Michael Abuo", "Member"),
+            ("Pamela Enamhe", "Member"), ("James Bulem", "Member"), ("Fr. Peter Abue", "Founder"),
+            ("Adewale Ajayi", "Member / Secretary")]
+BOARD_US = [("Chux Okochi", "Chairman"), ("Jeannine Goelz", "Member"),
+            ("Ethan Suquet", "Member"), ("Fr. Peter Abue", "Founder"), ("Silvia Okoro", "Member / Secretary")]
+ADMIN = [("Adewale Ajayi", "National Programmes Coordinator"), ("Jeannine Goelz", "Country Representative, USA"),
+         ("Elijah Ugani", "Project Manager I, Nigeria"), ("Silvia Okoro", "Office Coordinator, USA"),
+         ("OluRotimi Akinkunmi Padonu", "Grants Coordinator"), ("Edwin Okungbowa", "Project Manager II, Nigeria"),
+         ("Ethan Suquet", "IT Coordinator"), ("Blessing Ana", "Logistics, Nigeria")]
+# Titles stay as the written answers give them. Ethan, 2026-09-10: use the txt, even where
+# Fr. Peter's later WhatsApp list or a bio words a title differently.
+
+# Bios, lightly copy-edited from what was supplied: Michael Ana's own docx, the founder section
+# of WEB PAGES 3.docx, and the bios Fr. Peter posted on WhatsApp on 2026-09-06. Titles inside a
+# bio are brought into line with the lists above. Anyone missing here has no bio page yet;
+# docs/ASK-FR-PETER.md lists who still owes one.
+BIOS = {
+    "Michael Ana": [
+        "Michael is a certified Project Management Professional (PMP) and a business and financial advisory "
+        "consultant with more than 26 years of experience. His career has spanned banking operations, credit "
+        "analysis, treasury and asset management, and stockbroking, and he has held senior management positions "
+        "at a Pan-African bank, including Country Head, Commercial Banking, and Group Head, Lagos &amp; South "
+        "Zones. He is Principal Consultant at Dominion Excel Limited, helping commercial and mid-sized companies "
+        "with business transformation, process improvement and project management.",
+        "A graduate of Accounting, Michael is a Fellow of the Institute of Chartered Accountants of Nigeria (FCA) "
+        "and a Fellow of the Institute of Management Consultants (FIMC). He is also a change management "
+        "practitioner, and has been admitted by a US court as an expert witness in economic loss valuation. As a "
+        "consultant he has raised debt for companies through development finance institutions and structured "
+        "equity investments.",
+        "A keen football fan, Michael sits on the Board of Trustees of an All-Stars football club and on the board "
+        "of his local parish. His other interests are real estate and trading: he is a Director of The Yard "
+        "Terraces and of Dominion DTR Limited. He is happily married with children.",
+    ],
+    "Pamela Enamhe": [
+        "Pamela is a development finance professional with 20 years of experience spanning banking, strategy, "
+        "risk management, business analysis, data analysis and institutional development.",
+        "She is Head of the Credit Review Unit in the Risk Management Group of the Federal Mortgage Bank of Nigeria "
+        "(FMBN), and Secretary of the Bank&rsquo;s Management Credit Committee. She has held leadership roles in "
+        "strategy, business process improvement, performance management and internal audit.",
+        "A Certified Business Analysis Professional (CBAP), she holds ACCA certifications in Data Analysis and "
+        "Internal Audit, an M.Sc. in Banking and Finance and a B.Sc. in Economics.",
+        "She is the founder of the Pam-Zake Development Initiative (PDI), which works on housing finance, financial "
+        "inclusion, community development, youth empowerment and policy engagement, with particular attention to "
+        "informal-sector households and underserved communities.",
+    ],
+    "Mark Okpatuma": [
+        "Mark is a finance and accounting professional with more than a decade of experience in financial "
+        "governance, audit and accountability. He has a strong track record in financial reporting systems, "
+        "internal control frameworks, financial analysis, budgeting and risk management, and a particular interest "
+        "in capacity-building and training to strengthen financial literacy and governance. He holds an MBA and is "
+        "an Associate Chartered Accountant (ACA) of the Institute of Chartered Accountants of Nigeria (ICAN).",
+        "As a member of CORAfrica&rsquo;s Board of Trustees, he contributes technical accounting expertise and "
+        "governance oversight in support of the organisation&rsquo;s commitment to accountability, sound financial "
+        "management and the responsible use of resources.",
+    ],
+    "James Bulem": [
+        "James is an entrepreneur, media practitioner and public servant, with a B.A. Ed. in English and Education "
+        "from Lagos State University. His background is in broadcast media, entertainment and cultural "
+        "storytelling.",
+        "He serves as a Commission Member and Head of Planning, Research and Statistics at the Cross River State "
+        "Carnival Commission, following his contributions to the state&rsquo;s Tourism Cluster. He is committed to "
+        "building sustainable institutions that deliver value to his community, the state and humanity.",
+        "As CEO of The Grandmother Place, a restaurant and bar chain in Cross River State, James leads a hospitality "
+        "business, combining private-sector experience with public service to create jobs and promote Cross "
+        "River&rsquo;s culture and tourism. He is married with two children.",
+    ],
+    "Michael Abuo": [
+        "Prince Michael Abuo is a distinguished public servant, environmental scholar and community leader. He is "
+        "Special Adviser to the Governor of Cross River State on Interventions and Grants, and coordinator of the "
+        "African Union Development Agency (AUDA-NEPAD), the Renewed Hope Ward Development Programme and the Cross "
+        "River State Political Network (CRISPON).",
+        "A graduate of Microbiology with an M.Sc. in Environmental Resource Management, he is pursuing a Ph.D. in the "
+        "same field. He also holds an honorary doctorate in Public Administration from Escae University, Benin "
+        "Republic, and represented Nigeria at COP26 in Glasgow in 2021.",
+        "His public service began in student leadership at the University of Calabar and St. Patrick&rsquo;s "
+        "College, Calabar, and has included roles as Personal Assistant to the Governor, Special Assistant on "
+        "Students&rsquo; Affairs, and Director-General of the Cross River State Migration Control Agency.",
+        "A youth development advocate, political strategist and published poet and author, he is recognised for his "
+        "work in governance, environmental sustainability, migration management and grassroots mobilisation. He is "
+        "married with children.",
+    ],
+    "Adewale Ajayi": [
+        "Adewale is CORAfrica&rsquo;s National Programmes Coordinator, with a focus on education that restores "
+        "dignity and opportunity to rural children in Nigeria. In that role he also provides operational leadership "
+        "for CORAfrica in Nigeria, from partnership development and programme oversight to fiduciary stewardship "
+        "and community engagement.",
+        "He brings a practitioner&rsquo;s lens to programme design, making sure initiatives are locally owned, "
+        "financially prudent and built to last. With more than a decade of cross-sector experience in Nigeria, he "
+        "coordinates partnerships with community leaders, NGOs and the private sector, overseeing implementation "
+        "and compliance.",
+        "He is also a project development consultant, advising public and private stakeholders on feasibility, "
+        "stakeholder alignment and execution planning for community-impact projects.",
+    ],
+    # Sent as "Fr. Chux Okochi, President" and listed in the txt as Cornelius Okochi. Fr. Peter,
+    # 2026-09-14: show him as Chux Okochi, Chairman of the US board.
+    "Chux Okochi": [
+        "Chux Okochi chairs the Board of Trustees of Children of Rural Africa in the United States, bringing "
+        "steadfast leadership and a deeply rooted commitment to the organisation&rsquo;s humanitarian objectives. "
+        "Since taking on the role, he has been instrumental in translating strategic vision into community-focused "
+        "action.",
+        "His approach blends spiritual guidance with practical advocacy, keeping CORAfrica&rsquo;s initiatives "
+        "centred on the people they serve.",
+    ],
+    # Sent naming her Chiamaka S. Okoro, as "Secretary and Treasurer"; titles follow the txt.
+    "Silvia Okoro": [
+        "Silvia Okoro joined Children of Rural Africa in February 2026, bringing a diverse background in "
+        "administrative management to the leadership team. As Secretary to the US Board of Trustees and Office "
+        "Coordinator in the United States, she oversees the organisation&rsquo;s official records, making sure its "
+        "operations are transparent and meticulously documented.",
+        "Her work is driven by a deep dedication to the Nigerian communities CORAfrica serves, and a personal mission "
+        "to see every resource used to its fullest potential.",
+    ],
+    # His own updated bio, sent 2026-09-14, which settles the Duquesne degree (Corporate
+    # Communication, 1994) and the award month (June 2017). John Bosco Academy is left out,
+    # since it is not to be promoted; the PhD year follows his prose and his return date, 2006.
+    "OluRotimi Akinkunmi Padonu": [
+        "OluRotimi Akinkunmi Padonu is a seasoned executive and development finance specialist, supporting "
+        "CORAfrica&rsquo;s mission to transform rural communities. With more than 30 years of leadership experience "
+        "across the United Kingdom, Africa and the United States, he brings deep expertise in project finance, clean "
+        "energy and community-centred development.",
+        # His own words, 2026-09-18, in place of a closing line that said only that his guidance
+        # strengthened CORAfrica's ability to scale. This says what he actually does.
+        "He strengthens CORAfrica&rsquo;s governance and administrative systems to build the structures required "
+        "to deliver the organisation&rsquo;s 2026&ndash;2030 Strategic Plan. His work ensures CORAfrica is equipped "
+        "with the policies, documentation and institutional frameworks needed to unlock partnerships, grants and "
+        "multi-year funding for its expanding education, healthcare, agriculture and community programmes.",
+    ],
+    # His own bio opens "Elijah Ugani is programme Manager", which is Edwin Okungbowa's title in
+    # the list Fr. Peter confirmed on 2026-09-04. Brought into line with the list, as the other
+    # bios were; flagged in docs/ASK-FR-PETER.md for him to settle.
+    "Elijah Ugani": [
+        "Elijah Ugani is Project Manager I of CORAfrica, contributing to initiatives focused on education, economic "
+        "empowerment and support for vulnerable communities. His experience includes programmes designed to improve "
+        "educational opportunities for disadvantaged children and young people, and his particular interest is in "
+        "livelihood and skills-development work with economically vulnerable populations and refugees.",
+        "A development and community mobilisation specialist, he has worked with minority communities across public "
+        "health advocacy and civic engagement. His work is driven by a commitment to improving the lives of "
+        "vulnerable and underserved people &mdash; connecting communities with the skills, resources, opportunities "
+        "and practical development interventions that promote dignity, resilience and self-reliance.",
+    ],
+    "Blessing Ana": [
+        "Blessing Iyaji Ana is a leader and advocate for human capital development, with more than two decades of "
+        "experience in strategic leadership, business development, stakeholder management and organisational growth.",
+        "She holds a Master of Business Administration from the Franciscan University of Steubenville, Ohio, an "
+        "Executive Master&rsquo;s in Project Management and a Higher National Diploma in Accounting. She is a Fellow "
+        "of the West Africa Association of Customer Service Professionals and a Fellow of the Institute of Credit "
+        "Administration.",
+        "A wife and mother of three, Blessing believes that family is the foundation for nurturing faith, discipline, "
+        "compassion and service &mdash; the values essential to shaping future leaders.",
+    ],
+    "Edwin Okungbowa": [
+        "Edwin Okungbowa is Project Manager II of CORAfrica, in Abuja, where he coordinates projects and office "
+        "affairs across the Nasarawa axis. A businessman, entrepreneur and creative professional, he comes with "
+        "a strong background in digital media and business development.",
+        "As an entrepreneur he is committed to identifying opportunities, building sustainable ventures, and creating "
+        "platforms that connect people, ideas and businesses. His interests span hospitality management, property "
+        "development, entertainment, lifestyle and digital entrepreneurship.",
+        "Beyond business and entertainment, Edwin is driven by innovation, leadership and the desire to create "
+        "opportunities for others. His approach combines business thinking with creativity, allowing him to work "
+        "across different industries while continually exploring new ideas and ventures.",
+    ],
+    "Ethan Suquet": [
+        "Ethan Suquet is CORAfrica&rsquo;s IT Coordinator and a member of its United States Board of Trustees, "
+        "which he joined in July 2025. He has served as the board&rsquo;s Vice Chairman since September 2026.",
+        "A software developer by profession, he works for The Storyhaus Agency in Zelienople, Pennsylvania. For "
+        "CORAfrica he builds and maintains the website and the systems behind it &mdash; the charity&rsquo;s public "
+        "face, and the way most of its supporters first find the work.",
+        "A devout Catholic, he is a member of Most Precious Blood of Jesus Parish and lives in Evans City, "
+        "Pennsylvania. He was introduced to CORAfrica by Jeannine Goelz.",
+    ],
+    # "Since 2005", a year before the founding, is right: "the Ogoja project came first and was
+    # existing under Gospa Mission where Jeannine was working until CORAfrica was formalized in
+    # 2006" (Fr. Peter, ASK-FR-PETER6, 2026-09-22, B8).
+    "Jeannine Goelz": [
+        "Jeannine M. Goelz has been associated with CORAfrica&rsquo;s projects in Nigeria since 2005, when the "
+        "work in Ogoja was carried on under Gospa Mission, a year before CORAfrica was formally founded. Her "
+        "familiarity with the charity&rsquo;s history has shaped its direction and its decisions ever since.",
+        "For thirteen years she served as Sponsor Relations Coordinator for St. Joseph&rsquo;s Orphanage and School "
+        "in Ogoja. She was instrumental in finding new sponsors, and in sourcing the funding for a much-needed "
+        "medical clinic and for a school bus.",
+        "For the last ten years she has maintained the operation and the reporting of CORAfrica&rsquo;s American "
+        "side, and has hosted Fr. Peter in his work during his visits to the United States. She is dedicated to the "
+        "mission, with a long record of projects conceived, built from the ground up, and kept well maintained into "
+        "the future.",
+    ],
+    "Fr. Peter Abue": [
+        "Born in Idum-Mbube, in the Ogoja Local Government Area of Cross River State, Fr. Peter Abue was ordained "
+        "a Catholic priest of the Diocese of Ogoja in 1985. He went on to further study, taking a Master&rsquo;s "
+        "degree in Corporate Communication at Duquesne University, Pittsburgh, in 1994, and a PhD in International "
+        "Development at Cornell University, Ithaca, New York, in 2006.",
+        "As a corollary to that research he conceived Children of Rural Africa, incorporated as a "
+        "<span class='nolig'>501(c)(3)</span> non-profit in the United States in 2006 and registered as an NGO with "
+        "the Corporate Affairs Commission in Nigeria in 2010. In June 2017 the Cross River State Government honoured "
+        "him with a special award during its jubilee celebrations, Cross River@50.",
+        "Since returning from his studies he has initiated empowerment programmes and facilitated projects across "
+        "the diocese, among them St. Joseph Primary and Secondary School and the Sr. Augustina Abuo Memorial Medical "
+        "Clinic at Idum-Mbube, Little Flower School at Ipong-Obudu, the Ogoja Diocesan Agriculture and Investment "
+        "Program, the Thomas McGettrick Institute of Technology, the John Stilley Nursery and Primary Schools at "
+        "Victoria-Ikom, and the St. Thomas Aquinas and Holy Family economic empowerment programmes. Those "
+        "institutions are being handed on to the partners who will run them.",
+        # The St. Francis Humanitarian Mission is not to be named anywhere on the site until Fr. Peter
+        # has finished negotiating a memorandum of understanding (Ethan, 2026-09-14). His own bio was
+        # the last place it appeared; restore this line only when he says the MoU is signed.
+        "He is Parish Priest of Holy Family Parish, Ikom, and Vicar General of the Catholic Diocese of Ogoja.",
+    ],
+}
+
+
 # ============================================================== index
 body = hero("Education for Africa&rsquo;s Future",
             "A school, and everything that keeps a child in it.",
             "CORAfrica builds Community Education Centres in rural Nigeria where none exists &mdash; then "
             "adds a demonstration farm, a school clinic and a skills acquisition centre, so that children can stay "
             "within their own community. We provide economic empowerment for their parents, which is what keeps "
-            "them coming back. Founded in 2006, and now building our next centre in Nasarawa State, "
+            "them coming back. Founded in 2006, and about to build our next centre in Nasarawa State, "
             "near Abuja.",
             "hero.jpg", "Pupils working the rows on a CORAfrica school farm", page_hero=False,
             kicker_big=True,
@@ -928,7 +1166,7 @@ HISTORY = [
     # No skills centres in this list: every one built has been handed on with its school, and
     # "CORAfrica does not operate any" (ASK-FR-PETER6, 2026-09-22, B2).
     ("Today", "Handed on, and beginning again",
-     "The first two Community Education Centres, at Idum-Mbube and Victoria-Ikom, are being handed to the institutions that will run them from 2027. From our headquarters in Abuja, CORAfrica runs HELP-A-KID, its empowerment programmes, the school clinics, the demonstration farms and CORA Farms &mdash; and is building its next centre."),
+     "The first two Community Education Centres, at Idum-Mbube and Victoria-Ikom, are being handed to the institutions that will run them from 2027. From our headquarters in Abuja, CORAfrica runs HELP-A-KID, its empowerment programmes, the school clinics, the demonstration farms and CORA Farms &mdash; and is about to build its next centre."),
 ]
 VALUES = [
     ("Dignity of the human person", "Each person &mdash; each child &mdash; has an inalienable dignity, and should be treated as an end and never only as a means. Every child deserves the chance to achieve their dreams, no matter where they were born."),
@@ -994,27 +1232,40 @@ body += sec('    <div class="split split--center">\n'
             + clip("refugee-outreach.mp4", "refugee-outreach-poster.jpg",
                    "Fr. Peter among refugee children, in the villages CORAfrica works in.",
                    640, 360), cls="grad-white-paper")
-body += sec(head_block("Our philosophy", "Three convictions we build on.",
+# "OUR BOARD OF TRUSTEES (NIGERIA AND USA) GOVERNANCE should be taken from Contact to a strategic
+# position of WHO WE ARE", while "the ADMINISTRATIVE Team (Delivery) should stay in CONTACT" (Fr.
+# Peter, WhatsApp, 2026-09-23). It sits straight after the founder: who began the work, then who
+# governs it. The id is what the bio pages and the Transparency page link back to.
+body += sec(head_block("Boards of Trustees", "Governance.",
+                       "CORAfrica is overseen by two Boards of Trustees, one in Nigeria and one in the United States, "
+                       "and our operations are directed from our headquarters in Abuja.")
+            + '    <h3 class="group-label">Nigeria</h3>\n' + grid([person(n, r) for n, r in BOARD_NG], 4)
+            + '    <h3 class="group-label">United States</h3>\n' + grid([person(n, r) for n, r in BOARD_US], 4),
+            cls="grad-paper-warm", sid="boards")
+# "Under WHAT WE DO, the last section WHAT WE BELIEVE should be moved TO begin OUR PHILOSOPHY
+# section in WHO WE ARE" (Fr. Peter, 2026-09-23). So the philosophy opens on the beliefs, and the
+# three convictions follow them.
+RIGHTS = [
+    "Every child has the right to a standard of living adequate for their health and well-being.",
+    "Every child has the right to learn how to work, to free choice of employment, to just and favourable conditions of work, and to protection against unemployment.",
+    "Everyone, without discrimination, has the right to equal pay for equal work.",
+    "Everyone who works has the right to remuneration that ensures an existence worthy of human dignity for themselves and their family.",
+]
+rl = ""
+for r in RIGHTS:
+    rl += '      <div class="belief">%s<p>%s</p></div>\n' % (CHECK, r)
+body += sec_wide('    <div class="panel panel--dark">\n'
+                 '      <p class="kicker kicker--light">Our philosophy &middot; What we believe</p>\n'
+                 '      <h2 class="h2" style="color:#fff;margin-bottom:1.6rem">In CORAfrica, we hold that:</h2>\n'
+                 + rl + "    </div>\n", cls="grad-warm-white", extra="section--flush-top section")
+body += sec(head_block("Our values", "Three convictions we build on.",
                        "CORAfrica&rsquo;s philosophy is rooted in Catholic Social Teaching, and reduces to three core "
                        "values that govern how we choose projects and how we hand them on.")
-            + grid([card(t, b) for t, b in VALUES], 3), cls="grad-paper-warm")
-# Registration and audit detail, from the 2025 financial report. Figures converted to US
-# dollars at the report's own 2025 rate (S6), because every figure on the site is in USD.
-body += sec(head_block("Accountability", "Registered, audited, and on the record.",
-                       "We are a registered charity in both countries we work in, our books are audited annually by "
-                       "an independent firm, and our accounts are available to funders on request.")
-            + grid([card("Registered in Nigeria", "Incorporated under the Companies and Allied Matters Act on 6 September 2010 as a Registered Trustee of an NGO. Certificate CAC/IT/NO 40479.", "Since 2010"),
-                    card("Registered in the United States", "A <span class='nolig'>501(c)(3)</span> non-profit, so gifts from US taxpayers are tax-deductible. EIN " + EIN + ".", "Since 2006"),
-                    card("Independently audited", "Our financial statements are audited by Akomaye Adie &amp; Co., Chartered Accountants and Tax Practitioners, of Calabar.", "Annually"),
-                    card("92.6% to programmes", "Of everything CORAfrica spent in the year ended 31 December 2025, 92.6% went to education, healthcare, economic empowerment and agriculture. Overheads were 7.4%.", "2025 accounts"),
-                    card("Assets we hold", "Land, school buildings, and a farm and agricultural station, carried in our 2025 accounts at about US $114,500.", "2025 accounts"),
-                    card("Governed by two boards", "A Board of Trustees in Nigeria and another in the United States oversee the organisation, with operations directed from our headquarters in Abuja.", "Governance")], 3)
-            + '    <div class="button-row" style="margin-top:1.9rem">\n'
-              '      <a class="button button--dark" href="transparency.html">Transparency and accountability</a>\n    </div>\n',
-            cls="grad-warm-white")
+            + grid([card(t, b) for t, b in VALUES], 3), cls="bg-white", extra="section--flush-top section")
+# The Accountability section that ended this page now opens Transparency (Fr. Peter, 2026-09-23).
 write("who-we-are.html", head("who-we-are.html", "Who We Are — CORAfrica",
-      "Our vision, mission, history and philosophy. CORAfrica has built schools in rural Nigeria since 2006, "
-      "rooted in Catholic Social Teaching.", "img/gathering.jpg")
+      "Our vision, mission, history, Boards of Trustees and philosophy. CORAfrica has built schools in rural "
+      "Nigeria since 2006, rooted in Catholic Social Teaching.", "img/gathering.jpg")
       + BANNER + header("who-we-are.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
@@ -1026,26 +1277,26 @@ write("who-we-are.html", head("who-we-are.html", "Who We Are — CORAfrica",
 # State, not "Abuja" (he named it New Karu; on 2026-09-22 he asked for "our new Community
 # Education Center" instead, and for no amount until its budget is verified); and "How a centre works" and "The priority" move here from the
 # strategic plan page, which is where his document places them.
-PROGRAMME_BLOCKS = [
-    ("Education", "classroom.jpg", "01", "Programme", "Pupils at their desks in a classroom",
-     "Our primary and secondary schools are centred where children have no educational opportunity at all, and equipped where they exist but lack the basics. Small classes, good teaching, and a holistic education that grows a child academically, personally and spiritually &mdash; with vocational training and skills acquisition at its heart.",
-     ["We run economic empowerment programmes inside our centres, so that poor parents can take soft loans to start the small businesses and farms that lift their livelihoods.",
-      "The HELP-A-KID programme reaches children who are not in a CORAfrica-supported school at all, so that a poorer child is encouraged into an adequate education in spite of their vulnerability."]),
-    ("Healthcare", "clinic.jpg", "02", "Programme", "A CORAfrica school clinic",
-     "Our clinic is built inside the school system, so a child&rsquo;s health is never the reason they miss class. We concentrate on prevention, early detection, health education, and the treatment of diarrhoeal disease and malaria in the under-fives. We invest heavily in the first 1,000 days of life, the window that sets brain development, growth and immune strength. Child welfare carries the same premium, through HELP-A-KID.",
-     ["The clinics run medical outreach to underserved places that have none of their own &mdash; rural communities, refugee settlements, schools and orphanages.",
-      "Through them, school children are taught personal hygiene, environmental sanitation, proper handwashing and safe drinking water."]),
+# The two programme blocks, "01 Programme" education and "02 Programme" healthcare, moved on to
+# What We Do on 2026-09-23 at his instruction, taking the "Inside a centre" section with them.
+
+# The three centres, each beside its own photograph (Fr. Peter, WhatsApp, 2026-09-23). St. Joseph's
+# sat on Track Record under John Bosco Academy, as if it were that school, and goes to Centre one,
+# where it is; the new block at John Stilley was on the Strategic Plan, and goes to Centre two. The
+# courtyard photograph sent with St. Joseph's joins the row of photographs below. Nasarawa has none,
+# because nothing there is built yet.
+CENTRES = [
+    ("st-josephs-idum-mbube.jpg", "The front of St. Joseph&rsquo;s Schools, Idum-Mbube, a two-storey block in blue and red",
+     "Centre one", "Idum-Mbube, Ogoja",
+     "St. Joseph&rsquo;s Schools and Orphanage, the Sr. Augustina Abuo Memorial Medical Clinic and the CORA Farms &mdash; a demonstration of the CEC model. Today it is being handed on."),
+    ("john-stilley-new-block.jpg", "A new block going up at the John Stilley Schools, Victoria-Ikom, beside a paved walkway",
+     "Centre two", "Victoria, Ikom",
+     "The John Stilley Schools, the Victoria Medical Center and the CORA Farms. Being handed on."),
+    (None, None, BUILD_STATUS, "Nasarawa State",
+     "Our next Community Education Centre, recently initiated, near Abuja."),
 ]
-blocks = ""
-for i, (name, img, num, label, alt, txt, points) in enumerate(PROGRAMME_BLOCKS):
-    media = ('        <div class="media"><img src="img/%s" alt="%s" loading="lazy" width="900" height="675"></div>\n'
-             % (img, alt))
-    pts = "".join("            <li>%s</li>\n" % x for x in points)
-    copy = ('        <div>\n          <p class="alt-num"><span>%s</span><span class="alt-rule"></span></p>\n'
-            '          <span class="card-tag">%s</span>\n'
-            "          <h3>%s</h3>\n          <p>%s</p>\n" % (num, label, name, txt)
-            + '          <ul class="sub-points">\n%s          </ul>\n        </div>\n' % pts)
-    blocks += '      <div class="alt-row">\n%s      </div>\n' % ((media + copy) if i % 2 == 0 else (copy + media))
+centre_rows = "".join(alt_row(i, img, alt, "%02d" % (i + 1), tag, name, txt)
+                      for i, (img, alt, tag, name, txt) in enumerate(CENTRES))
 
 body = hero("Our model", "A school on its own does not keep a child in class.",
             "Hunger, illness and a family with no income take more children out of class than any exam does. So a "
@@ -1058,32 +1309,23 @@ body += sec(head_block("The Community Education Centre", "Two programmes. One co
                        "keep a child in class. Hunger, illness and a family without income take more children out "
                        "of class than any exam does. This is Education for Africa&rsquo;s Future.")
             + cec_diagram(), cls="grad-paper-warm")
-body += sec(head_block("Inside a centre", "More than a school.",
-                       "A Community Education Centre brings learning, social welfare and empowerment together for "
-                       "the African child, inside the child&rsquo;s own community &mdash; above all for the child "
-                       "who would otherwise have no hope of a sustainable livelihood. It rests on education and "
-                       "healthcare alone. Agriculture, economic empowerment and skills training are not separate "
-                       "programmes but parts of the education itself, so that the whole community gathers its "
-                       "children into a school system that provides for parents as well as pupils.")
-            + blocks, cls="bg-white")
 body += sec(head_block("Where the model stands", "Proven twice. Now going to Nasarawa State.",
                        "The model was first built at Idum-Mbube, in Ogoja, and at Victoria, in Ikom. At each, a "
                        "school, a health centre and a farm were built. Both are working, and both are now being "
                        "handed to the institutions that will run them from 2027 &mdash; which is what they were "
                        "built for. We intend to replicate the model across Nigeria, beginning in "
                        "Nasarawa State.")
-            + grid([card("Idum-Mbube, Ogoja", "St. Joseph&rsquo;s Schools and Orphanage, the Sr. Augustina Abuo Memorial Medical Clinic and the CORA Farms &mdash; a demonstration of the CEC model. Today it is being handed on.", "Centre one"),
-                    card("Victoria, Ikom", "The John Stilley Schools, the Victoria Medical Center and the CORA Farms. Being handed on.", "Centre two"),
-                    card("Nasarawa State", "Our next Community Education Centre, recently initiated, near Abuja.", "Building now")], 3)
-            + shot_grid([("clinic.jpg", "The Sr. Augustina Abuo Memorial Medical Clinic",
+            + centre_rows
+            + shot_grid([("st-josephs-assembly.jpg",
+                          "Pupils in red and yellow house colours crossing the courtyard at St. Joseph&rsquo;s",
+                          "St. Joseph&rsquo;s courtyard, between classes &mdash; Idum-Mbube, Ogoja"),
+                         ("clinic.jpg", "The Sr. Augustina Abuo Memorial Medical Clinic",
                           "The Sr. Augustina Abuo Memorial Medical Clinic &mdash; Idum-Mbube, Ogoja"),
-                         ("john-bosco-lesson.jpg", "Pupils standing at their desks as a lesson begins",
-                          "A lesson at John Bosco Academy, Adagom"),
                          ("js-welcome.jpg", "Children outside John Stilley Secondary School",
                           "The John Stilley Schools &mdash; Victoria, Ikom"),
                          ("school-farm.jpg", "Students in school uniform working on a school farm",
                           "The school demonstration farm, worked by the pupils themselves")]),
-            cls="grad-white-strong")
+            cls="grad-warm-white")
 body += sec(head_block("How a centre works", "Study teams, not just classes.",
                        "Our Vocational and Skills Acquisition Centres are designed around pilot systems in which "
                        "children and young people form study teams together with parents, teachers and community "
@@ -1092,7 +1334,7 @@ body += sec(head_block("How a centre works", "Study teams, not just classes.",
             + grid([card("Children and parents together", "The school provides for parents and guardians as well as pupils, through farming support and micro-credit where it is available."),
                     card("Skills that outlast school", "Trades from computing and fashion design to building, solar installation and farming, to be taught hands-on."),
                     card("Built to be handed on", "Each centre is designed to be run by its community and partners, so that CORAfrica can move on and begin the next.")], 3),
-            cls="grad-warm-white")
+            cls="grad-white-paper")
 body += sec(head_block("The priority", "Our new Community Education Centre.",
                        "Our first two centres, at Idum-Mbube and Victoria-Ikom, proved the model, and are being "
                        "handed to the institutions that will run them from 2027. The next is in Nasarawa "
@@ -1164,21 +1406,38 @@ CENTRE_COSTS = [("$120,000", "Structural building and finishing"),
                ("$10,000", "Running costs for the first year"),
                ("$320,000", "<strong>Total</strong>")]
 
-RIGHTS = [
-    "Every child has the right to a standard of living adequate for their health and well-being.",
-    "Every child has the right to learn how to work, to free choice of employment, to just and favourable conditions of work, and to protection against unemployment.",
-    "Everyone, without discrimination, has the right to equal pay for equal work.",
-    "Everyone who works has the right to remuneration that ensures an existence worthy of human dignity for themselves and their family.",
+# "01 PROGRAMME in OUR MODEL (containing EDUCATION and HEALTHCARE) should now go to WHAT WE DO"
+# (Fr. Peter, WhatsApp, 2026-09-23). The two blocks come first, straight under the hero: the two
+# programmes, and then what CORAfrica runs under each.
+PROGRAMME_BLOCKS = [
+    ("Education", "classroom.jpg", "01", "Programme", "Pupils at their desks in a classroom",
+     "Our primary and secondary schools are centred where children have no educational opportunity at all, and equipped where they exist but lack the basics. Small classes, good teaching, and a holistic education that grows a child academically, personally and spiritually &mdash; with vocational training and skills acquisition at its heart.",
+     ["We run economic empowerment programmes inside our centres, so that poor parents can take soft loans to start the small businesses and farms that lift their livelihoods.",
+      "The HELP-A-KID programme reaches children who are not in a CORAfrica-supported school at all, so that a poorer child is encouraged into an adequate education in spite of their vulnerability."]),
+    ("Healthcare", "clinic.jpg", "02", "Programme", "A CORAfrica school clinic",
+     "Our clinic is built inside the school system, so a child&rsquo;s health is never the reason they miss class. We concentrate on prevention, early detection, health education, and the treatment of diarrhoeal disease and malaria in the under-fives. We invest heavily in the first 1,000 days of life, the window that sets brain development, growth and immune strength. Child welfare carries the same premium, through HELP-A-KID.",
+     ["The clinics run medical outreach to underserved places that have none of their own &mdash; rural communities, refugee settlements, schools and orphanages.",
+      "Through them, school children are taught personal hygiene, environmental sanitation, proper handwashing and safe drinking water."]),
 ]
-rl = ""
-for r in RIGHTS:
-    rl += '      <div class="belief">%s<p>%s</p></div>\n' % (CHECK, r)
+blocks = ""
+for i, (name, img, num, label, alt, txt, points) in enumerate(PROGRAMME_BLOCKS):
+    pts = "".join("            <li>%s</li>\n" % x for x in points)
+    blocks += alt_row(i, img, alt, num, label, name, txt,
+                      '          <ul class="sub-points">\n%s          </ul>\n' % pts)
 
 body = hero("What we do", "Education is the bedrock. Everything else is built on it.",
             "Getting a good education as a child is the essential building block of a tolerant, well-adjusted, healthy "
             "and prosperous adult. Families where parents completed primary and secondary school have higher incomes, "
             "better health and longer lives &mdash; and pass all of it on.",
             "what-we-do-hero.jpg", "A community gathered with CORAfrica for a distribution")
+body += sec(head_block("Our two programmes", "More than a school.",
+                       "A Community Education Centre brings learning, social welfare and empowerment together for "
+                       "the African child, inside the child&rsquo;s own community &mdash; above all for the child "
+                       "who would otherwise have no hope of a sustainable livelihood. It rests on education and "
+                       "healthcare alone. Agriculture, economic empowerment and skills training are not separate "
+                       "programmes but parts of the education itself, so that the whole community gathers its "
+                       "children into a school system that provides for parents as well as pupils.")
+            + blocks, cls="grad-white-paper")
 body += sec(head_block("What we run today", "Two programmes, under our own direction.",
                        "The schools and clinics we founded are being handed to the institutions that will run them "
                        "from 2027 &mdash; see our <a href=\"track-record.html\">track record</a>. These are the "
@@ -1208,7 +1467,13 @@ body += sec(head_block("Education", "A high-quality education is an inherent rig
                        "follow when a child is out of class.")
             + grid([card("Primary and secondary", "Conventional schooling, run properly &mdash; small classes, quality instruction, and preparation for an increasingly globalised world."),
                     card("Holistic by design", "Children are encouraged to grow academically, personally and spiritually, in an environment of curiosity, creativity and enthusiasm."),
-                    card("Tertiary and vocational", "Our educational component runs from primary through secondary to tertiary support and vocational skills acquisition.")], 3),
+                    card("Tertiary and vocational", "Our educational component runs from primary through secondary to tertiary support and vocational skills acquisition.")], 3)
+            # Sent by Fr. Peter on 2026-09-24 with "Just a girl child", answering C1 of Round 5: "Please
+            # send one of a CORAfrica pupil, straight from a phone", to go under education. It is a phone
+            # photograph, 1080x487, so it keeps its own shape. The school is not named, so neither is it here.
+            + wide_shot("girl-pupil.jpg",
+                        "A smiling schoolgirl in a cream uniform with a pink collar, at a wooden desk in a classroom",
+                        "Every child, especially the girl child.", 1080, 487),
             cls="grad-paper-warm")
 body += sec(head_block("VASAC", "Vocational and Skills Acquisition Centres.",
                        "We go a step beyond the conventional classroom and equip our schools so that students "
@@ -1230,9 +1495,7 @@ body += sec(head_block("Healthcare", "A child too ill to learn is not being educ
                     card("Community health workers", "A growing team providing health education and accompanying families through the process of seeking care."),
                     card("Water and sanitation", "Practical hand-washing hygiene, toilets, and water collection and treatment &mdash; taught in school, extended into the community and to refugee settlements.")], 3),
             cls="bg-white")
-body += sec_wide('    <div class="panel panel--dark">\n      <p class="kicker kicker--light">What we believe</p>\n'
-                 '      <h2 class="h2" style="color:#fff;margin-bottom:1.6rem">In CORAfrica, we hold that:</h2>\n'
-                 + rl + "    </div>\n", cls="grad-white-strong", extra="section--flush-top section")
+# What we believe, which ended this page, now opens Our Philosophy on Who We Are (2026-09-23).
 write("what-we-do.html", head("what-we-do.html", "What We Do — CORAfrica",
       "The programmes CORAfrica runs today — HELP-A-KID, economic empowerment, school clinics, demonstration farms "
       "and skills acquisition — and the education and healthcare approach behind them.", "img/what-we-do-hero.jpg")
@@ -1309,31 +1572,59 @@ programme_page(
                   card("Holy Family", "Ikom. Gives parishioners access to funds for small and larger enterprises.", "Parish"),
                   card("The CORAfrica programme", "Micro-credit for poor parents and guardians, especially in communities where a Community Education Centre operates.", "National")], 3),
           cls="grad-white-strong")
-    + sec(head_block("Two beneficiaries", "What a loan turned into.")
-          # Two businesses, two men. "Thomas Nsing opened the gym" (ASK-FR-PETER6, 2026-09-22, B5);
-          # the shop is the trader's at Ikom, named in the same answer as Emmanuel Eyo and corrected
-          # by Fr. Peter at 1:54 AM on 2026-09-23: "The name of the other guy given money (N100,000)
-          # to open a phone shop or POS business is Achu Owalu pls (not Emmanuel Eyo). He expanded
-          # it later into a phone accessories."
-          + grid([card("Thomas Nsing", "Received &#8358;3,000,000 to furnish and improve his gym.", "The gym"),
-                  card("Achu Owalu", "Received &#8358;100,000 to open a Point of Sale business at Ikom, and expanded it into phone accessories. He recently gave 20 POS machines to 20 other business owners &mdash; one loan, rippling outward.", "The ripple")], 2)
-          # Sent 2026-09-17 with "Please share these pics and video under the EEP system". The man
-          # in the photograph is Thomas Nsing (named 2026-09-18, confirmed by Ethan 2026-09-23).
-          # The phone shop is Achu Owalu's business, not his (above), so the caption names the man
-          # and does not say whose shop it is.
-          + single_shot("empowerment-shop.jpg",
-                        "Thomas Nsing standing in a phone-accessories shop, its shelves stocked with phone "
-                        "cases, power banks and earphones",
-                        "Thomas Nsing, one of the programme&rsquo;s beneficiaries, photographed for us.")
+    # "The story of the two beneficiaries under Education and Economic empowerment are not fully
+    # told" (Fr. Peter, WhatsApp, 2026-09-23). He sent "Past Beneficiaries of our EEP" with it, and
+    # forwarded IMG_6972.MOV as "Thomas Nsing Blessed testimony video". That reverses his "Please
+    # discard" of the same file (ASK-FR-PETER6, C4); the later message stands. The stories are his
+    # write-up, with the detail of Thomas's from Thomas's own words in the film.
+    # Two businesses, two men. "Thomas Nsing opened the gym" (ASK-FR-PETER6, 2026-09-22, B5); the
+    # shop is the trader's at Ikom, named in the same answer as Emmanuel Eyo and corrected by Fr.
+    # Peter at 1:54 AM on 2026-09-23: "The name of the other guy given money (N100,000) to open a
+    # phone shop or POS business is Achu Owalu pls (not Emmanuel Eyo). He expanded it later into a
+    # phone accessories."
+    # Achu's story was cut off at "Read more" in the first screenshot; the full text arrived on
+    # 2026-09-25 (Ethan). His closing paragraph is kept whole below, and the pull quote at the end is
+    # the last sentence of Thomas's in full, where it had been shortened.
+    + sec(head_block("Past beneficiaries", "What a loan turned into.",
+                     "Two businesses, and what each one made of the money.")
+          # The film is 100 seconds, portrait, from an iPhone in HLG HDR. It was converted to SDR with
+          # macOS avconvert (Homebrew's ffmpeg has no zscale to tone-map with) and then encoded to
+          # 540x960 H.264, 9.8 MB from 161 MB. Its end card shows the gym's own phone number.
+          + alt_row(1, None, None, "01", "The gym", "Thomas Nsing",
+                    "Thomas Nsing is a fitness trainer, and the founder of The Team DBB Fitness. He received "
+                    "&#8358;3,000,000 to furnish and improve his gym. When he started, the room was empty: "
+                    "&ldquo;We didn&rsquo;t have any equipment,&rdquo; he says, and for weights they used "
+                    "flywheels from a mechanic.",
+                    "          <p>The funding bought Olympic weights, a bench and a multi-station gym. The gym used "
+                    "to run one session. It runs three now, two in the morning and one in the evening, "
+                    "because the business has grown. In his own documentary he shares his experience, and "
+                    "the difference CORAfrica has made.</p>\n",
+                    media=clip("thomas-nsing.mp4", "thomas-nsing-poster.jpg",
+                               "Thomas Nsing, in his own words, at The Team DBB Fitness.", 540, 960))
+          # Sent 2026-09-17 with "Please share these pics and video under the EEP system", and named
+          # as Thomas Nsing on 2026-09-18. Unnamed again on 2026-09-23: Thomas's own film, which opens
+          # "My name is Nsing Thomas Blessed", shows a man who does not look like this one, and the
+          # shop is Achu Owalu's, not his. Asked of Fr. Peter; name him once he says who it is.
+          + alt_row(0, "empowerment-shop.jpg",
+                    "A man in white standing in Achu Owalu&rsquo;s phone-accessories shop, its shelves stocked "
+                    "with phone cases, power banks and earphones",
+                    "02", "The ripple", "Achu Owalu",
+                    "Achu Owalu received &#8358;100,000 to establish a Point of Sale business at Ikom, and "
+                    "later expanded it into the sale of phone accessories. Through the growth and success of "
+                    "his business, he has also found ways to give back to society.",
+                    "          <p>Recently he donated 20 POS machines to 20 business owners, helping to ease their "
+                    "business operations and creating opportunities for others. His story shows how supporting "
+                    "one person can create a ripple effect that benefits an entire community.</p>\n")
           + clip("phone-shop.mp4", "phone-shop-poster.jpg",
-                 "Fifteen seconds along the shelves, filmed for us.", 360, 640)
+                 "Fifteen seconds along the shelves of Achu Owalu&rsquo;s shop, filmed for us.", 360, 640)
           # 2.5:1 as it was taken, so it goes in the wide frame; the 4:3 one would cut the
           # children out of their own photograph.
           + wide_shot("fr-peter-with-children.jpg",
                       "Fr. Peter Abue with three laughing children outside a CORAfrica building",
                       "What the lending is for: a parent earning, and a child who stays in class.")
-          + '    <p class="pull">Meaningful empowerment is not simply financial assistance. <span>It is the '
-            "opportunity, the confidence and the resources to build a livelihood.</span></p>\n",
+          + '    <p class="pull">Meaningful empowerment is not simply about providing financial assistance. '
+            "<span>It is about giving people the opportunity, confidence and resources to build sustainable "
+            "livelihoods and improve their quality of life.</span></p>\n",
           cls="grad-paper-warm"))
 
 programme_page(
@@ -1634,14 +1925,11 @@ body += sec(head_block("Institutions we founded", "Schools and clinics, now in o
                        "the hand-over to the partners who will run them completes in 2027.")
             + '    <div class="register-head"><span>Institution</span><span>Location</span><span>Founded</span><span>Scale</span></div>\n'
             + rows
-            # Sent 2026-09-18 as one stacked image, split back into the two photographs it was
-            # made from. St. Joseph's is in the register above, so the pair sits under it.
-            + shot_grid([("st-josephs-idum-mbube.jpg",
-                          "The front of St. Joseph&rsquo;s Schools, a two-storey block in blue and red",
-                          "St. Joseph&rsquo;s Schools and Orphanage &mdash; Idum Mbube, Ogoja"),
-                         ("st-josephs-assembly.jpg",
-                          "Pupils in red and yellow house colours crossing the courtyard at St. Joseph&rsquo;s",
-                          "Its courtyard, between classes")]), cls="grad-paper-warm")
+            # The St. Joseph's pair that sat here read as a picture of John Bosco Academy, the row
+            # above it. Fr. Peter moved it to Centre one on Our Model (WhatsApp, 2026-09-23), and a
+            # photograph of John Bosco itself, from Our Model, takes its place.
+            + single_shot("john-bosco-lesson.jpg", "Pupils standing at their desks as a lesson begins",
+                          "A lesson at John Bosco Academy, Adagom."), cls="grad-paper-warm")
 body += sec(head_block("Programmes delivered", "Loans, training, classrooms and farms.",
                        "Beyond the institutions, CORAfrica has run programmes for families, refugees and displaced "
                        "people across Cross River and Benue States.")
@@ -1796,8 +2084,8 @@ TARGETS = [("10", "New Community Education Centres", "Education"),
 # (ASK-FR-PETER6, B1); the new centre carries none until its budget is verified (Fr. Peter,
 # 2026-09-22: "I don't think we should mention a specific amount anymore").
 COSTED = [("Our new Community Education Centre",
-           "Our next centre, recently begun in Nasarawa State, near Abuja. Its budget is being verified.",
-           "our-model.html", "Building now"),
+           "Our next centre, recently initiated in Nasarawa State, near Abuja. Its budget is being verified.",
+           "our-model.html", BUILD_STATUS),
           ("A Vocational and Skills Acquisition Centre",
            "A purpose-built skills centre, planned for our new Community Education Centre. <strong>US "
            "$320,000</strong> builds one and runs its first year.", "programme-vasac.html", "Costed")]
@@ -1888,11 +2176,15 @@ for i, (area, h2, lede, tiers) in enumerate(PLAN):
                    + "".join("      <li>%s</li>\n" % p for p in CEC_PARTS) + "    </ul>\n"
                    if area == "Community infrastructure" else "")
                 + grid([goals_card(t, items, tag) for (t, tag), items in zip(TIERS, tiers)], 3)
-                # The first pillar is the children's, so the photograph of the block going up
-                # belongs under it rather than on its own.
-                + (single_shot("john-stilley-new-block.jpg",
-                               "A new block under construction beside a paved walkway",
-                               "A new block going up at the John Stilley model, Victoria Village, Ikom.")
+                # The first pillar is the children's, so a school belongs under it. It was the
+                # photograph of the block going up at John Stilley until 2026-09-23, when Fr. Peter
+                # moved that to Centre two on Our Model and sent this film to replace it: "insert this
+                # video without voice". The audio is stripped from the file, not only muted. The
+                # school is not named in his message. It is John Stilley by the signs (School Hall,
+                # Physics Lab: a secondary school), the stamped walkway and the new blocks, which are
+                # the ones in the photograph it replaces.
+                + (clip("john-stilley.mp4", "john-stilley-poster.jpg",
+                        "Between classes at the John Stilley Schools, Victoria-Ikom.", 848, 478, muted=True)
                    if i == 0 else ""), cls=backgrounds[i])
 body += sec_wide(targets_panel(), cls="grad-paper-warm", extra="section--tight")
 body += sec(head_block("Where to start", "Two projects to begin with.",
@@ -2115,7 +2407,7 @@ body += sec(head_block("Give monthly", "Monthly gifts are what let us plan.",
                        "and Stripe handles the rest.")
             + '    <div class="amounts">\n' + amounts + "    </div>\n"
             + '    <p class="amounts-note">Every gift goes into one general fund, which we direct to wherever the need '
-              "is greatest &mdash; including our new Community Education Centre, now being built in Nasarawa State. We don&rsquo;t "
+              "is greatest &mdash; including our new Community Education Centre, about to be built in Nasarawa State. We don&rsquo;t "
               "promise that a particular dollar buys a particular thing, because we could not honestly keep that "
               "promise. A page for giving to named projects is on the way. Online gifts are in US dollars.</p>\n",
             cls="grad-paper-warm")
@@ -2147,7 +2439,8 @@ body += sec(head_block("Give once", "A single gift, in any amount.",
 body += sec(head_block("Where it went", "Our 2025 accounts, audited.",
                        "For the year ended 31 December 2025, independently audited by Akomaye Adie &amp; Co., "
                        "Chartered Accountants, of Calabar. Of everything we spent, <strong>92.6% went to "
-                       "programmes</strong>. Full statements are available to funders on request.")
+                       "programmes</strong>. The audited statements for 2022 to 2025 are on our "
+                       "<a href=\"transparency.html#accounts\">Transparency</a> page.")
             + '    <div class="costs">\n' + split + "    </div>\n"
             + '    <div class="button-row" style="margin-top:1.9rem">\n'
               '      <a class="button button--dark" href="transparency.html">Where every naira went</a>\n    </div>\n',
@@ -2178,11 +2471,10 @@ write("donate.html", head("donate.html", "Donate — CORAfrica",
 # CORAfrica_Transparency_and_Accountability.docx, written by CORAfrica's financial consultant and
 # forwarded by Fr. Peter on 2026-09-23: "From our Financial consultant. Pls publish what he sent".
 # His words and figures, with these changes:
-#   - No PDF downloads. The docx offers the audited statements for 2022-2025. In the voice note
-#     sent with it the consultant himself advises against publishing the statements in full, and
-#     asks that anything naming a donor be removed; and Fr. Peter asked on 2026-09-04 that the
-#     principal donor never be named, which the 2025 statements do. So the page says the full
-#     statements are available to funders on request, as Donate always has.
+#   - The audited statements are redacted copies (see ACCOUNTS below). Until 2026-09-24 they were
+#     not offered at all, only "on request": the consultant's voice note advised against publishing
+#     them in full and asked that anything naming a donor be removed, and Fr. Peter asked on
+#     2026-09-04 that the principal donor never be named. Then he sent the scans himself.
 #   - US dollars beside the naira, at the 2025 statements' own rate (S6), because every figure on
 #     the site is in US dollars (S10). The four-year table stays in naira: converting each year
 #     needs that year's rate, which we do not hold.
@@ -2262,6 +2554,34 @@ four = ('    <table class="ledger ledger--years">\n'
         + "    </table>\n"
         '    <p class="ledger-note">Millions of naira, from the audited statements for each year.</p>\n')
 
+# The audited statements themselves. Fr. Peter, 2026-09-24: "These are pdf files to be linked to our
+# Accountability section. They are our yearly audited financial records 2022-2025", and "Pls link
+# them to the website but don't put them out openly". Every year's note 7 names the principal
+# donor, which his own rule of 2026-09-04 forbids, so these are copies with that name blacked out
+# (in 2022 also a company donor in the 2021 comparative column), flattened to images so that no text
+# layer still carries it. Ethan chose redaction over publishing as sent, 2026-09-25.
+# "Not openly": linked from this table and nowhere else, never shown on the page, rel=nofollow, and
+# /accounts/ is disallowed in robots.txt. Anyone with the link can still open them.
+# 2022 and 2023 are his CamScanner scans; 2024 is twelve WhatsApp photographs of the statements, put
+# in page order; 2025 is the report he sent on 2026-09-01 (S6). The 2021 scan sent with them is left
+# out: it is outside the years he named, by a different auditor, and prints bank account numbers.
+ACCOUNTS = ["2025", "2024", "2023", "2022"]
+
+
+def accounts_table():
+    rows = ""
+    for year in ACCOUNTS:
+        pdf = "accounts/corafrica-audited-accounts-%s.pdf" % year
+        size = os.path.getsize(os.path.join(OUT, pdf)) / 1e6
+        rows += ('        <tr><th scope="row">%s<span>Audited Financial Statements, year ended 31 December %s</span>'
+                 '</th><td><a href="%s" rel="nofollow" type="application/pdf">PDF, %.1f&nbsp;MB</a></td></tr>\n'
+                 % (year, year, pdf, size))
+    return ('    <table class="ledger ledger--years">\n'
+            '      <thead><tr><th scope="col">Year</th><th scope="col">Download</th></tr></thead>\n'
+            "      <tbody>\n" + rows + "      </tbody>\n    </table>\n"
+            '    <p class="ledger-note">Copies of the statements as audited, with the names of private donors '
+            "withheld.</p>\n")
+
 body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
         '    <p class="kicker">Transparency &amp; accountability</p>\n'
         "    <h1>Your gift has an address.</h1>\n"
@@ -2271,6 +2591,22 @@ body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell
         '    <p class="lede">For twenty years, rural families have trusted us with their children&rsquo;s futures. You '
         "deserve the same honesty from us that they do. So on this page we open our books: what came in, where every "
         "naira went, and who checks our work.</p>\n  </div>\n</section>\n")
+# "Under WHO WE ARE, the last section ACCOUNTABILITY should be removed to begin the TRANSPARENCY
+# section of the main menu" (Fr. Peter, WhatsApp, 2026-09-23). So it opens the consultant's page,
+# whole but for its button to this page. Registration and audit detail are from the 2025 financial
+# report, in US dollars at the report's own 2025 rate (S6), because every figure on the site is.
+# The boards card now points to the boards themselves, which moved to Who We Are the same day.
+body += sec(head_block("Accountability", "Registered, audited, and on the record.",
+                       "We are a registered charity in both countries we work in, our books are audited annually by "
+                       "an independent firm, and the audited accounts are <a href='#accounts'>at the foot of this page</a>.")
+            + grid([card("Registered in Nigeria", "Incorporated under the Companies and Allied Matters Act on 6 September 2010 as a Registered Trustee of an NGO. Certificate CAC/IT/NO 40479.", "Since 2010"),
+                    card("Registered in the United States", "A <span class='nolig'>501(c)(3)</span> non-profit, so gifts from US taxpayers are tax-deductible. EIN " + EIN + ".", "Since 2006"),
+                    card("Independently audited", "Our financial statements are audited by Akomaye Adie &amp; Co., Chartered Accountants and Tax Practitioners, of Calabar.", "Annually"),
+                    card("92.6% to programmes", "Of everything CORAfrica spent in the year ended 31 December 2025, 92.6% went to education, healthcare, economic empowerment and agriculture. Overheads were 7.4%.", "2025 accounts"),
+                    card("Assets we hold", "Land, school buildings, and a farm and agricultural station, carried in our 2025 accounts at about US $114,500.", "2025 accounts"),
+                    link_card("Governed by two boards", "A Board of Trustees in Nigeria and another in the United States oversee the organisation, with operations directed from our headquarters in Abuja.",
+                              "who-we-are.html#boards", tag="Governance", cta="Meet the boards")], 3),
+            cls="grad-paper-warm", extra="section--flush-top section")
 body += sec(head_block("Where your gift goes", "Almost all of it reaches a child.",
                        "Picture a basket of tomatoes carried into a village to be shared. By the time the basket is "
                        "emptied, almost everything in it has reached the families waiting there. Only a couple of "
@@ -2279,7 +2615,7 @@ body += sec(head_block("Where your gift goes", "Almost all of it reaches a child
                       "classrooms, clinics, farms and family businesses: <strong>92.6%</strong>. A small share kept us "
                       "running &mdash; fuel for the vehicles that reach remote communities, phone and internet, "
                       "stationery, repairs, and the bookkeeping and audit that let us show you this page."),
-            cls="grad-paper-warm", extra="section--flush-top section")
+            cls="grad-warm-white")
 body += sec(head_block("2025 at a glance", "What we received, and what we spent.",
                        "In 2025 we received &#8358;383.1 million in donations (about US %s) and spent &#8358;433.1 "
                        "million (about US %s). Here is every naira of that spending."
@@ -2311,230 +2647,17 @@ body += sec(head_block("Audited accounts", "Don&rsquo;t take our word for it.",
                        "Every year, our accounts are independently audited by Akomaye Adie &amp; Co., Chartered "
                        "Accountants &amp; Tax Practitioners, Calabar. In each of the last four years the auditors have "
                        "confirmed that our financial statements give a true and fair view of CORAfrica&rsquo;s affairs.")
-            + article("The full audited statements for 2022, 2023, 2024 and 2025 are available to funders on request.")
-            + contact_block(),
-            cls="bg-white")
+            + accounts_table()
+            + contact_block(margin_top=True),
+            cls="bg-white", sid="accounts")
 body += sec_wide(donate_band(accounts=False), cls="bg-paper", extra="section--flush-top section--tight")
 write("transparency.html", head("transparency.html", "Transparency and Accountability — CORAfrica",
-      "Where every naira went: CORAfrica's 2025 spending, what it built, a four-year record, and who audits our "
-      "accounts.")
+      "How CORAfrica is registered, audited and governed, and where every naira went: 2025 spending, what it "
+      "built, and a four-year record.")
       + BANNER + header("transparency.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 
 # ============================================================== contact
-# Governance and staff from Fr. Peter's written answers of 2026-09-04 (S10), which superseded
-# the single board taken from the docx. He is shown as Founder.
-# Michael Abuo sat on both boards until 2026-09-16: FINAL WEB MENU (S16) lists him on Nigeria
-# only, and Ethan — who sits on the US board himself — confirmed the same day that he is off
-# it. He keeps his Nigeria seat, his headshot and his bio page.
-BOARD_NG = [("Michael Ana", "Chairman"), ("Mark Okpatuma", "Member"), ("Michael Abuo", "Member"),
-            ("Pamela Enamhe", "Member"), ("James Bulem", "Member"), ("Fr. Peter Abue", "Founder"),
-            ("Adewale Ajayi", "Member / Secretary")]
-BOARD_US = [("Chux Okochi", "Chairman"), ("Jeannine Goelz", "Member"),
-            ("Ethan Suquet", "Member"), ("Fr. Peter Abue", "Founder"), ("Silvia Okoro", "Member / Secretary")]
-ADMIN = [("Adewale Ajayi", "National Programmes Coordinator"), ("Jeannine Goelz", "Country Representative, USA"),
-         ("Elijah Ugani", "Project Manager I, Nigeria"), ("Silvia Okoro", "Office Coordinator, USA"),
-         ("OluRotimi Akinkunmi Padonu", "Grants Coordinator"), ("Edwin Okungbowa", "Project Manager II, Nigeria"),
-         ("Ethan Suquet", "IT Coordinator"), ("Blessing Ana", "Logistics, Nigeria")]
-# Titles stay as the written answers give them. Ethan, 2026-09-10: use the txt, even where
-# Fr. Peter's later WhatsApp list or a bio words a title differently.
-
-# Bios, lightly copy-edited from what was supplied: Michael Ana's own docx, the founder section
-# of WEB PAGES 3.docx, and the bios Fr. Peter posted on WhatsApp on 2026-09-06. Titles inside a
-# bio are brought into line with the lists above. Anyone missing here has no bio page yet;
-# docs/ASK-FR-PETER.md lists who still owes one.
-BIOS = {
-    "Michael Ana": [
-        "Michael is a certified Project Management Professional (PMP) and a business and financial advisory "
-        "consultant with more than 26 years of experience. His career has spanned banking operations, credit "
-        "analysis, treasury and asset management, and stockbroking, and he has held senior management positions "
-        "at a Pan-African bank, including Country Head, Commercial Banking, and Group Head, Lagos &amp; South "
-        "Zones. He is Principal Consultant at Dominion Excel Limited, helping commercial and mid-sized companies "
-        "with business transformation, process improvement and project management.",
-        "A graduate of Accounting, Michael is a Fellow of the Institute of Chartered Accountants of Nigeria (FCA) "
-        "and a Fellow of the Institute of Management Consultants (FIMC). He is also a change management "
-        "practitioner, and has been admitted by a US court as an expert witness in economic loss valuation. As a "
-        "consultant he has raised debt for companies through development finance institutions and structured "
-        "equity investments.",
-        "A keen football fan, Michael sits on the Board of Trustees of an All-Stars football club and on the board "
-        "of his local parish. His other interests are real estate and trading: he is a Director of The Yard "
-        "Terraces and of Dominion DTR Limited. He is happily married with children.",
-    ],
-    "Pamela Enamhe": [
-        "Pamela is a development finance professional with 20 years of experience spanning banking, strategy, "
-        "risk management, business analysis, data analysis and institutional development.",
-        "She is Head of the Credit Review Unit in the Risk Management Group of the Federal Mortgage Bank of Nigeria "
-        "(FMBN), and Secretary of the Bank&rsquo;s Management Credit Committee. She has held leadership roles in "
-        "strategy, business process improvement, performance management and internal audit.",
-        "A Certified Business Analysis Professional (CBAP), she holds ACCA certifications in Data Analysis and "
-        "Internal Audit, an M.Sc. in Banking and Finance and a B.Sc. in Economics.",
-        "She is the founder of the Pam-Zake Development Initiative (PDI), which works on housing finance, financial "
-        "inclusion, community development, youth empowerment and policy engagement, with particular attention to "
-        "informal-sector households and underserved communities.",
-    ],
-    "Mark Okpatuma": [
-        "Mark is a finance and accounting professional with more than a decade of experience in financial "
-        "governance, audit and accountability. He has a strong track record in financial reporting systems, "
-        "internal control frameworks, financial analysis, budgeting and risk management, and a particular interest "
-        "in capacity-building and training to strengthen financial literacy and governance. He holds an MBA and is "
-        "an Associate Chartered Accountant (ACA) of the Institute of Chartered Accountants of Nigeria (ICAN).",
-        "As a member of CORAfrica&rsquo;s Board of Trustees, he contributes technical accounting expertise and "
-        "governance oversight in support of the organisation&rsquo;s commitment to accountability, sound financial "
-        "management and the responsible use of resources.",
-    ],
-    "James Bulem": [
-        "James is an entrepreneur, media practitioner and public servant, with a B.A. Ed. in English and Education "
-        "from Lagos State University. His background is in broadcast media, entertainment and cultural "
-        "storytelling.",
-        "He serves as a Commission Member and Head of Planning, Research and Statistics at the Cross River State "
-        "Carnival Commission, following his contributions to the state&rsquo;s Tourism Cluster. He is committed to "
-        "building sustainable institutions that deliver value to his community, the state and humanity.",
-        "As CEO of The Grandmother Place, a restaurant and bar chain in Cross River State, James leads a hospitality "
-        "business, combining private-sector experience with public service to create jobs and promote Cross "
-        "River&rsquo;s culture and tourism. He is married with two children.",
-    ],
-    "Michael Abuo": [
-        "Prince Michael Abuo is a distinguished public servant, environmental scholar and community leader. He is "
-        "Special Adviser to the Governor of Cross River State on Interventions and Grants, and coordinator of the "
-        "African Union Development Agency (AUDA-NEPAD), the Renewed Hope Ward Development Programme and the Cross "
-        "River State Political Network (CRISPON).",
-        "A graduate of Microbiology with an M.Sc. in Environmental Resource Management, he is pursuing a Ph.D. in the "
-        "same field. He also holds an honorary doctorate in Public Administration from Escae University, Benin "
-        "Republic, and represented Nigeria at COP26 in Glasgow in 2021.",
-        "His public service began in student leadership at the University of Calabar and St. Patrick&rsquo;s "
-        "College, Calabar, and has included roles as Personal Assistant to the Governor, Special Assistant on "
-        "Students&rsquo; Affairs, and Director-General of the Cross River State Migration Control Agency.",
-        "A youth development advocate, political strategist and published poet and author, he is recognised for his "
-        "work in governance, environmental sustainability, migration management and grassroots mobilisation. He is "
-        "married with children.",
-    ],
-    "Adewale Ajayi": [
-        "Adewale is CORAfrica&rsquo;s National Programmes Coordinator, with a focus on education that restores "
-        "dignity and opportunity to rural children in Nigeria. In that role he also provides operational leadership "
-        "for CORAfrica in Nigeria, from partnership development and programme oversight to fiduciary stewardship "
-        "and community engagement.",
-        "He brings a practitioner&rsquo;s lens to programme design, making sure initiatives are locally owned, "
-        "financially prudent and built to last. With more than a decade of cross-sector experience in Nigeria, he "
-        "coordinates partnerships with community leaders, NGOs and the private sector, overseeing implementation "
-        "and compliance.",
-        "He is also a project development consultant, advising public and private stakeholders on feasibility, "
-        "stakeholder alignment and execution planning for community-impact projects.",
-    ],
-    # Sent as "Fr. Chux Okochi, President" and listed in the txt as Cornelius Okochi. Fr. Peter,
-    # 2026-09-14: show him as Chux Okochi, Chairman of the US board.
-    "Chux Okochi": [
-        "Chux Okochi chairs the Board of Trustees of Children of Rural Africa in the United States, bringing "
-        "steadfast leadership and a deeply rooted commitment to the organisation&rsquo;s humanitarian objectives. "
-        "Since taking on the role, he has been instrumental in translating strategic vision into community-focused "
-        "action.",
-        "His approach blends spiritual guidance with practical advocacy, keeping CORAfrica&rsquo;s initiatives "
-        "centred on the people they serve.",
-    ],
-    # Sent naming her Chiamaka S. Okoro, as "Secretary and Treasurer"; titles follow the txt.
-    "Silvia Okoro": [
-        "Silvia Okoro joined Children of Rural Africa in February 2026, bringing a diverse background in "
-        "administrative management to the leadership team. As Secretary to the US Board of Trustees and Office "
-        "Coordinator in the United States, she oversees the organisation&rsquo;s official records, making sure its "
-        "operations are transparent and meticulously documented.",
-        "Her work is driven by a deep dedication to the Nigerian communities CORAfrica serves, and a personal mission "
-        "to see every resource used to its fullest potential.",
-    ],
-    # His own updated bio, sent 2026-09-14, which settles the Duquesne degree (Corporate
-    # Communication, 1994) and the award month (June 2017). John Bosco Academy is left out,
-    # since it is not to be promoted; the PhD year follows his prose and his return date, 2006.
-    "OluRotimi Akinkunmi Padonu": [
-        "OluRotimi Akinkunmi Padonu is a seasoned executive and development finance specialist, supporting "
-        "CORAfrica&rsquo;s mission to transform rural communities. With more than 30 years of leadership experience "
-        "across the United Kingdom, Africa and the United States, he brings deep expertise in project finance, clean "
-        "energy and community-centred development.",
-        # His own words, 2026-09-18, in place of a closing line that said only that his guidance
-        # strengthened CORAfrica's ability to scale. This says what he actually does.
-        "He strengthens CORAfrica&rsquo;s governance and administrative systems to build the structures required "
-        "to deliver the organisation&rsquo;s 2026&ndash;2030 Strategic Plan. His work ensures CORAfrica is equipped "
-        "with the policies, documentation and institutional frameworks needed to unlock partnerships, grants and "
-        "multi-year funding for its expanding education, healthcare, agriculture and community programmes.",
-    ],
-    # His own bio opens "Elijah Ugani is programme Manager", which is Edwin Okungbowa's title in
-    # the list Fr. Peter confirmed on 2026-09-04. Brought into line with the list, as the other
-    # bios were; flagged in docs/ASK-FR-PETER.md for him to settle.
-    "Elijah Ugani": [
-        "Elijah Ugani is Project Manager I of CORAfrica, contributing to initiatives focused on education, economic "
-        "empowerment and support for vulnerable communities. His experience includes programmes designed to improve "
-        "educational opportunities for disadvantaged children and young people, and his particular interest is in "
-        "livelihood and skills-development work with economically vulnerable populations and refugees.",
-        "A development and community mobilisation specialist, he has worked with minority communities across public "
-        "health advocacy and civic engagement. His work is driven by a commitment to improving the lives of "
-        "vulnerable and underserved people &mdash; connecting communities with the skills, resources, opportunities "
-        "and practical development interventions that promote dignity, resilience and self-reliance.",
-    ],
-    "Blessing Ana": [
-        "Blessing Iyaji Ana is a leader and advocate for human capital development, with more than two decades of "
-        "experience in strategic leadership, business development, stakeholder management and organisational growth.",
-        "She holds a Master of Business Administration from the Franciscan University of Steubenville, Ohio, an "
-        "Executive Master&rsquo;s in Project Management and a Higher National Diploma in Accounting. She is a Fellow "
-        "of the West Africa Association of Customer Service Professionals and a Fellow of the Institute of Credit "
-        "Administration.",
-        "A wife and mother of three, Blessing believes that family is the foundation for nurturing faith, discipline, "
-        "compassion and service &mdash; the values essential to shaping future leaders.",
-    ],
-    "Edwin Okungbowa": [
-        "Edwin Okungbowa is Project Manager II of CORAfrica, in Abuja, where he coordinates projects and office "
-        "affairs across the Nasarawa axis. A businessman, entrepreneur and creative professional, he comes with "
-        "a strong background in digital media and business development.",
-        "As an entrepreneur he is committed to identifying opportunities, building sustainable ventures, and creating "
-        "platforms that connect people, ideas and businesses. His interests span hospitality management, property "
-        "development, entertainment, lifestyle and digital entrepreneurship.",
-        "Beyond business and entertainment, Edwin is driven by innovation, leadership and the desire to create "
-        "opportunities for others. His approach combines business thinking with creativity, allowing him to work "
-        "across different industries while continually exploring new ideas and ventures.",
-    ],
-    "Ethan Suquet": [
-        "Ethan Suquet is CORAfrica&rsquo;s IT Coordinator and a member of its United States Board of Trustees, "
-        "which he joined in July 2025. He has served as the board&rsquo;s Vice Chairman since September 2026.",
-        "A software developer by profession, he works for The Storyhaus Agency in Zelienople, Pennsylvania. For "
-        "CORAfrica he builds and maintains the website and the systems behind it &mdash; the charity&rsquo;s public "
-        "face, and the way most of its supporters first find the work.",
-        "A devout Catholic, he is a member of Most Precious Blood of Jesus Parish and lives in Evans City, "
-        "Pennsylvania. He was introduced to CORAfrica by Jeannine Goelz.",
-    ],
-    # "Since 2005", a year before the founding, is right: "the Ogoja project came first and was
-    # existing under Gospa Mission where Jeannine was working until CORAfrica was formalized in
-    # 2006" (Fr. Peter, ASK-FR-PETER6, 2026-09-22, B8).
-    "Jeannine Goelz": [
-        "Jeannine M. Goelz has been associated with CORAfrica&rsquo;s projects in Nigeria since 2005, when the "
-        "work in Ogoja was carried on under Gospa Mission, a year before CORAfrica was formally founded. Her "
-        "familiarity with the charity&rsquo;s history has shaped its direction and its decisions ever since.",
-        "For thirteen years she served as Sponsor Relations Coordinator for St. Joseph&rsquo;s Orphanage and School "
-        "in Ogoja. She was instrumental in finding new sponsors, and in sourcing the funding for a much-needed "
-        "medical clinic and for a school bus.",
-        "For the last ten years she has maintained the operation and the reporting of CORAfrica&rsquo;s American "
-        "side, and has hosted Fr. Peter in his work during his visits to the United States. She is dedicated to the "
-        "mission, with a long record of projects conceived, built from the ground up, and kept well maintained into "
-        "the future.",
-    ],
-    "Fr. Peter Abue": [
-        "Born in Idum-Mbube, in the Ogoja Local Government Area of Cross River State, Fr. Peter Abue was ordained "
-        "a Catholic priest of the Diocese of Ogoja in 1985. He went on to further study, taking a Master&rsquo;s "
-        "degree in Corporate Communication at Duquesne University, Pittsburgh, in 1994, and a PhD in International "
-        "Development at Cornell University, Ithaca, New York, in 2006.",
-        "As a corollary to that research he conceived Children of Rural Africa, incorporated as a "
-        "<span class='nolig'>501(c)(3)</span> non-profit in the United States in 2006 and registered as an NGO with "
-        "the Corporate Affairs Commission in Nigeria in 2010. In June 2017 the Cross River State Government honoured "
-        "him with a special award during its jubilee celebrations, Cross River@50.",
-        "Since returning from his studies he has initiated empowerment programmes and facilitated projects across "
-        "the diocese, among them St. Joseph Primary and Secondary School and the Sr. Augustina Abuo Memorial Medical "
-        "Clinic at Idum-Mbube, Little Flower School at Ipong-Obudu, the Ogoja Diocesan Agriculture and Investment "
-        "Program, the Thomas McGettrick Institute of Technology, the John Stilley Nursery and Primary Schools at "
-        "Victoria-Ikom, and the St. Thomas Aquinas and Holy Family economic empowerment programmes. Those "
-        "institutions are being handed on to the partners who will run them.",
-        # The St. Francis Humanitarian Mission is not to be named anywhere on the site until Fr. Peter
-        # has finished negotiating a memorandum of understanding (Ethan, 2026-09-14). His own bio was
-        # the last place it appeared; restore this line only when he says the MoU is signed.
-        "He is Parish Priest of Holy Family Parish, Ikom, and Vicar General of the Catholic Diocese of Ogoja.",
-    ],
-}
-
-
 def roles_of(name):
     out = []
     for group, where in ((BOARD_NG, "Board of Trustees, Nigeria"), (BOARD_US, "Board of Trustees, United States"),
@@ -2546,14 +2669,20 @@ def roles_of(name):
     return out
 
 
+# Since 2026-09-23 the boards are on Who We Are and the administrative team on Contact, so a
+# bio page leads back to whichever list its person is on, the boards first for anyone on both.
+ON_A_BOARD = {n for n, _ in BOARD_NG + BOARD_US}
+
 for name, paras in BIOS.items():
     page, roles = bio_page(name), roles_of(name)
     photo = HEADSHOTS.get(name)
     if photo and os.path.exists(os.path.join(OUT, "img", photo.replace(".jpg", "-lg.jpg"))):
         photo = photo.replace(".jpg", "-lg.jpg")
+    home, back, label = (("who-we-are.html", "who-we-are.html#boards", "Boards of Trustees") if name in ON_A_BOARD
+                         else ("contact.html", "contact.html#team", "Administrative team"))
     body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
-            '    <a class="bio-back" href="contact.html">&larr; Boards and team</a>\n'
-            '    <div class="bio-head">\n'
+            + '    <a class="bio-back" href="%s">&larr; %s</a>\n' % (back, label)
+            + '    <div class="bio-head">\n'
             + ('      <img class="bio-photo" src="img/%s" alt="%s" width="440" height="440">\n' % (photo, name) if photo else "")
             + '      <div>\n        <p class="kicker">Our people</p>\n        <h1>%s</h1>\n' % name
             + '        <ul class="bio-roles">\n' + "".join("          <li>%s</li>\n" % r for r in roles) + "        </ul>\n"
@@ -2563,29 +2692,29 @@ for name, paras in BIOS.items():
     write(page, head(page, "%s — CORAfrica" % name,
                      "%s: %s at CORAfrica, Children of Rural Africa." % (name, "; ".join(roles)),
                      og_img="img/" + (photo or "hero.jpg"))
-          + BANNER + header("contact.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
+          + BANNER + header(home) + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 body = ('<section class="page-hero-light grad-white-paper">\n  <div class="shell">\n'
         '    <p class="kicker">Contact us</p>\n'
         "    <h1>Talk to the people running the work.</h1>\n"
-        '    <p class="lede">Our operations are directed from our headquarters in Abuja and overseen by two Boards '
-        "of Trustees, one in Nigeria and one in the United States. For partnership, grant or press enquiries, write "
-        "to us and we will route you to the right person.</p>\n  </div>\n</section>\n")
-body += sec(head_block("Boards of Trustees", "Governance.")
-            + '    <h3 class="group-label">Nigeria</h3>\n' + grid([person(n, r) for n, r in BOARD_NG], 4)
-            + '    <h3 class="group-label">United States</h3>\n' + grid([person(n, r) for n, r in BOARD_US], 4),
-            cls="grad-paper-warm", extra="section--flush-top section")
+        '    <p class="lede">Our operations are directed from our headquarters in Abuja and overseen by two '
+        '<a href="who-we-are.html#boards">Boards of Trustees</a>, one in Nigeria and one in the United States. For '
+        "partnership, grant or press enquiries, write to us and we will route you to the right person.</p>\n"
+        "  </div>\n</section>\n")
+# The Boards of Trustees moved to Who We Are on 2026-09-23; "the ADMINISTRATIVE Team (Delivery)
+# should stay in CONTACT" (Fr. Peter). The lede above links to the boards.
 body += sec(head_block("Administrative team", "Delivery.")
-            + grid([person(n, r) for n, r in ADMIN], 4), cls="bg-white")
+            + grid([person(n, r) for n, r in ADMIN], 4),
+            cls="grad-paper-warm", extra="section--flush-top section", sid="team")
 body += sec(head_block("Offices", "Where to find us.")
             + grid([card("Nigeria &mdash; headquarters", ", ".join(NG_ADDRESS) + ". Our national office directs our programmes and the new Community Education Centre."),
                     card("Cross River State", "Our programmes run across the Ogoja&ndash;Ikom axis of Cross River State, where the schools, clinics and empowerment programmes we founded are."),
                     card("United States", ", ".join(US_ADDRESS) + ". Our <span class='nolig'>501(c)(3)</span> entity and US board.")], 3)
             + contact_block(margin_top=True),
-            cls="grad-white-strong")
+            cls="grad-warm-white")
 write("contact.html", head("contact.html", "Contact Us — CORAfrica",
-      "CORAfrica's Boards of Trustees in Nigeria and the United States, our administrative team, and our offices "
-      "in Abuja and New York.")
+      "CORAfrica's administrative team, our offices in Abuja and New York, and how to reach us by email and "
+      "phone.")
       + BANNER + header("contact.html") + '<main id="main">\n' + body + "</main>\n" + FOOTER)
 
 

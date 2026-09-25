@@ -1,0 +1,4 @@
+# The audited accounts are linked from transparency.html but kept out of search results,
+# at Fr. Peter's request (2026-09-24): "link them to the website but don't put them out openly".
+User-agent: *
+Disallow: /accounts/
