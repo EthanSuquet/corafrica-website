@@ -116,7 +116,9 @@ questions page. Set it back to `None` and the placeholder returns. The phone num
 
 The full list of what is still open with Fr. Peter is `docs/ASK-FR-PETER.md` (local only).
 
-## 🔴 Before this goes live
+## ✅ Launched 2026-09-25
+
+The site went live on corafrica.org.ng on 2026-09-25. Every item below is settled.
 
 1. ~~**The new email address.**~~ Settled 2026-09-22: `info@corafrica.org.ng`. The mailbox is on the
    cPanel host and forwards to Jeannine and Ethan.
@@ -125,22 +127,38 @@ The full list of what is still open with Fr. Peter is `docs/ASK-FR-PETER.md` (lo
    confirmed (Ethan, 2026-09-10).
 3. ~~**Two bios still to come.**~~ Jeannine Goelz's and Ethan Suquet's were written on 2026-09-17. The
    administrative team need a photo only, not a bio (Fr. Peter, 2026-09-14), and every one of them has one.
-4. **WordPress comes down**; its GiveWP donation records and media library pass to the new site
-   (Fr. Peter, 2026-09-04). Export both before anything is switched off.
-5. **DNS.** Ethan is the sole controller of the domain (Fr. Peter, 2026-09-04). Point
-   corafrica.org.ng at the host, then restore a `CNAME`. ⚠️ **Mail first.** The zone lives in the WhoGoHost
-   cPanel, and its MX record points at `corafrica.org.ng` itself, with `mail.` a CNAME to it. Repoint only the
-   A record and mail to `info@` goes to GitHub and bounces. Make `mail.corafrica.org.ng` an A record to
-   176.74.16.235 and point the MX at it *before* switching the website.
+4. ~~**WordPress comes down.**~~ Ethan exported the GiveWP donation records and the media library first.
+   On 2026-09-25 its files were moved, not deleted, out of `public_html` into `~/wordpress-retired-2026-09-25/`
+   on the cPanel host, outside the web root. Its database is untouched.
+5. ~~**DNS.**~~ Switched 2026-09-25 in the WhoGoHost cPanel Zone Editor, mail first. See *Deploying*.
 
 ## Deploying
 
 The site is plain static files — any host works.
 
-**Preview:** `.github/workflows/pages.yml` publishes `site/` to GitHub Pages on every push to
-`main`, injecting `noindex` at deploy time so the staging URL cannot be indexed or compete with
-corafrica.org.ng. No `CNAME` is committed — adding one would make Pages claim the live domain,
-which still serves WordPress. Restore it only once DNS actually points at Pages.
+**Live:** `.github/workflows/pages.yml` publishes `site/` to GitHub Pages on every push to `main`, and it is
+live on <https://corafrica.org.ng> within a minute. The custom domain is set in the repository's Pages
+settings, not by a committed `CNAME` file, which an Actions deploy ignores. HTTPS is enforced, and GitHub
+renews the certificate itself.
+
+**DNS** is in the WhoGoHost cPanel (Zone Editor; Ethan is the sole controller, Fr. Peter 2026-09-04):
+
+| Record | Points at |
+|---|---|
+| `corafrica.org.ng` A | GitHub Pages: `185.199.108.153`, `.109.153`, `.110.153`, `.111.153` |
+| `www` CNAME | `ethansuquet.github.io` (GitHub redirects it to the bare domain) |
+| `mail` A | `176.74.16.235`, the cPanel server |
+| MX | `0 mail.corafrica.org.ng` |
+| `_cal/carddav(s)._tcp` SRV | `mail.corafrica.org.ng` |
+
+⚠️ **Mail never depends on the bare domain.** Until 2026-09-25 the MX pointed at `corafrica.org.ng` itself and
+`mail.` was a CNAME to it, so moving the website would have sent `info@` to GitHub. Both now point at the cPanel
+server directly, and cPanel's mail routing is pinned to *Local Mail Exchanger*. Keep it that way: never point the
+MX, or any record mail uses, back at the bare domain. Email apps should use `mail.corafrica.org.ng` as the server.
+
+`public_html` on the cPanel host now holds only a holding page (`index.html` and an `.htaccess`) for visitors whose
+DNS still cached the old address during the switch. It can go once that has passed. Keep `.well-known/`: cPanel's
+AutoSSL uses it to renew the certificate for `mail.` and `webmail.`.
 
 Repo: <https://github.com/EthanSuquet/corafrica-website> (public).
 
