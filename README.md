@@ -6,7 +6,7 @@ no build toolchain beyond one Python script.
 
 ```
 site/            ← the deployable. Upload this directory, nothing else.
-  *.html            32 pages (generated — see below)
+  *.html            33 pages (generated — see below)
   styles.css        the whole design system
   script.js         mobile nav and scroll reveals; the site works without JS
   img/              logo SVGs, photography, team/ headshots
@@ -28,8 +28,8 @@ python3 build.py
 ```
 
 Regenerates every page into `site/`. Ten are in the main menu — Home, Who We Are, Our Model, What We Do,
-Track Record, Strategic Plan, Transparency, News, Donate, Contact — and twenty-two are not: five
-`programme-*.html` pages, fifteen `team-*.html` bio pages, `faq.html` and one news story,
+Track Record, Strategic Plan, Transparency, News, Donate, Contact — and twenty-three are not: five
+`programme-*.html` pages, sixteen `team-*.html` bio pages, `faq.html` and one news story,
 `news-twenty-years.html`. Those are reached by clicking a card or a button, or from the footer in the case of
 the questions page. **The menu collapses to a button below 1240px**, not only on phones: eight links do not fit
 on one line any narrower. **The generated HTML carries a do-not-edit banner** — the
@@ -190,7 +190,7 @@ widest file on disk was also one of the softest, and it was the old home hero.
 
 Headshots live in `site/img/team/` (168 × 168, plus a larger `-lg` version for the bio pages) and are
 wired by name in `HEADSHOTS` in `build.py`; anyone without one shows their initials. **Only add a
-headshot once you are certain who is in it.** All fifteen people on the boards and the team have one. Thirteen
+headshot once you are certain who is in it.** All sixteen people on the boards and the team have one; Michael Paluda's came with his bio (2026-10-01). Thirteen
 were matched on 2026-09-10 against Fr. Peter's messages of 2026-09-06: each board photo sits between
 that trustee's name and their details, and each admin-team photo is followed by its "Name (Role)"
 caption. Olurotimi Padonu's comes from `rotimi.docx`, and Ethan supplied his own. **Blessing Ana's was
@@ -299,3 +299,33 @@ nothing else. Four departures from it are recorded at the top of the strategic-p
 4. **Fr. Peter is shown as Founder and kept low-profile**, at his request.
 5. **Nothing about where the money came from.** The site names no donor and says nothing about how
    concentrated income is, at Fr. Peter's explicit request.
+
+## Fr. Peter's notes of 1 October 2026
+
+- **The school at Victoria is "the Victoria Schools", never John Stilley.** The name is gone from every page, and so is
+  every photograph showing it: the painted welcome wall and the signboard shots. The new set (WhatsApp, 2026-09-29) is
+  in `photos/source/whatsapp-2026-09-29/` (gitignored). Three of its own photos show the signboard: use them only
+  cropped below it.
+- **The next centre is "proposed near Abuja"**, nothing more precise, until there is a 3-D design or model, and no
+  amount until there is a budget. `BUILD_STATUS` reads *Proposed*.
+- **Our Model carries "The model, live"**, a gallery built from that set, with his own captions.
+- **The home page opens on Fr. Peter with three laughing children** (his selfie, 2026-09-18), chosen so his face
+  shows clearly beside the headline (Ethan, 2026-10-01). On desktop the photograph takes the right of the card
+  and fades into the dark under the text; on tablets and phones it sits above the text.
+
+## Phones and tablets (audit of 1 October 2026)
+
+Every page was captured at 390px and compared with desktop, and the findings were fixed site-wide. The rules
+live in the *phone pass* block at the end of `styles.css`, which sits last on purpose so that it wins the
+cascade without raising specificity.
+
+- **Heroes stack below 1024px**: the photograph sits above the text, never under it. `hero(pos=)` points the crop
+  at an off-centre subject (`HERO_POS` for programme pages).
+- **A grid chooses its phone layout**: `grid(cards, cols, m=)`. Use `"rail"` (a swipeable row) for a run of
+  like things, `"duo"` (two to a row) for short cards, and `"list"` (ruled rows, no card chrome) for steps and
+  reasons. With no `m`, the grid is one column as before.
+- **`wide_shot(crop_m=True)`** for a wide photograph of people, which is cropped to 4:3 on a phone. Without it,
+  a wide image is treated as a rendering and runs edge to edge.
+- **On a phone the questions page folds** (`script.js`). Each answer opens from its question, and without JS
+  every answer stays open.
+- The alternating photo-and-text rows always put the photograph first once they stack.

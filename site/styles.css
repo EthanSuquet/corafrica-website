@@ -88,6 +88,12 @@ h1, h2, h3, h4 {
   line-height: 1.05;
   margin: 0;
 }
+/* Heavier by rank (Fr. Peter, 2026-10-01: "make headings bolder according to their order of
+   importance"). Space Grotesk is variable to 700, loaded as a range, so the steps can sit between
+   its named weights: page titles heaviest, section titles next, then the rest. */
+h1 { font-weight: 700; }
+h2 { font-weight: 660; }
+h3, h4 { font-weight: 620; }
 
 :focus-visible {
   outline: 3px solid rgba(251, 96, 10, 0.55);
@@ -139,7 +145,7 @@ h1, h2, h3, h4 {
 .js-anim a.photo-card[data-reveal].is-in:hover { transform: translateY(-4px); }
 
 /* The hero photograph settles out of a slow push-in. Runs once, forwards. */
-.js-anim .hero-card > img { animation: heroSettle 2600ms cubic-bezier(.16,.72,.3,1) both; }
+.js-anim .hero-card > img, .js-anim .hero-card > picture > img { animation: heroSettle 2600ms cubic-bezier(.16,.72,.3,1) both; }
 @keyframes heroSettle {
   from { transform: scale(1.10); }
   to   { transform: scale(1); }
@@ -168,7 +174,7 @@ h1, h2, h3, h4 {
 @media (prefers-reduced-motion: reduce) {
   .js-anim [data-reveal],
   .js-anim .hero-body > * { opacity: 1; transform: none; transition: none; animation: none; }
-  .js-anim .hero-card > img { animation: none; }
+  .js-anim .hero-card > img, .js-anim .hero-card > picture > img { animation: none; }
 }
 
 /* ---------------------------------------------------------------- layout */
@@ -279,9 +285,23 @@ h1, h2, h3, h4 {
    top line off once a hero carried a button as well as a long lede (Donate, 2026-09-23). */
 .hero-card--page { height: auto; min-height: 392px; }
 .hero-card--page .hero-body { min-height: inherit; padding-top: 40px; }
-.hero-card > img {
+.hero-card > img, .hero-card > picture > img {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: center 38%;
+}
+/* Home: the photograph is all faces, so on desktop it takes the right of the card and fades into
+   the dark the text sits on, rather than lying under the headline. */
+@media (min-width: 1024px) {
+  .hero-card--home { background: #101318; }
+  .hero-card--home > img {
+    left: auto; right: 0; width: 64%; object-position: 50% 30%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 30%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 30%);
+  }
+  .hero-card--home .hero-scrim { background: linear-gradient(0deg, rgba(8, 12, 16, 0.35), rgba(8, 12, 16, 0) 40%); }
+  .hero-card--home .hero-sheen { display: none; }
+  .hero-card--home .hero-body h1 { max-width: 12ch; }
+  .hero-card--home .hero-body p { max-width: 44ch; }
 }
 .hero-scrim {
   position: absolute; inset: 0;
@@ -426,7 +446,7 @@ h1, h2, h3, h4 {
   display: flex; flex-direction: column; gap: 11px;
   box-shadow: var(--shadow-card);
 }
-.card h3 { font-family: Manrope, sans-serif; font-size: 19px; font-weight: 700; letter-spacing: -0.03em; }
+.card h3 { font-family: Manrope, sans-serif; font-size: 19px; font-weight: 800; letter-spacing: -0.03em; }
 .card p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
 .card-tag {
   align-self: flex-start; padding: 4px 10px; border-radius: 999px;
@@ -489,7 +509,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
 .tl-row { display: grid; grid-template-columns: 108px 1fr; gap: 30px; padding: 24px 0; border-top: 1px solid var(--line-strong); }
 .tl-year { font-family: "Space Grotesk", sans-serif; font-size: 17px; font-weight: 600; color: var(--accent); letter-spacing: -0.02em; }
-.tl-row h3 { font-family: Manrope, sans-serif; font-size: 19px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 6px; }
+.tl-row h3 { font-family: Manrope, sans-serif; font-size: 19px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
 .tl-row p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); max-width: 74ch; }
 
 /* ---------------------------------------------------------------- press */
@@ -503,7 +523,7 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
 
 .press-card { background: #fff; border: 1px solid var(--line); border-radius: 1.4rem; padding: 24px 26px 26px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 18px 44px rgba(14, 18, 24, 0.05); }
 .press-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.press-card h3 { font-family: Manrope, sans-serif; font-size: 16.5px; font-weight: 700; line-height: 1.28; letter-spacing: -0.025em; }
+.press-card h3 { font-family: Manrope, sans-serif; font-size: 16.5px; font-weight: 800; line-height: 1.28; letter-spacing: -0.025em; }
 
 /* ---------------------------------------------------------------- donate */
 
@@ -995,4 +1015,195 @@ a.photo-card:hover { transform: translateY(-4px); box-shadow: 0 32px 70px rgba(2
   .stats--9 { grid-template-columns: 1fr 1fr; gap: 26px 18px; }
   .stats--9 > div:last-child { grid-column: 1 / -1; }
   .stats--9 .stat-n { font-size: 36px; }
+}
+
+/* ================================================================ phone pass, 2026-10-01
+   From a page-by-page audit of every page at 390px against desktop. It sits last so that it
+   wins without raising specificity: an earlier phone rule (.section's padding) had been
+   silently overriding .section--flush-top. Desktop is untouched by everything below. */
+
+/* Headings break into balanced lines instead of leaving one word alone on the last. */
+h1, h2, h3, .h2, .statement, .pull { text-wrap: balance; }
+.card h3 { line-height: 1.22; }
+
+/* A question on the questions page is a button (it folds on phones) but reads as its heading. */
+.faq-q { all: unset; display: block; cursor: text; }
+.faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+/* Hero focal point: a page can point the narrower crops at its subject (hero(pos=)). */
+.hero-card > img, .hero-card > picture > img { object-position: var(--pos, center 38%); }
+
+/* Every photograph above the text, never under it: tablets stack the alternating rows too. */
+@media (max-width: 1023px) {
+  .alt-row > .media, .alt-row > .shot { order: -1; }
+  /* Heroes: the photograph above the text rather than under it, so no headline covers a face. */
+  .hero-card, .hero-card--page { height: auto; min-height: 0; display: flex; flex-direction: column; }
+  .hero-card > picture { display: block; }
+  .hero-card > img, .hero-card > picture > img {
+    position: relative; inset: auto; display: block; width: 100%; height: auto; aspect-ratio: 2 / 1;
+  }
+  .hero-scrim, .hero-sheen { display: none; }
+  .hero-body, .hero-card--page .hero-body { height: auto; min-height: 0; padding: 30px 36px 34px; }
+  .hero-card--home > img { aspect-ratio: 16 / 9; object-position: 50% 35%; }
+}
+
+@media (max-width: 639px) {
+  /* ---- rhythm */
+  .section { padding: 40px 0; }
+  .section--tight { padding: 32px 0; }
+  .section--flush-top { padding-top: 8px; }
+  .page-hero-light { padding: 34px 0 26px; }
+  .section-head { margin-bottom: 1.5rem; }
+  .split, .split--media { gap: 1.6rem; }
+  main img[src$="corafrica-seal.svg"] { width: 150px !important; }
+
+  /* ---- type: the lede was smaller than the body text it introduces */
+  .lede { font-size: 15.5px; line-height: 1.6; }
+  .section-head + p:not([class]) { font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .kicker { letter-spacing: 0.1em; line-height: 1.5; }
+  .pull { font-size: 21px; line-height: 1.26; margin-top: 2rem; padding-top: 1.5rem; }
+  .card .statement { font-size: 18px; font-weight: 500; line-height: 1.34; }
+
+  /* ---- heroes (stacked from 1023px down, below): phone sizes */
+  .hero-card > img, .hero-card > picture > img { aspect-ratio: 16 / 10; }
+  .hero-body, .hero-card--page .hero-body { padding: 22px 22px 26px; }
+  .hero-body h1, .hero-card--page .hero-body h1 { margin-bottom: 12px; }
+  .hero-body p { font-size: 15px; line-height: 1.55; margin-bottom: 0; }
+  .hero-body .eyebrow { margin-bottom: 10px; }
+  .hero-body p + .button-row, .hero-body p + .button { margin-top: 20px; }
+  .hero-body .button-row { flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .hero-body .button { width: auto; min-height: 46px; padding: 0 20px; font-size: 15px; }
+
+  /* ---- buttons: full width only for the main asks; the dark "read more" slabs size to their text */
+  .button--dark, .button--plain {
+    width: auto; align-self: flex-start; min-height: 48px; padding: 0 22px;
+    box-shadow: 0 8px 18px rgba(19, 20, 22, 0.1);
+  }
+  .site-header .button--accent { box-shadow: 0 4px 12px rgba(251, 96, 10, 0.22); }
+
+  /* ---- panels: the inset glow drew a box inside the box */
+  .panel::before { inset: 0; }
+  .panel { padding: 24px 18px 26px; }
+  .donate-band .kicker { margin-bottom: 12px; }
+  .donate-band h2 { font-size: 26px; }
+  .donate-fine a { white-space: nowrap; }
+
+  /* ---- grids: three phone layouts in place of one long column (grid(m=)) */
+  .grid--m-rail {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%;
+    gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+    margin-inline: calc(-1 * var(--gutter)); padding: 4px var(--gutter) 22px;
+    scrollbar-width: none;
+  }
+  .grid--m-rail::-webkit-scrollbar { display: none; }
+  .grid--m-rail > * { scroll-snap-align: start; }
+  .grid--m-rail { align-items: start; }
+  .grid--m-rail .photo-card { height: 340px; }
+
+  .grid--m-duo { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid--m-duo > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .grid--m-duo .card { padding: 16px 15px 17px; gap: 8px; }
+  .grid--m-duo .card h3 { font-size: 15.5px; }
+  .grid--m-duo .card p { font-size: 13px; }
+  .grid--m-duo .card-tag { font-size: 10.5px; padding: 3px 8px; }
+
+  .grid--m-list { grid-template-columns: 1fr; gap: 0; }
+  .grid--m-list .card {
+    background: none; border: 0; border-top: 1px solid var(--line); border-radius: 0;
+    box-shadow: none; padding: 17px 0 18px; gap: 6px;
+  }
+  .grid--m-list .card:last-child { border-bottom: 1px solid var(--line); }
+  .grid--m-list .card h3 { font-size: 17px; }
+  .grid--m-list .card p { font-size: 14.5px; }
+  .grid { gap: 12px; }
+  .card { padding: 20px 20px 22px; }
+
+  /* ---- photographs */
+  .shot-grid { grid-template-columns: 1fr 1fr; gap: 14px 10px; }
+  .shot .media img { height: auto; aspect-ratio: 1 / 1; }
+  .shot figcaption { font-size: 12px; margin-top: 7px; line-height: 1.4; }
+  .shot-grid + .shot-grid { margin-top: 14px; }
+  .shot img[src$="handover-classroom.jpg"] { object-position: 100% 50%; }
+  .shot--single .media img { aspect-ratio: 4 / 3; }
+  .media-pair { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .media-pair .media img { height: 170px; }
+  .photo-card { height: 340px; }
+  .photo-card > img { object-position: center 30%; }
+  /* Wide photographs of people get a 4:3 crop; renderings keep their shape, edge to edge. */
+  .shot--wide-crop .media--wide img { aspect-ratio: 4 / 3 !important; object-fit: cover; object-position: 50% 40%; }
+  .shot--wide-bleed { margin-inline: calc(-1 * var(--gutter)); max-width: none; }
+  .shot--wide-bleed .media { border-radius: 0; box-shadow: none; }
+  .shot--wide-bleed figcaption { padding-inline: var(--gutter); }
+  .shot--wide + .grid { margin-top: 1.8rem; }
+  .alt-row .media img[src$="cec-proposed.jpg"] { aspect-ratio: 960 / 346 !important; }
+  /* Portrait films were sized for desktop and filled a whole phone screen. */
+  .shot--clip:not(.shot--clip-wide) { max-width: 240px; }
+
+  /* ---- people: compact rows instead of tall cards */
+  .grid--4:has(.person) { gap: 8px; }
+  .person { padding: 12px 40px 12px 12px; border-radius: 14px; box-shadow: none; gap: 13px; }
+  .person-photo, .person-initials { flex-basis: 48px; width: 48px; height: 48px; }
+  .person-name { font-size: 16px; margin-bottom: 2px; }
+  .person-role { font-size: 13px; }
+  .person--link::after { right: 14px; opacity: 0.8; }
+
+  /* ---- bio pages */
+  .bio-back, .back-link { display: inline-flex; align-items: center; min-height: 44px; margin: -10px 0 0.8rem; }
+  .bio-back--end { margin: 1.2rem 0 0; }
+  .bio-photo { flex-basis: 128px; width: 128px; height: 128px; box-shadow: 0 10px 24px rgba(14, 18, 24, 0.12); }
+  .bio-roles li + li { margin-top: 2px; }
+
+  /* ---- press: the whole row opens the story, and outlet and date share a line */
+  .press-row { position: relative; gap: 6px; padding: 18px 0; }
+  .press-row > div:first-child { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .press-date { margin-top: 0; }
+  .press-go a::after { content: ""; position: absolute; inset: 0; }
+  .press-go { display: block; position: static; height: 0; overflow: visible; font-size: 0; }
+
+  /* ---- questions fold on a phone (script.js) */
+  .faq-folding .faq-q { cursor: pointer; position: relative; padding-right: 34px; -webkit-tap-highlight-color: transparent; }
+  .faq-folding .faq-q::after {
+    content: "+"; position: absolute; right: 2px; top: 50%; transform: translateY(-50%);
+    font-family: Manrope, sans-serif; font-size: 24px; font-weight: 500; color: var(--accent);
+  }
+  .faq-folding .faq-q[aria-expanded="true"]::after { content: "\2013"; }
+  .faq-folding .faq-row { gap: 0; padding: 18px 0; }
+  .faq-folding .faq-row h3 { font-size: 18px; }
+  .faq-folding .faq-q[aria-expanded="false"] ~ p, .faq-folding h3:has(.faq-q[aria-expanded="false"]) + p { display: none; }
+  .faq-folding .faq-row p { margin-top: 10px; }
+
+  /* ---- money */
+  .amounts > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .ledger thead th { white-space: nowrap; font-size: 10.5px; letter-spacing: 0.04em; }
+  .ledger:not(.ledger--years) thead tr, .ledger:not(.ledger--years) tbody tr, .ledger:not(.ledger--years) tfoot tr {
+    display: grid; grid-template-columns: 1fr 8.6em 5.8em; column-gap: 12px;
+  }
+  .ledger:not(.ledger--years) tbody tr { border-top: 1px solid var(--line); padding: 13px 0; }
+  .ledger:not(.ledger--years) tbody th { grid-column: 1 / -1; padding: 0 0 6px; border: 0; }
+  .ledger:not(.ledger--years) tbody td { border: 0; padding: 0; }
+  .ledger:not(.ledger--years) tbody td:nth-of-type(1) { grid-column: 2; }
+  .ledger:not(.ledger--years) tfoot tr { border-top: 1px solid var(--line-strong); }
+  .ledger:not(.ledger--years) tfoot th, .ledger:not(.ledger--years) tfoot td { border-top: 0; }
+  .ledger:not(.ledger--years) thead th, .ledger:not(.ledger--years) tfoot th, .ledger:not(.ledger--years) tfoot td { padding-left: 0; }
+  .ledger:not(.ledger--years) tbody tr:last-child th, .ledger:not(.ledger--years) tbody tr:last-child td { padding-bottom: 0; }
+  .ledger--years { table-layout: fixed; }
+  .ledger--years thead th { white-space: normal; line-height: 1.3; vertical-align: bottom; }
+  .ledger--years th:first-child, .ledger--years td:first-child { width: 31%; }
+  .ledger--years th, .ledger--years td { padding-left: 6px; }
+
+  /* ---- lists of names */
+  .partners { gap: 7px; }
+  .partners li { font-size: 12.5px; padding: 6px 11px; }
+
+  /* ---- the CEC tree, as a list on phones: each programme keeps the wheel's colour */
+  .cec-list > li { border-left: 4px solid var(--accent); }
+
+  /* ---- footer: two columns, and links you can hit */
+  .site-footer { padding: 40px 0 calc(28px + env(safe-area-inset-bottom)); }
+  .footer-brand img { height: 56px; }
+  .footer-cols { grid-template-columns: 1fr 1fr; gap: 24px 16px; }
+  .footer-col:last-child { grid-column: 1 / -1; }
+  .footer-col p { font-size: 14px; line-height: 1.5; }
+  .footer-col a { display: inline-block; padding: 6px 0; }
 }

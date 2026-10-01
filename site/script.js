@@ -160,3 +160,28 @@
     onScroll();
   }
 })();
+
+/* ---------------------------------------------------------------- questions
+   On a phone the questions page was one long column of answers. There, each answer
+   folds under its question, and the question is the button that opens it. Wider
+   screens, and the page without JS, keep every answer open. */
+(function () {
+  "use strict";
+  var qs = [].slice.call(document.querySelectorAll(".faq-q"));
+  if (!qs.length) return;
+  var mq = window.matchMedia("(max-width: 639px)");
+
+  function apply() {
+    qs.forEach(function (q) { q.setAttribute("aria-expanded", mq.matches ? "false" : "true"); });
+    document.documentElement.classList.toggle("faq-folding", mq.matches);
+  }
+  qs.forEach(function (q) {
+    q.addEventListener("click", function () {
+      if (!mq.matches) return;
+      q.setAttribute("aria-expanded", q.getAttribute("aria-expanded") === "true" ? "false" : "true");
+    });
+  });
+  apply();
+  if (mq.addEventListener) mq.addEventListener("change", apply);
+  else if (mq.addListener) mq.addListener(apply);
+})();
