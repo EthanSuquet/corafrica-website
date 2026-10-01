@@ -761,8 +761,8 @@ TRACK_CARDS = [("Founded 2017", "Victoria Schools", "victoria-pupils.jpg",
                ("Founded 2007", "Sr. Augustina Abuo Memorial Medical Clinic", "clinic.jpg",
                 "The Sr. Augustina Abuo Memorial Medical Clinic",
                 "Idum-Mbube &mdash; a doctor, ten beds, and a community of 20,000"),
-               ("2020&ndash;22", "Refugees and displaced families", "refugee-children.jpg",
-                "Refugee children at a CORAfrica distribution, beside the school bus",
+               ("2020&ndash;22", "Refugees and displaced families", "field-team.jpg",
+                "CORAfrica field staff outside a shelter at a settlement for displaced families",
                 "Cross River and Benue &mdash; 1,000 trained in agribusiness, six classrooms built in a camp")]
 
 # Headshots for the Contact page, keyed by name exactly as it appears in the lists
@@ -1352,20 +1352,12 @@ centre_rows = "".join(alt_row(i, img, alt, "%02d" % (i + 1), tag, name, txt, med
 # None shows the old school name: those with the signboard in frame are cropped below it, or left
 # out. The cocoa nursery is a phone film, shown with its sound since he did not ask otherwise.
 LIVE = [
-    [("victoria-playtime.jpg", "Pupils of the Victoria Schools in check and yellow uniforms, laughing in the schoolyard",
-      "School children at the Victoria Schools, Ikom"),
-     ("jba-classroom.jpg", "Pupils in purple uniform filling a classroom at John Bosco Academy",
-      "In class at John Bosco Academy, Adagom"),
+    [("st-josephs-assembly.jpg", "Pupils in red and yellow house colours crossing the courtyard at St. Joseph&rsquo;s",
+      "St. Joseph&rsquo;s courtyard, between classes &mdash; Idum-Mbube, Ogoja"),
      ("jba-farm.jpg", "Pupils in purple uniform planting the ridges of the school demonstration farm",
       "The school demonstration farm at John Bosco Academy"),
      ("jba-happy.jpg", "A man crouching among small pupils in purple uniform, who crowd round him",
-      "A happy moment for the children of John Bosco Academy, Adagom")],
-    [("st-josephs-courtyard-2.jpg", "The two-storey classroom blocks of St. Joseph&rsquo;s round a planted courtyard",
-      "St. Joseph&rsquo;s Schools and the CEC at Idum-Mbube"),
-     ("st-josephs-grounds.jpg", "A path between hedges beside the classroom blocks at St. Joseph&rsquo;s",
-      "The grounds of St. Joseph&rsquo;s, Idum-Mbube"),
-     ("jba-assembly.jpg", "Pupils in purple uniform gathered outdoors at John Bosco Academy, with visitors behind them",
-      "Outside, at John Bosco Academy"),
+      "A happy moment for the children of John Bosco Academy, Adagom"),
      ("handover-jba.jpg", "Visitors and CORAfrica staff beside the John Bosco Academy signboard at Adagom",
       "Handing over our institutions to partners from Franciscan University of Steubenville")],
     [("handover-classroom.jpg", "Visitors standing at the side of a classroom while a teacher takes a lesson",
@@ -1383,7 +1375,7 @@ body = hero("Our model", "A school on its own does not keep a child in class.",
             "Community Education Centre runs two programmes, education and healthcare &mdash; and builds the school "
             "farms, HELP-A-KID, economic empowerment and the skills centres into the education itself, for parents "
             "and community members as well as pupils. It takes a village to raise a child.",
-            "our-model-hero.jpg", "Pupils of the Victoria Schools, Ikom, laughing and holding hands in the schoolyard")
+            "our-model-hero.jpg", "Pupils in purple uniform gathered outdoors at John Bosco Academy, Adagom")
 body += sec(head_block("The Community Education Centre", "Two programmes. One community. Several systems.",
                        "The Community Education Centre is our answer to a hard lesson: a school on its own does not "
                        "keep a child in class. Hunger, illness and a family without income take more children out "
@@ -1395,22 +1387,9 @@ body += sec(head_block("Where the model stands", "Proven twice. Next, near Abuja
                        "handed to the institutions that will run them from 2027 &mdash; which is what they were "
                        "built for. We intend to replicate the model across Nigeria, beginning with a proposed "
                        "centre near Abuja.")
-            + centre_rows
-            + shot_grid([("st-josephs-assembly.jpg",
-                          "Pupils in red and yellow house colours crossing the courtyard at St. Joseph&rsquo;s",
-                          "St. Joseph&rsquo;s courtyard, between classes &mdash; Idum-Mbube, Ogoja"),
-                         ("clinic.jpg", "The Sr. Augustina Abuo Memorial Medical Clinic",
-                          "The Sr. Augustina Abuo Memorial Medical Clinic &mdash; Idum-Mbube, Ogoja"),
-                         # Picture 03 was the welcome wall, with the old school name painted on it.
-                         # "Remove picture 03 and replace in 01" (Fr. Peter, 2026-10-01): his own
-                         # picture 1, "School children in Victoria Schools".
-                         ("victoria-pupils.jpg", "Children gathered on the stamped walkway outside the classrooms of the Victoria Schools",
-                          "School children at the Victoria Schools &mdash; Victoria, Ikom"),
-                         ("school-farm.jpg", "Students in school uniform working on a school farm",
-                          "The school demonstration farm, worked by the pupils themselves")]),
-            cls="grad-warm-white")
+            + centre_rows, cls="grad-warm-white")
 body += sec(head_block("The model, live", "What a centre looks like on an ordinary day.",
-                       "Pupils in class, at play and on the farm; the schools and their grounds; the trustees who "
+                       "Pupils at school and on the farm; the schools and their grounds; the trustees who "
                        "oversee the work; and the partners the schools are being handed on to.")
             + "".join(shot_grid(row) for row in LIVE)
             + clip("cocoa-nursery.mp4", "cocoa-nursery-poster.jpg",
@@ -1504,7 +1483,7 @@ PROGRAMME_BLOCKS = [
      "Our primary and secondary schools are centred where children have no educational opportunity at all, and equipped where they exist but lack the basics. Small classes, good teaching, and a holistic education that grows a child academically, personally and spiritually &mdash; with vocational training and skills acquisition at its heart.",
      ["We run economic empowerment programmes inside our centres, so that poor parents can take soft loans to start the small businesses and farms that lift their livelihoods.",
       "The HELP-A-KID programme reaches children who are not in a CORAfrica-supported school at all, so that a poorer child is encouraged into an adequate education in spite of their vulnerability."]),
-    ("Healthcare", "clinic.jpg", "02", "Programme", "A CORAfrica school clinic",
+    ("Healthcare", None, "02", "Programme", "",
      "Our clinic is built inside the school system, so a child&rsquo;s health is never the reason they miss class. We concentrate on prevention, early detection, health education, and the treatment of diarrhoeal disease and malaria in the under-fives. We invest heavily in the first 1,000 days of life, the window that sets brain development, growth and immune strength. Child welfare carries the same premium, through HELP-A-KID.",
      ["The clinics run medical outreach to underserved places that have none of their own &mdash; rural communities, refugee settlements, schools and orphanages.",
       "Through them, school children are taught personal hygiene, environmental sanitation, proper handwashing and safe drinking water."]),
@@ -1519,7 +1498,7 @@ body = hero("What we do", "Education is the bedrock. Everything else is built on
             "Getting a good education as a child is the essential building block of a tolerant, well-adjusted, healthy "
             "and prosperous adult. Families where parents completed primary and secondary school have higher incomes, "
             "better health and longer lives &mdash; and pass all of it on.",
-            "what-we-do-hero.jpg", "A community gathered with CORAfrica for a distribution")
+            "what-we-do-hero.jpg", "Children with their arms raised beneath a CORAfrica banner")
 body += sec(head_block("Our two programmes", "More than a school.",
                        "A Community Education Centre brings learning, social welfare and empowerment together for "
                        "the African child, inside the child&rsquo;s own community &mdash; above all for the child "
@@ -1534,9 +1513,9 @@ body += sec(head_block("What we run today", "Two programmes, under our own direc
                        "programmes CORAfrica runs day to day, alongside our Community Education Centres, each one "
                        "answering a different reason a child stops coming to class.")
             + programme_groups(3, education_shot=(
-                "john-bosco-classroom.jpg",
-                "Pupils at their desks in a classroom at John Bosco Academy, with CORAfrica staff at the front",
-                "A class at John Bosco Academy, Adagom. Photographed for us in September 2026."))
+                "jba-classroom.jpg",
+                "Pupils in purple uniform filling a classroom at John Bosco Academy",
+                "In class at John Bosco Academy, Adagom. Photographed for us in September 2026."))
             + '    <h3 class="group-label">Alongside them</h3>\n'
             + grid([card(t, b, tag) for t, b, tag in ALSO_TODAY], 2, m="rail")
             + media_pair(("livelihoods.jpg", "Women at a Special Project Funds distribution implemented by CORAfrica with support from Cuso International"),
@@ -1758,7 +1737,7 @@ programme_page(
     "programme-school-farms.html", "School demonstration farms", "School demonstration farms",
     "Agriculture on the timetable rather than in a textbook. Pupils work a real farm through a real season, and "
     "leave school with a skill that feeds a family.",
-    "farms-hero.jpg", "Pupils of John Bosco Academy in purple uniform planting the ridges of the school demonstration farm",
+    "farms-hero.jpg", "Two students in blue and white uniform feeding the animals on a school farm",
     "CORAfrica's school demonstration farms: practical agriculture inside the school curriculum, from land "
     "preparation to marketing and post-harvest handling.",
     sec(head_block("What it is", "Practical agriculture, inside the curriculum.",
@@ -2017,7 +1996,7 @@ body = hero("Our track record", "Built where there was nothing, then handed on."
             "For twenty years CORAfrica has founded schools, clinics and farms where the need was greatest, proved "
             "they work, and handed them to the institutions that will carry them on. Everything on this page was "
             "built by CORAfrica, and the hand-over of the schools and clinics completes in 2027.",
-            "track-hero.jpg", "Children gathered outside the classrooms of the Victoria Schools, Ikom")
+            "track-hero.jpg", "A path between hedges and the classroom blocks at St. Joseph's Schools, Idum-Mbube")
 body += sec(head_block("Institutions we founded", "Schools and clinics, now in other hands.",
                        "Handing a school on is the intended end state, not a loss &mdash; a project that cannot be "
                        "handed on has not really been built. Every institution below was founded by CORAfrica, and "
@@ -2033,8 +2012,8 @@ body += sec(head_block("Programmes delivered", "Loans, training, classrooms and 
                        "Beyond the institutions, CORAfrica has run programmes for families, refugees and displaced "
                        "people across Cross River and Benue States.")
             + grid([card(t, b, tag) for t, b, tag in DELIVERED], 3, m="rail")
-            + media_pair(("field-team.jpg", "CORAfrica field staff outside a shelter at a settlement"),
-                         ("bus.jpg", "Pupils in school uniform beside a CORAfrica school bus"))
+            + single_shot("bus.jpg", "Pupils in school uniform beside a CORAfrica school bus",
+                          "The school bus that carries pupils to class.")
             # 2026-09-18, Fr. Peter, of the children in it: they are refugees. This is the section
             # that says CORAfrica works among refugee and displaced families, so it belongs here.
             + single_shot("refugee-children.jpg",
@@ -2722,9 +2701,9 @@ body += sec(head_block("2025 at a glance", "What we received, and what we spent.
             + ledger, cls="bg-white")
 body += sec(head_block("What your money built", "Not just figures. Places, people and change.")
             + grid([card(t, b, tag) for t, b, tag in BUILT], 2)
-            + single_shot("john-bosco-classroom.jpg",
-                          "Pupils at their desks in a classroom at John Bosco Academy, with CORAfrica staff at the front",
-                          "A class at John Bosco Academy, Adagom."),
+            + single_shot("st-josephs-courtyard-2.jpg",
+                          "The two-storey classroom blocks of St. Joseph&rsquo;s round a planted courtyard",
+                          "The classroom blocks at St. Joseph&rsquo;s, Idum-Mbube."),
             cls="grad-warm-white")
 body += sec(head_block("The honest part", "In 2025, we spent more than we received. Here is why.")
             + article("We received &#8358;383.1 million and spent &#8358;433.1 million. The &#8358;50.1 million "
