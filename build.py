@@ -1098,10 +1098,12 @@ body = hero("Education for Africa&rsquo;s Future",
             # goes on the site", choosing the one where "his face is more visible with the children given
             # the text" (Ethan, 2026-10-01): his selfie with three laughing children (2026-09-18). hero.jpg,
             # the school farm, stays on Donate and as the default share image.
+            # Superseded 2026-10-01 (Fr. Peter): the opening image is now the Victoria Schools pupils laughing
+            # in the yard (the full 4:3 frame, not the banner crop on Our Model).
             # The faces fill the frame edge to edge, so no text can sit on it: on desktop the photograph
             # takes the right of the card and fades into the dark the text sits on (.hero-card--home), and
             # on tablets and phones it sits above the text, as every hero does there.
-            "home-hero.jpg", "Fr. Peter Abue, in sunglasses, with three laughing children pressed close round him",
+            "home-hero.jpg", "Pupils of the Victoria Schools, Ikom, laughing and playing in the schoolyard, the school sign behind them",
             page_hero=False,
             kicker_big=True, extra_cls="hero-card--home",
             actions='      <div class="button-row">\n'
